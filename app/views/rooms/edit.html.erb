@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="mx-auto col-11 col-sm-10 col-lg-8 col-xl-6">
+      <h3 class="text-dark bg-light py-4 mb-0 text-center">投稿編集</h3>
+      <%= render 'layouts/errors', obj: @room %>
+      <%= form_with model: @room do |f| %>
+        <div class="form-group">
+          <%= f.label :Image %>
+          <%= f.file_field :image, class: "form-control-file" %>
+        </div>
+                  <!-- 名前編集 -->
+        <div class="form-group">
+          <%= f.label :名前, class: 'text-black' %>
+          <%= f.text_field :title, class: 'form-control' %>
+        </div>
+                  <!-- 自己紹介 -->
+        <div class="form-group">
+          <%= f.label :body, '紹介文(200文字まで) ', class:'text-black' %>
+          <%= f.text_area :body, class: "form-control", rows: "3", placeholder:"説明文
+        (例文)明日の夕食が決められませんどうすればよいでしょうか"
+          %>
+        </div>
+
+        <%= f.submit "更新", class: 'btn-block' %>
+      <% end %>
+    </div>
+  </div>
+</div>

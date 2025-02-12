@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Soudankaijou</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'homes', media: 'all' %>
+
+    <script src="https://kit.fontawesome.com/f074eb6831.js" crossorigin="anonymous"></script>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body class="d-flex flex-column vh-100">
+    <header class="shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+
+            <% if user_signed_in? %>
+              <%= link_to rooms_path do %>
+                <div class="logo"></div>
+              <% end %>
+            <% else %>
+              <%= link_to root_path do %>
+                <div class="logo"></div>
+              <% end %>
+            <% end %>
+          <% if user_signed_in? %>
+            <div class="search_form mx-5">
+              <%= form_with url: search_path, local: true, method: :get do |f| %>
+                <div class="input-group-prepend">
+                  <%= f.text_field :word, placeholder: "検索文字"%>
+                  <%= f.select :range, options_for_select(['タイトル']) %>
+                  <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]) %>
+                  <%= f.submit "検索", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <!--<a class="navbar-brand p-3" href="/">< image_tag('logo.png') %></a>-->
+          <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="navbar-nav ml-auto">
+
+            <% if user_signed_in? %>
+              <%= link_to new_room_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+                <i class="fa-solid fa-wrench"></i>
+                部屋作成
+              <% end %>
+
+              <%= link_to rooms_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+                <i class="fa-solid fa-table"></i>
+                部屋一覧
+              <% end %>
+
+              <%= link_to user_path(current_user.id), class: "btn btn-outline-dark btn-sm mx-2" do %>
+                <i class="fa-solid fa-home"></i>
+                マイページ
+              <% end %>
+
+              <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-dark btn-sm mx-2" do %>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                ログアウト
+              <% end %>
+
+            <!--<li class="nav-item">-->
+                <!--link_to '投稿フォーム', new_post_image_path, class: 'nav-link text-dark' %>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--   link_to 'マイページ', user_path(current_user.id), class: 'nav-link text-dark' %>-->
+            <!--</li>-->
+            <% else %>
+                <%= link_to root_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
+                  <i class="fa-solid fa-home"></i>
+                  TOP
+                <% end %>
+
+                <%= link_to about_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
+                  <i class="fa-solid fa-link"></i>
+                  About
+                <% end %>
+
+                <%= link_to new_user_registration_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
+                  <i class="fa-solid fa-user-plus"></i>
+                  新規登録
+                <% end %>
+
+                <%= link_to new_user_session_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                  ログイン
+                <% end %>
+            <% end %>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="mb-auto">
+      <% if flash[:notice] %>
+        <div class="alert alert-primary text-center" role="alert">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+    <%= yield %>
+    </main>
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <p>困ったときに気軽に相談できる場所</p>
+            <!--< image_tag('logo-white.png') %>-->
+          </div>
+          <div class="col-md-8">
+            <h6 class="text-white mt-2 mb-3">Link</h6>
+            <ul class="p-0 list-unstyled">
+              <li>
+                <a href="" title="About" class="text-white-50">会社概要</a>
+              </li>
+              <li>
+                <a href="" title="License informations" class="text-white-50">プライバシーポリシー</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
