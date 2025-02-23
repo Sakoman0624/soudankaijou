@@ -13,6 +13,11 @@ class Room < ApplicationRecord
   end
 
   has_one_attached :image
+  has_many :comments, dependent: :destroy
+
+  def room_comments
+    comments
+  end
 
   validates :title, length: { in: 2..30 }, presence: true
   validates :body, length: { in: 5..200 }, presence: true

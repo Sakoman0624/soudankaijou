@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Soudankaijou</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <script src="https://kit.fontawesome.com/f074eb6831.js" crossorigin="anonymous"></script>
+  <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+  <% if admin_signed_in? %>
+    <div class="text-right">
+      <%= link_to admin_dashboards_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+        全一覧
+      <% end %>
+      
+      <%= link_to admin_users_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+        
+        ユーザー一覧
+      <% end %>
+      
+      <%= link_to admin_rooms_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+        <i class="fa-solid fa-table"></i>
+        部屋一覧
+      <% end %>
+      
+      <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-dark btn-sm mx-2" do %>
+        <i class="fa-solid fa-right-from-bracket"></i>
+        ログアウト
+      <% end %>
+    </div>
+  <% end %>
+  <%= yield %>
+</body>
+</html>

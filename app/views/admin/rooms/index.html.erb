@@ -1,0 +1,35 @@
+<div class="text-center">
+  <h1>全投稿一覧</h1>
+</div>
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4 m-4">
+    <% @rooms.each do |room| %>
+      <div class="col mb-4">
+        <div class="card h-100 shadow">
+          <% if room.image.attached? %>
+              <%= image_tag room.get_image(300,230), class:'card-img-top', style:"height: 180px; object-fit:contain" %>
+          <% else %>
+            <%= image_tag "room_image.jpg", class:'card-img-top', style:"height: 180px; object-fit:cover" %>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to room.title, admin_room_path(room) %></h5>
+            <div class="muted-text">
+              <%= image_tag room.user.get_profile_image(25,25), class:"rounded-circle icon" %>
+              <%= room.user.name %>
+            </div>
+            <small class="text-end text-left"><%= room.created_at.strftime('%Y/%m/%d') %></small>
+            <div>
+              コメント数： <%= room.room_comments.count %>
+            </div>
+          </div>
+          <div class="card-footer text-end d-md-flex justify-content-md-end">
+            <%= link_to "Show", admin_room_path(room), class: 'btn btn-secondary mx-1' %>
+              <%= link_to "Delete", admin_room_path(room),
+            method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= paginate @rooms %>

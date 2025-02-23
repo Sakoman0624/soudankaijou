@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 order-lg-2 mt-4 text-center">
+      <div class="text-center text-light bg-dark">
+        <h2><%= @user.name %>
+          <span class="mt-3 ml-2">さんのページ</span>
+        </h2>
+      </div>
+      <div class="mt-3">
+        <%= image_tag @user.get_profile_image(100,100), class:"rounded-circle" %>
+      </div>
+      <dev class="text-center">
+        <h3 class="font-weight-bold"><%= @user.name %></h3>
+      </dev>
+      <div class="mt-3">
+        <h3>紹介文</h3>
+        <div class="row">
+          <div class="col-md-12 text-break border border-secondary">
+            <%= @user.introduction %>
+          </div>
+        </div>
+        <% if user_signed_in? && current_user == @user %>
+          <%= link_to "編集", edit_user_path, class: "mt-3 btn btn-warning btn-lg btn-block" %>
+          <%= link_to "退会画面", users_check_path, class: "mt-3 btn btn-danger btn-lg btn-block" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="col-lg-3 order-lg-1 mt-4">
+      <h4>お気に入りした一覧</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>タイトル</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (1..5).each do |i| %>
+            <tr>
+              <td><%= "タイトル_#{i}" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-lg-3 order-lg-3 mt-4">
+      <h3>自作部屋一覧</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ルーム名</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (1..5).each do |i| %>
+            <tr>
+              <td><%= "ルーム_#{i}" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="bg-info mb-0 pb-2">
+  <div class="container bg-white">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="text-start">
+          製作者：
+          <%= link_to user_path(@room.user.id) do %>
+            <%= image_tag @room.user.get_profile_image(30,30), class:"rounded-circle icon" %>
+            <%= @room.user.name %>
+          <% end %>
+        </div>
+        <div class="text-light bg-dark">
+          <div class="text-center">
+            <h2><%= @room.title %></h2>
+          </div>
+          <div class="text-end d-md-flex justify-content-md-end">
+            <% if current_user ==  @room.user %>
+              <%= link_to "Edit", edit_room_path(@room), class: 'btn btn-primary mx-2' %>
+              <%= link_to "Delete", room_path(@room),
+            method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-2' %>
+            <% end %>
+          </div>
+        </div>
+        <div class="text-center">
+          <% if @room.image.attached? %>                     <!--height: 500px; width: 1000px;-->
+            <%= image_tag @room.get_image(1000,1000), style:"object-fit:fill" %>
+          <% else %>
+            <%= image_tag "room_image.jpg", style:"object-fit:fill" %>
+          <% end %>
+        </div>
+        <div class="col-md-12 text-break border border-secondary">
+          <%= @room.body %>
+        </div>
+        <%= link_to "掲示板", "#", class: "btn btn-success btn-lg btn-block" %>
+
+        <%= render 'layouts/errors', obj: @room %>
+        <div class="comments">
+          <% if @room.comments.blank? %>
+            <p>コメントが投稿されていません。</p>
+          <% else %>
+            <% @room.comments.each do |comment| %>
+            　<div class="post">
+                <div class="post-info">
+                  <%= image_tag comment.user.get_profile_image(35,35), class:"rounded-circle icon" %>
+                  <%= comment.user.name %>
+                  <%= comment.created_at.strftime('%Y/%m/%d') %>
+                </div>
+
+                <div class="content col-md-12 text-break">
+                  <p><%= comment.body %></p>
+
+                  <% if comment.image.attached? %>
+                    <%= image_tag(comment.image, size: "200x200") %>
+                  <% end %>
+                  <% if comment.user == current_user %>
+                    <%= link_to room_comment_path(comment.room, comment), method: :delete do %>
+                      <i class="fa-solid fa-trash-can"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="form form-group">
+          <%= form_with(model: [@room, @comment], id: "new_comment") do |f| %>
+            <div>
+              <%= f.label :image, "画像アップロード" %><br>
+              <%= f.file_field :image, accept: "image/*" %>
+            </div>
+            <div class="input-group">
+              <%= f.text_field :body, placeholder: "コメントを入力してください。", class: "form-control" %>
+              <%= f.hidden_field :room_id, value: @room.id %>
+              <%= f.button type: "submit", class: "submit-btn" do %>
+                <i class="far fa-paper-plane"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
