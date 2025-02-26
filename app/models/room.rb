@@ -1,4 +1,9 @@
 class Room < ApplicationRecord
+  
+  has_many :likes, dependent: :destroy
+  has_many :liked_users, through: :likes, source: :user
+  
+  validates :public, inclusion: { in: [true, false] }
 
   belongs_to :user
 

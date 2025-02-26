@@ -16,5 +16,6 @@ class Admin::RoomsController < ApplicationController
     @comment = Comment.new
     @user = @room.user_id
     @current_user = current_admin
+    @rooms = Room.all
   end
 end

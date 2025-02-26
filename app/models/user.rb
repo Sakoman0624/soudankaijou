@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  
+  has_many :likes, dependent: :destroy
+  has_many :liked_rooms, through: :likes, source: :room
+  
   has_many :rooms, dependent: :destroy
   has_many :comments, dependent: :nullify
   
@@ -22,7 +26,19 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :profile_image
-
+  
+  GUEST_USER_EMAIL = "guest@example.com"
+  
+  def self.guest
+    find_or_create_by!(email: GUEST_USER_EMAIL) do |user|
+      user.password = SecureRandom.urlsafe_base64
+      user.name = "ゲストユーザー"
+    end
+  end
+  
+  def guest?
+    email == 'guest@example.com'
+  end
 
   def get_profile_image(width, height)
     unless profile_image.attached?

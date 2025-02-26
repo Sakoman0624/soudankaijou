@@ -1,19 +1,29 @@
 <h1>全ユーザー一覧</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>
-          ユーザー名
-        </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @users.each do |user| %>
+<table class="table table-striped">
+  <thead>
     <tr>
-        <td><%= user.name %> - <%= user.email %></td>
-        <td><%= link_to '削除', admin_user_path(user), method: :delete, data: { confirm: '本当に削除しますか？' } %></td>
+      <th>ユーザー名</th>
+      <th>メールアドレス</th>
+      <te></te>
     </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td>
+          <% if user.is_deleted %>
+            <!-- 退会中のユーザーに対して再有効化ボタンを表示 -->
+            <%= link_to '再有効化', reactivate_admin_user_path(user), method: :patch, class: 'btn btn-success btn-sm' %>
+          <% else %>
+            <!-- 通常ユーザーに対して退会ボタンを表示 -->
+            <%= link_to '退会', withdraw_admin_user_path(user), method: :patch, data: { confirm: '本当に退会させますか？' }, class: 'btn btn-warning btn-sm' %>
+          <% end %>
+          <!-- 完全削除ボタンは常に表示 -->
+          <%= link_to '削除', admin_user_path(user), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-sm' %>
+        </td>
+      </tr>
     <% end %>
-    </tbody>
-  </table>
+  </tbody>
+</table>

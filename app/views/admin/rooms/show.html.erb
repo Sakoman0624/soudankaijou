@@ -1,7 +1,7 @@
-<div class="bg-info mb-0 pb-2">
+<body class="bg-info">
   <div class="container bg-white">
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12 mb-4">
         <div class="text-start">
           製作者：
           <%= image_tag @room.user.get_profile_image(30,30), class:"rounded-circle icon" %>
@@ -50,33 +50,15 @@
                   <% if comment.image.attached? %>
                     <%= image_tag(comment.image, size: "200x200") %>
                   <% end %>
-                  <% if comment.user == current_user %>
-                    <%= link_to room_comment_path(comment.room, comment), method: :delete do %>
-                      <i class="fa-solid fa-trash-can"></i>
-                    <% end %>
+                  <%= link_to room_comment_path(comment.room, comment), method: :delete do %>
+                    <i class="fa-solid fa-trash-can"></i>
                   <% end %>
                 </div>
               </div>
             <% end %>
           <% end %>
         </div>
-
-        <div class="form form-group">
-          <%= form_with(model: [@room, @comment], id: "new_comment") do |f| %>
-            <div>
-              <%= f.label :image, "画像アップロード" %><br>
-              <%= f.file_field :image, accept: "image/*" %>
-            </div>
-            <div class="input-group">
-              <%= f.text_field :body, placeholder: "コメントを入力してください。", class: "form-control" %>
-              <%= f.hidden_field :room_id, value: @room.id %>
-              <%= f.button type: "submit", class: "submit-btn" do %>
-                <i class="far fa-paper-plane"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
       </div>
     </div>
   </div>
-</div>
+</body>

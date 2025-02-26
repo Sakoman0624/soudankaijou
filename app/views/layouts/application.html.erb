@@ -106,7 +106,12 @@
           <%= flash[:notice] %>
         </div>
       <% end %>
-    <%= yield %>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger text-center" role="alert">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+      <%= yield %>
     </main>
     <footer class="bg-dark text-white pt-5 pb-4">
       <div class="container">

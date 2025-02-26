@@ -1,7 +1,14 @@
 class ApplicationController < ActionController::Base
   before_action :configure_authentication
+  before_action :check_guest_user, only: [:create, :update]
  
   private
+  
+  def check_guest_user
+    if user_signed_in? && current_user.guest?
+      redirect_to request.referer, alert: 'ゲストユーザーはこの操作を実行できません。'
+    end
+  end
  
   def configure_authentication
     if admin_controller?

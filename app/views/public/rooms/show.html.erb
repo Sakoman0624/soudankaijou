@@ -1,3 +1,4 @@
+<%= render 'layouts/errors', obj: @room %>
 <div class="bg-info mb-0 pb-2">
   <div class="container bg-white">
     <div class="row">
@@ -5,8 +6,28 @@
         <div class="text-start">
           製作者：
           <%= link_to user_path(@room.user.id) do %>
-            <%= image_tag @room.user.get_profile_image(30,30), class:"rounded-circle icon" %>
+            <%= image_tag @room.user.get_profile_image(30, 30), class:"rounded-circle icon" %>
             <%= @room.user.name %>
+          <% end %>
+          <% if @room.user_id == current_user.id %>
+            <%= link_to toggle_public_room_path(@room), method: :patch, class: 'btn btn-outline-primary' do %>
+              <% if @room.public? %>
+                <i class="fa fa-lock"></i> 非公開にする
+              <% else %>
+                <i class="fa fa-check-circle"></i> 公開にする
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if current_user.likes.exists?(room: @room) %>
+            <!-- いいねを外すボタン -->
+            <%= button_to room_like_path(@room, current_user.likes.find_by(room: @room)), method: :delete, class: "btn btn-danger d-inline" do %>
+              <i class="fa-solid fa-heart"></i> いいねを取り消す
+            <% end %>
+          <% else %>
+            <!-- いいねするボタン -->
+            <%= button_to room_likes_path(@room), method: :post, class: "btn btn-success d-inline" do %>
+              <i class="fa-regular fa-heart"></i> いいねする
+            <% end %>
           <% end %>
         </div>
         <div class="text-light bg-dark">
@@ -14,7 +35,7 @@
             <h2><%= @room.title %></h2>
           </div>
           <div class="text-end d-md-flex justify-content-md-end">
-            <% if current_user ==  @room.user %>
+            <% if current_user == @room.user %>
               <%= link_to "Edit", edit_room_path(@room), class: 'btn btn-primary mx-2' %>
               <%= link_to "Delete", room_path(@room),
             method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-2' %>
@@ -22,8 +43,8 @@
           </div>
         </div>
         <div class="text-center">
-          <% if @room.image.attached? %>                     <!--height: 500px; width: 1000px;-->
-            <%= image_tag @room.get_image(1000,1000), style:"object-fit:fill" %>
+          <% if @room.image.attached? %>
+            <%= image_tag @room.get_image(1000, 1000), style:"object-fit:fill" %>
           <% else %>
             <%= image_tag "room_image.jpg", style:"object-fit:fill" %>
           <% end %>
@@ -39,9 +60,9 @@
             <p>コメントが投稿されていません。</p>
           <% else %>
             <% @room.comments.each do |comment| %>
-            　<div class="post">
+              <div class="post">
                 <div class="post-info">
-                  <%= image_tag comment.user.get_profile_image(35,35), class:"rounded-circle icon" %>
+                  <%= image_tag comment.user.get_profile_image(35, 35), class:"rounded-circle icon" %>
                   <%= comment.user.name %>
                   <%= comment.created_at.strftime('%Y/%m/%d') %>
                 </div>
@@ -52,8 +73,8 @@
                   <% if comment.image.attached? %>
                     <%= image_tag(comment.image, size: "200x200") %>
                   <% end %>
-                  <% if comment.user == current_user %>
-                    <%= link_to room_comment_path(comment.room, comment), method: :delete do %>
+                  <% if comment.user == current_user || comment.room.user == current_user %>
+                    <%= link_to room_comment_path(@room, comment), method: :delete do %>
                       <i class="fa-solid fa-trash-can"></i>
                     <% end %>
                   <% end %>
@@ -70,7 +91,7 @@
               <%= f.file_field :image, accept: "image/*" %>
             </div>
             <div class="input-group">
-              <%= f.text_field :body, placeholder: "コメントを入力してください。", class: "form-control" %>
+              <%= f.text_field :body, placeholder: "コメントを入力してください。200文字までしか投稿できません　画像単体での投稿はできません", class: "form-control" %>
               <%= f.hidden_field :room_id, value: @room.id %>
               <%= f.button type: "submit", class: "submit-btn" do %>
                 <i class="far fa-paper-plane"></i>

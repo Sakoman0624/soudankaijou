@@ -11,7 +11,7 @@ class Public::RoomsController < ApplicationController
         redirect_to rooms_path(@rooms)
       else
         @user = current_user
-        @rooms = Room.all
+        @rooms = Room.where(public: true).page(params[:page]).per(12)
         render :index
       end
   end
@@ -19,7 +19,7 @@ class Public::RoomsController < ApplicationController
   def index
     # @room = Room.new
     @user = current_user
-    @rooms = Room.all.page(params[:page]).per(12)
+    @rooms = Room.where(public: true).page(params[:page]).per(12)
    # @room = Room.find(params[:id])
   end
 
@@ -28,6 +28,9 @@ class Public::RoomsController < ApplicationController
     @comment = Comment.new
     @user = @room.user_id
     @current_user = current_user
+    if !@room.public? && @room.user != current_user
+      redirect_to rooms_path, alert: "この部屋は非公開です"
+    end
   end
 
   def edit
@@ -52,7 +55,17 @@ class Public::RoomsController < ApplicationController
   def destroy
     room = Room.find(params[:id])
     room.destroy
-    redirect_to rooms_path
+    redirect_to request.referer
+  end
+  
+  def toggle_public
+    @room = Room.find(params[:id])
+    @room.update(public: !@room.public?) # 公開/非公開を反転させる
+    redirect_to @room, notice: "公開設定が変更されました。"
+  end
+  
+  def liked_rooms
+    @liked_rooms = Room.where(id: current_user.liked_rooms.pluck(:room_id))
   end
 
   private

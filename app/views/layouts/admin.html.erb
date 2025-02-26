@@ -11,22 +11,22 @@
 </head>
 <body>
   <% if admin_signed_in? %>
-    <div class="text-right">
-      <%= link_to admin_dashboards_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+    <div class="text-right bg-primary">
+      <%= link_to admin_dashboards_path, class: "btn btn-light btn-sm mx-2 mt-2 mb-2" do %>
         全一覧
       <% end %>
       
-      <%= link_to admin_users_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+      <%= link_to admin_users_path, class: "btn btn-light btn-sm mx-2 mt-2 mb-2" do %>
         
         ユーザー一覧
       <% end %>
       
-      <%= link_to admin_rooms_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
+      <%= link_to admin_rooms_path, class: "btn btn-light btn-sm mx-2 mt-2 mb-2" do %>
         <i class="fa-solid fa-table"></i>
         部屋一覧
       <% end %>
       
-      <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-dark btn-sm mx-2" do %>
+      <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-light btn-sm mx-2 mt-2 mb-2" do %>
         <i class="fa-solid fa-right-from-bracket"></i>
         ログアウト
       <% end %>
