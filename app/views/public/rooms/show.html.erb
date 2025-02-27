@@ -18,15 +18,17 @@
               <% end %>
             <% end %>
           <% end %>
-          <% if current_user.likes.exists?(room: @room) %>
-            <!-- いいねを外すボタン -->
-            <%= button_to room_like_path(@room, current_user.likes.find_by(room: @room)), method: :delete, class: "btn btn-danger d-inline" do %>
-              <i class="fa-solid fa-heart"></i> いいねを取り消す
-            <% end %>
-          <% else %>
-            <!-- いいねするボタン -->
-            <%= button_to room_likes_path(@room), method: :post, class: "btn btn-success d-inline" do %>
-              <i class="fa-regular fa-heart"></i> いいねする
+          <% if @room.public? %>
+            <% if current_user.likes.exists?(room: @room) %>
+              <!-- いいねを外すボタン -->
+              <%= button_to room_like_path(@room, current_user.likes.find_by(room: @room)), method: :delete, class: "btn btn-danger d-inline" do %>
+                <i class="fa-solid fa-heart"></i> いいねを取り消す
+              <% end %>
+            <% else %>
+              <!-- いいねするボタン -->
+              <%= button_to room_likes_path(@room), method: :post, class: "btn btn-success d-inline" do %>
+                <i class="fa-regular fa-heart"></i> いいねする
+              <% end %>
             <% end %>
           <% end %>
         </div>

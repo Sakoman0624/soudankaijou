@@ -65,7 +65,7 @@ class Public::RoomsController < ApplicationController
   end
   
   def liked_rooms
-    @liked_rooms = Room.where(id: current_user.liked_rooms.pluck(:room_id))
+    @liked_rooms = Room.where(public: true).where(id: current_user.liked_rooms.pluck(:room_id)).page(params[:page]).per(12)
   end
 
   private

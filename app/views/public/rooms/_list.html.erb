@@ -26,15 +26,17 @@
           <% end %>
         </div>
         <div class="like-button mt-3">
-          <% if current_user.likes.exists?(room: room) %>
-            <!-- いいねを外すボタン -->
-            <%= button_to room_like_path(room, current_user.likes.find_by(room_id: room.id)), method: :delete, class: "btn btn-danger" do %>
-              <i class="fa fa-heart-broken"></i> いいねを取り消す
-            <% end %>
-          <% else %>
-            <!-- いいねするボタン -->
-            <%= button_to room_likes_path(room), method: :post, class: "btn btn-success" do %>
-              <i class="fa fa-heart"></i> いいねする
+          <% if room.public? %>
+            <% if current_user.likes.exists?(room: room) %>
+              <!-- いいねを外すボタン -->
+              <%= button_to room_like_path(room, current_user.likes.find_by(room_id: room.id)), method: :delete, class: "btn btn-danger" do %>
+                <i class="fa fa-heart-broken"></i> いいねを取り消す
+              <% end %>
+            <% else %>
+              <!-- いいねするボタン -->
+              <%= button_to room_likes_path(room), method: :post, class: "btn btn-success" do %>
+                <i class="fa fa-heart"></i> いいねする
+              <% end %>
             <% end %>
           <% end %>
         </div>

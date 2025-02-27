@@ -37,6 +37,9 @@ class Public::UsersController < ApplicationController
     @user = User.find(current_user.id)
     # is_deletedカラムをtrueに変更することにより削除フラグを立てる
     @user.update(is_deleted: true)
+    # 対象ユーザーがあつかった投稿全てを非公開に
+    @user.rooms.update_all(public: false)
+    #@room.update(public: !@room.public?)
     reset_session
     flash[:notice] = "退会処理を実行いたしました"
     redirect_to root_path
