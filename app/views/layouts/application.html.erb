@@ -28,13 +28,19 @@
               <% end %>
             <% end %>
             <% if user_signed_in? %>
-              <div class="search_form mx-5">
-                <%= form_with url: search_path, local: true, method: :get do |f| %>
-                  <div class="input-group-prepend">
-                    <%= f.text_field :word, placeholder: "検索文字"%>
-                    <%= f.select :range, options_for_select(['タイトル']) %>
-                    <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]) %>
-                    <%= f.submit "検索", class: "btn btn-primary" %>
+              <div class="search_form mx-lg-5 mx-3">
+                <%= form_with url: search_path, local: true, method: :get, class: "form-inline flex-wrap" do |f| %>
+                  <div class="form-group mb-2 mr-sm-2 flex-grow-1">
+                    <%= f.text_field :word, placeholder: "検索文字", class: "form-control form-control-sm w-100" %>
+                  </div>
+                  <div class="form-group mb-2 mr-sm-2">
+                    <%= f.select :range, options_for_select(['タイトル']), class: "form-control form-control-sm" %>
+                  </div>
+                  <div class="form-group mb-2 mr-sm-2">
+                    <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]), class: "form-control form-control-sm" %>
+                  </div>
+                  <div class="form-group mb-2">
+                    <%= f.submit "検索", class: "btn btn-primary btn-sm btn-block btn-md-auto" %>
                   </div>
                 <% end %>
               </div>
