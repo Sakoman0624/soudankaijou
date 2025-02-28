@@ -14,10 +14,8 @@
           <div class="card-body">
             <h5 class="card-title"><%= link_to room.title, admin_room_path(room.id) %></h5>
             <div class="muted-text">
-              <%= link_to user_path(room.user.id) do %>
-                <%= image_tag room.user.get_profile_image(25,25), class:"rounded-circle icon" %>
-                <%= room.user.name %>
-              <% end %>
+              <%= image_tag room.user.get_profile_image(25,25), class:"rounded-circle icon" %>
+              <%= room.user.name %>
             </div>
             <small class="text-end text-left"><%= room.created_at.strftime('%Y/%m/%d') %></small>
             <div>
