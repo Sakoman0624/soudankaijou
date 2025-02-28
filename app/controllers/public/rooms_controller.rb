@@ -1,4 +1,6 @@
 class Public::RoomsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :destroy
+  
   def new
     @room = Room.new
   end
@@ -55,7 +57,7 @@ class Public::RoomsController < ApplicationController
   def destroy
     room = Room.find(params[:id])
     room.destroy
-    redirect_to request.referer
+    redirect_to request.referer, notice: 'Room was successfully deleted.'
   end
   
   def toggle_public

@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
  
   private
   
+  def admin_controller?
+    self.class.module_parent_name == 'Admin'
+  end
+  
   def check_guest_user
     if user_signed_in? && current_user.guest?
       redirect_to request.referer, alert: 'ゲストユーザーはこの操作を実行できません。'
@@ -16,10 +20,6 @@ class ApplicationController < ActionController::Base
     else
       authenticate_user! unless action_is_public?
     end
-  end
- 
-  def admin_controller?
-    self.class.module_parent_name == 'Admin'
   end
  
   def action_is_public?

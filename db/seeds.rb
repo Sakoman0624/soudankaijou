@@ -26,21 +26,21 @@ lucas = User.find_or_create_by!(email: "lucas@example.com") do |user|
   user.profile_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-user3.jpg"), filename:"sample-user3.jpg")
 end
 
-Room.find_or_create_by!(title: "Cavello") do |room|
+Room.find_or_create_by!(title: "学校に行きたくないです") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post1.jpg"), filename: "sample-post1.jpg")
-  room.body = "大人気のカフェです。"
+  room.body = "理由はありませんなんとなくです"
   room.user = olivia
 end
 
-Room.find_or_create_by!(title: "和食屋せん") do |room|
+Room.find_or_create_by!(title: "家族仲が") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post2.jpg"), filename: "sample-post2.jpg")
-  room.body = "日本料理は美しい！"
+  room.body = "子供が絶賛反抗期になってしまいました！"
   room.user = james
 end
 
-Room.find_or_create_by!(title: "ShoreditchBar") do |room|
+Room.find_or_create_by!(title: "職場環境が") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post3.jpg"), filename: "sample-post3.jpg")
-  room.body = "メキシコ料理好きな方にオススメ！"
+  room.body = "職場でうまくいかなくて困っています"
   room.user = lucas
 end
 

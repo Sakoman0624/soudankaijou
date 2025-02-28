@@ -27,18 +27,18 @@
                 <div class="logo"></div>
               <% end %>
             <% end %>
-          <% if user_signed_in? %>
-            <div class="search_form mx-5">
-              <%= form_with url: search_path, local: true, method: :get do |f| %>
-                <div class="input-group-prepend">
-                  <%= f.text_field :word, placeholder: "検索文字"%>
-                  <%= f.select :range, options_for_select(['タイトル']) %>
-                  <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]) %>
-                  <%= f.submit "検索", class: "btn btn-primary" %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
+            <% if user_signed_in? %>
+              <div class="search_form mx-5">
+                <%= form_with url: search_path, local: true, method: :get do |f| %>
+                  <div class="input-group-prepend">
+                    <%= f.text_field :word, placeholder: "検索文字"%>
+                    <%= f.select :range, options_for_select(['タイトル']) %>
+                    <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]) %>
+                    <%= f.submit "検索", class: "btn btn-primary" %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           <!--<a class="navbar-brand p-3" href="/">< image_tag('logo.png') %></a>-->
           <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
                         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
