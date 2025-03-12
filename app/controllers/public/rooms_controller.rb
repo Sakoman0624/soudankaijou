@@ -12,9 +12,7 @@ class Public::RoomsController < ApplicationController
         flash[:notice] = "部屋の作成が完了しました"
         redirect_to rooms_path(@rooms)
       else
-        @user = current_user
-        @rooms = Room.where(public: true).page(params[:page]).per(12)
-        render :index
+        render :new
       end
   end
 
