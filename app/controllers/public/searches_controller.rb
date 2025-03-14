@@ -5,9 +5,9 @@ class Public::SearchesController < ApplicationController
     @range = params[:range]
     
     if @range == "User"
-      @users = User.looks(params[:search], params[:word]).page(params[:page]).per(20)
+      @users = User.looks(params[:search], params[:word]).order(created_at: :desc).page(params[:page]).per(20)
     else
-      @rooms = Room.looks(params[:search], params[:word]).page(params[:page]).per(12)
+      @rooms = Room.looks(params[:search], params[:word]).order(created_at: :desc).page(params[:page]).per(12)
     end
 
   end

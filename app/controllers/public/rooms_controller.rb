@@ -19,7 +19,7 @@ class Public::RoomsController < ApplicationController
   def index
     # @room = Room.new
     @user = current_user
-    @rooms = Room.where(public: true).page(params[:page]).per(12)
+    @rooms = Room.where(public: true).order(created_at: :desc).page(params[:page]).per(12)
    # @room = Room.find(params[:id])
   end
 
