@@ -4,7 +4,7 @@ class Admin::RoomsController < ApplicationController
   
   def index
     @user = current_admin
-    @rooms = Room.all.page(params[:page]).per(12)
+    @rooms = Room.all.order(created_at: :desc).page(params[:page]).per(12)
   end
   
   def destroy
