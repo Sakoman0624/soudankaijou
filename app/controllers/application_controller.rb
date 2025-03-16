@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :configure_authentication
   before_action :check_guest_user, only: [:create, :update]
+  
+  config.time_zone = 'Tokyo'
 
   private
 
