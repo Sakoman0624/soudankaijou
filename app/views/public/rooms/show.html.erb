@@ -76,7 +76,7 @@
                     <%= image_tag(comment.image, size: "200x200") %>
                   <% end %>
                   <% if comment.user == current_user || comment.room.user == current_user %>
-                    <%= link_to room_comment_path(@room, comment), method: :delete do %>
+                    <%= link_to room_comment_path(@room, comment), method: :delete, data: { confirm: "本当に削除しますか？" } do %>
                       <i class="fa-solid fa-trash-can"></i>
                     <% end %>
                   <% end %>
