@@ -101,11 +101,11 @@
           <div class="card-body">
             <%= form_with(model: [@room, @comment], id: "new_comment") do |f| %>
               <div class="mb-3">
-                <%= f.label :image, "画像アップロード", class: "form-label" %>
+                <%= f.label :image, "画像アップロード 画像単体では、投稿できません", class: "form-label" %>
                 <%= f.file_field :image, accept: "image/*", class: "form-control" %>
               </div>
               <div class="input-group">
-                <%= f.text_field :body, placeholder: "コメントを入力してください。", class: "form-control" %>
+                <%= f.text_field :body, placeholder: "コメントを入力してください。　２００文字以内", class: "form-control" %>
                 <%= f.hidden_field :room_id, value: @room.id %>
                 <button type="submit" class="btn btn-primary">
                   <i class="far fa-paper-plane"></i> 送信
