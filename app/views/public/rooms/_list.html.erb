@@ -42,14 +42,15 @@
         </div>
       </div>
 
-      <div class="card-footer text-end d-flex flex-column flex-md-row justify-content-md-end flex-wrap">
-        <%= link_to "Show", room_path(room), class: 'btn btn-secondary mx-1 mb-2 mb-md-0 w-100 w-md-auto' %>
-        <% if current_user == room.user %>
-          <%= link_to "Edit", edit_room_path(room), class: 'btn btn-primary mx-1 mb-2 mb-md-0 w-100 w-md-auto' %>
-          <%= link_to "Delete", room_path(room),
-          method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1 w-100 w-md-auto' %>
-        <% end %>
-      </div>
+      <% if controller_name == "my_rooms" && action_name == "index" %>
+        <div class="card-footer text-end d-flex flex-column flex-md-row justify-content-md-end flex-wrap">
+          <% if current_user == room.user %>
+            <%= link_to "Edit", edit_room_path(room), class: 'btn btn-primary mx-1 mb-2 mb-md-0' %>
+            <%= link_to "Delete", room_path(room),
+            method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1' %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>
