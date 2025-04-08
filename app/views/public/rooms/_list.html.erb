@@ -2,9 +2,13 @@
   <div class="col mb-4">
     <div class="card h-100 shadow">
       <% if room.image.attached? %>
-          <%= image_tag room.get_image(300,230), class:'card-img-top', style:"height: 180px; object-fit:contain" %>
+        <%= link_to room_path(room) do %>
+          <%= image_tag room.get_image(300,230), class: 'card-img-top', style: "height: 180px; object-fit:contain" %>
+        <% end %>
       <% else %>
-        <%= image_tag "room_image.jpg", class:'card-img-top', style:"height: 180px; object-fit:cover" %>
+        <%= link_to room_path(room) do %>
+          <%= image_tag "room_image.jpg", class: 'card-img-top', style: "height: 180px; object-fit:cover" %>
+        <% end %>
       <% end %>
       <div class="card-body">
         <h5 class="card-title"><%= link_to room.title, room %></h5>
