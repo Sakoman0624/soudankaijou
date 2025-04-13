@@ -1,4 +1,5 @@
-
-<%= render 'public/rooms/list', rooms: @rooms %>
+<div class="text-center text-light bg-dark">
+    <h2>自作部屋一覧</h2>
 </div>
+<%= render 'public/rooms/list', rooms: @rooms %>
 <%= paginate @rooms %>
