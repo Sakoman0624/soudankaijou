@@ -1,16 +1,11 @@
-<div class="container">
-  <div class="row no-gutters">
-    <div class="mx-auto col-11 col-sm-10 col-lg-8 col-xl-6 shadow-lg rounded px-0 my-5">
-      <h3 class="text-dark bg-light py-4 mb-0 text-center">本当に退会しますか？</h3>
-      <p class="d-flex justify-content-center text-center">
-        退会すると、会員登録情報や<br>
-        今までの記録を観覧できなくなります<br>
-        退会する場合は、「退会する」をクリックしてください。
-      </p>
-      <div class="d-flex justify-content-center mt-5">
-        <%= link_to "退会しない", user_path(current_user.id), :class => "btn btn-lg btn-primary mx-3 my-3" %>
-        <%= link_to "退会する", users_withdraw_path, method: :patch, :class => "btn btn-lg btn-danger mx-3 my-3", data: { confirm: "本当に退会しますか？" }  %>
-      </div>
-    </div>
-  </div>
+<h3 class="text-danger bg-light py-4 mb-0 text-center">【最終警告】本当に退会しますか？</h3>
+<p class="d-flex justify-content-center text-center text-danger font-weight-bold">
+  一度退会すると、<br>
+  アカウント情報・これまでの投稿・記録・やり取りの履歴は<br>
+  **すべて完全に削除され、元に戻すことはできません。**<br>
+  この操作は取り消せません。本当に退会してもよろしいですか？
+</p>
+<div class="d-flex justify-content-center mt-5">
+  <%= link_to "退会しない", user_path(current_user.id), :class => "btn btn-lg btn-secondary mx-3 my-3" %>
+  <%= link_to "退会する", users_withdraw_path, method: :patch, :class => "btn btn-lg btn-danger mx-3 my-3", data: { confirm: "最終確認です。本当に退会しますか？この操作は元に戻せません。" }  %>
 </div>

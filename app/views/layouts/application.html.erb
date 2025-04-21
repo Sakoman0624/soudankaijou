@@ -15,93 +15,78 @@
 
   <body class="d-flex flex-column vh-100">
     <header class="shadow-sm">
-      <nav class="navbar navbar-expand-lg navbar-light">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-
-            <% if user_signed_in? %>
-              <%= link_to rooms_path do %>
-                <div class="logo"></div>
-              <% end %>
-            <% else %>
-              <%= link_to root_path do %>
-                <div class="logo"></div>
-              <% end %>
+          <% if user_signed_in? %>
+            <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center" do %>
+              <div class="logo mr-2"></div>
+              <strong>MyApp</strong>
             <% end %>
-            <% if user_signed_in? %>
-              <div class="search_form mx-lg-5 mx-3">
-                <%= form_with url: search_path, local: true, method: :get, class: "form-inline flex-wrap" do |f| %>
-                  <div class="form-group mb-2 mr-sm-2 flex-grow-1">
-                    <%= f.text_field :word, placeholder: "検索文字", class: "form-control form-control-sm w-100" %>
-                  </div>
-                  <div class="form-group mb-2 mr-sm-2">
-                    <%= f.select :range, options_for_select(['タイトル']), class: "form-control form-control-sm" %>
-                  </div>
-                  <div class="form-group mb-2 mr-sm-2">
-                    <%= f.select :search, options_for_select([["完全一致","perfect_match"], ["部分一致","partial_match"]]), class: "form-control form-control-sm" %>
-                  </div>
-                  <div class="form-group mb-2">
-                    <%= f.submit "検索", class: "btn btn-primary btn-sm btn-block btn-md-auto" %>
-                  </div>
-                <% end %>
-              </div>
+          <% else %>
+            <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+              <div class="logo mr-2"></div>
+              <strong>MyApp</strong>
             <% end %>
-          <!--<a class="navbar-brand p-3" href="/">< image_tag('logo.png') %></a>-->
-          <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <% end %>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <div class="navbar-nav ml-auto">
-
             <% if user_signed_in? %>
-              <%= link_to new_room_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
-                <i class="fa-solid fa-wrench"></i>
-                部屋作成
-              <% end %>
-
-              <%= link_to rooms_path, class: "btn btn-outline-dark btn-sm mx-2" do %>
-                <i class="fa-solid fa-table"></i>
-                部屋一覧
-              <% end %>
-
-              <%= link_to user_path(current_user.id), class: "btn btn-outline-dark btn-sm mx-2" do %>
-                <i class="fa-solid fa-home"></i>
-                マイページ
-              <% end %>
-
-              <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-dark btn-sm mx-2" do %>
-                <i class="fa-solid fa-right-from-bracket"></i>
-                ログアウト
-              <% end %>
-
-            <!--<li class="nav-item">-->
-                <!--link_to '投稿フォーム', new_post_image_path, class: 'nav-link text-dark' %>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--   link_to 'マイページ', user_path(current_user.id), class: 'nav-link text-dark' %>-->
-            <!--</li>-->
-            <% else %>
-                <%= link_to root_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
-                  <i class="fa-solid fa-home"></i>
-                  TOP
+              <div class="mx-auto my-2 my-lg-0" style="width: 100%; max-width: 700px;">
+                <%= form_with url: search_path, local: true, method: :get, class: "form-inline d-flex justify-content-between" do |f| %>
+                  <%= f.text_field :word, placeholder: "検索ワード", class: "form-control form-control-sm mr-2 flex-fill" %>
+                  <%= f.select :range, options_for_select(['タイトル']), class: "form-control form-control-sm mr-2" %>
+                  <%= f.select :search, options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]]), class: "form-control form-control-sm mr-2" %>
+                  <%= f.submit "検索", class: "btn btn-primary btn-sm" %>
                 <% end %>
-
-                <%= link_to about_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
-                  <i class="fa-solid fa-link"></i>
-                  About
-                <% end %>
-
-                <%= link_to new_user_registration_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
-                  <i class="fa-solid fa-user-plus"></i>
-                  新規登録
-                <% end %>
-
-                <%= link_to new_user_session_path, class:"btn btn-outline-dark btn-sm mx-2" do %>
-                  <i class="fa-solid fa-right-to-bracket"></i>
-                  ログイン
-                <% end %>
+              </div>
             <% end %>
-            </div>
+            <ul class="navbar-nav ml-auto text-center">
+              <% if user_signed_in? %>
+                <li class="nav-item">
+                  <%= link_to new_room_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-wrench"></i> 部屋作成
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to rooms_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-table"></i> 部屋一覧
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to user_path(current_user.id), class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-user"></i> マイページ
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to destroy_user_session_path, method: :delete, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+                  <% end %>
+                </li>
+              <% else %>
+                <li class="nav-item">
+                  <%= link_to root_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-home"></i> TOP
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to about_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-link"></i> About
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to new_user_registration_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-user-plus"></i> 新規登録
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to new_user_session_path, class: "nav-link text-light" do %>
+                    <i class="fa-solid fa-right-to-bracket"></i> ログイン
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
           </div>
         </div>
       </nav>

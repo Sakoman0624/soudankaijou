@@ -1,93 +1,100 @@
 <%= render 'layouts/errors', obj: @room %>
-<div class="bg-info mb-0 pb-2">
-  <div class="container bg-white">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="text-start">
-          製作者：
-          <%= link_to user_path(@room.user.id) do %>
-            <%= image_tag @room.user.get_profile_image(30, 30), class:"rounded-circle icon" %>
-            <%= @room.user.name %>
+<div class="bg-light py-4">
+  <div class="container">
+    <div class="card shadow">
+      <!-- ヘッダー（製作者・公開/非公開・いいね） -->
+      <div class="card-header bg-info text-white d-flex flex-wrap justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <%= link_to user_path(@room.user.id), class: "text-white d-flex align-items-center" do %>
+            <%= image_tag @room.user.get_profile_image(40, 40), class: "rounded-circle mr-2" %>
+            <strong class="ml-2"><%= @room.user.name %></strong>
           <% end %>
+        </div>
+        <div class="mt-2 mt-sm-0 d-flex flex-wrap gap-2">
           <% if @room.user_id == current_user.id %>
-            <%= link_to toggle_public_room_path(@room), method: :patch, class: 'btn btn-outline-primary' do %>
+            <%= link_to toggle_public_room_path(@room), method: :patch, class: 'btn btn-light btn-sm' do %>
               <% if @room.public? %>
                 <i class="fa fa-lock"></i> 非公開にする
               <% else %>
-                <i class="fa fa-check-circle"></i> 公開にする
+                <i class="fa fa-unlock"></i> 公開にする
               <% end %>
             <% end %>
           <% end %>
           <% if @room.public? %>
             <% if current_user.likes.exists?(room: @room) %>
-              <!-- いいねを外すボタン -->
-              <%= button_to room_like_path(@room, current_user.likes.find_by(room: @room)), method: :delete, class: "btn btn-danger d-inline" do %>
-                <i class="fa-solid fa-heart"></i> いいねを取り消す
+              <%= button_to room_like_path(@room, current_user.likes.find_by(room: @room)), method: :delete, class: "btn btn-danger btn-sm" do %>
+                <i class="fa-solid fa-heart"></i> いいね解除
               <% end %>
             <% else %>
-              <!-- いいねするボタン -->
-              <%= button_to room_likes_path(@room), method: :post, class: "btn btn-success d-inline" do %>
-                <i class="fa-regular fa-heart"></i> いいねする
+              <%= button_to room_likes_path(@room), method: :post, class: "btn btn-success btn-sm" do %>
+                <i class="fa-regular fa-heart"></i> いいね
               <% end %>
             <% end %>
           <% end %>
         </div>
-        <div class="text-light bg-dark">
-          <div class="text-center">
-            <h2><%= @room.title %></h2>
-          </div>
-          <div class="text-end d-md-flex justify-content-md-end">
-            <% if current_user == @room.user %>
-              <%= link_to "Edit", edit_room_path(@room), class: 'btn btn-primary mx-2' %>
-              <%= link_to "Delete", room_path(@room),
-            method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-2' %>
-            <% end %>
-          </div>
+      </div>
+      <!-- 本文 -->
+      <div class="card-body bg-light">
+        <!-- タイトル -->
+        <div class="text-center mb-4">
+          <h2><%= @room.title %></h2>
         </div>
-        <div class="text-center">
+        <!-- 画像 -->
+        <div class="text-center mb-3">
           <% if @room.image.attached? %>
-            <%= image_tag @room.get_image(1000, 1000), style:"object-fit:fill" %>
+            <%= image_tag @room.get_image(1000, 1000), class: "img-fluid rounded", style: "max-height: 400px; object-fit: cover;" %>
           <% else %>
-            <%= image_tag "room_image.jpg", style:"object-fit:fill" %>
+            <%= image_tag "room_image.jpg", class: "img-fluid rounded", style: "max-height: 400px; object-fit: cover;" %>
           <% end %>
         </div>
-        <div class="col-md-12 text-break border border-secondary">
-          <%= @room.body %>
+        <!-- 本文 -->
+        <div class="p-3 bg-white border rounded text-break">
+          <%= simple_format(@room.body) %>
         </div>
-        <%= link_to "掲示板", "#", class: "btn btn-success btn-lg btn-block" %>
-
+        <!-- 編集削除 -->
+        <div class="text-right mt-3">
+          <% if current_user == @room.user %>
+            <%= link_to edit_room_path(@room), class: "btn btn-outline-primary mx-1" do %>
+              <i class="fa fa-pen"></i> 編集
+            <% end %>
+            <%= link_to room_path(@room), method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: "btn btn-outline-danger mx-1" do %>
+              <i class="fa fa-trash"></i> 削除
+            <% end %>
+          <% end %>
+        </div>
+        <!-- 掲示板ボタン -->
+        <div class="mt-4">
+          <%= link_to "掲示板", "#", class: "btn btn-success btn-block btn-lg" %>
+        </div>
+        <!-- エラーメッセージ -->
         <%= render 'layouts/errors', obj: @room %>
-        <div class="comments">
+        <!-- コメント一覧 -->
+        <div class="comments mt-5">
           <% if @room.comments.blank? %>
             <p class="text-muted text-center">コメントが投稿されていません。</p>
           <% else %>
             <% @room.comments.each do |comment| %>
               <div class="card my-3">
                 <div class="card-body d-flex">
-                  <!-- プロフィール画像 -->
                   <div class="me-3">
-                    <%= image_tag comment.user.get_profile_image(40, 40), class:"rounded-circle" %>
+                    <%= image_tag comment.user.get_profile_image(40, 40), class: "rounded-circle" %>
                   </div>
                   <div class="w-100">
-                    <!-- ユーザー情報 -->
                     <div class="d-flex justify-content-between">
                       <div>
                         <strong><%= comment.user.name %></strong>
-                        <span class="text-muted small">・ <%= comment.created_at.strftime('%Y/%m/%d') %></span>
+                        <span class="text-muted small">  ・ <%= comment.created_at.strftime('%Y/%m/%d %H:%M') %></span>
                       </div>
-                      <!-- 削除ボタン -->
                       <% if comment.user == current_user || comment.room.user == current_user %>
                         <%= link_to room_comment_path(@room, comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-danger small" do %>
                           <i class="fa-solid fa-trash-can"></i>
                         <% end %>
                       <% end %>
                     </div>
-                    <!-- コメント本文 -->
                     <p class="mt-2 text-break"><%= comment.body %></p>
-                    <!-- 画像がある場合 -->
                     <% if comment.image.attached? %>
                       <div class="mt-2">
-                        <%= image_tag(comment.image, class: "img-fluid rounded", style: "max-width: 200px;") %>
+                        <%= image_tag comment.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
                       </div>
                     <% end %>
                   </div>
@@ -101,14 +108,14 @@
           <div class="card-body">
             <%= form_with(model: [@room, @comment], id: "new_comment") do |f| %>
               <div class="mb-3">
-                <%= f.label :image, "画像アップロード 画像単体では、投稿できません", class: "form-label" %>
+                <%= f.label :image, "画像アップロード（※画像単体では投稿できません）", class: "form-label" %>
                 <%= f.file_field :image, accept: "image/*", class: "form-control" %>
               </div>
               <div class="input-group">
-                <%= f.text_field :body, placeholder: "コメントを入力してください。　２００文字以内", class: "form-control" %>
+                <%= f.text_field :body, placeholder: "コメントを入力（200文字以内）", class: "form-control" %>
                 <%= f.hidden_field :room_id, value: @room.id %>
                 <button type="submit" class="btn btn-primary">
-                  <i class="far fa-paper-plane"></i> 送信
+                  <i class="fa-regular fa-paper-plane"></i> 送信
                 </button>
               </div>
             <% end %>
