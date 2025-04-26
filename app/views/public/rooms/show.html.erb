@@ -87,7 +87,7 @@
                         <% if is_creator_comment %>
                           <span class="badge badge-primary ml-2">作成者</span>
                         <% end %>
-                        <span class="text-muted small">・<%= comment.created_at.strftime('%Y/%m/%d') %></span>
+                        <span class="text-muted small">・<%= comment.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M') %></span>
                       </div>
                       <% if comment.user == current_user || comment.room.user == current_user %>
                         <%= link_to room_comment_path(@room, comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-danger small" do %>
