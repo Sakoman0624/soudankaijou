@@ -1,22 +1,24 @@
 <!--<div class="container">-->
 <!--  <div class="row">-->
 <!--    <div class="mx-auto col-11 col-sm-10 col-lg-8 col-xl-6">-->
-<div class="background_top-image">
-  <div class="d-flex flex-column">
-    <h1 class="d-flex justify-content-center my-5">
-      <strong>相談会場</strong>
-      へようこそ
-    </h1>
-    <p class="d-flex justify-content-center my-3">
-      ここは、今日の夕食の献立から、自身の将来的な悩みまでありとあらゆることを相談し、解決する場所です
+<div class="background_top-image position-relative text-white" style="min-height: 100vh;">
+  <!-- 背景オーバーレイ -->
+  <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.6); top: 0; left: 0; z-index: 1;"></div>
+  <!-- コンテンツ -->
+  <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="position: relative; z-index: 2; min-height: 100vh;">
+    <h1 class="display-3 font-weight-bold mb-4">相談会場へようこそ</h1>
+    <p class="lead mb-4">
+      ここは、今日の夕食の献立から将来的な悩みまで、<br>
+      あらゆることを相談し、解決へ導く場所です。
     </p>
-    <h2 class="d-flex justify-content-center my-3">
-      さあ！自身の悩みを打ち明けて共に解決していこう!!
+    <h2 class="h4 font-weight-bold mb-5">
+      さあ！悩みを打ち明けて、<br class="d-sm-none">一緒に解決していこう!!
     </h2>
-    <div class="d-flex justify-content-center mt-5">
-      <%= link_to "新規登録", new_user_registration_path, class: "btn btn-lg btn-danger mx-3" %>
-      <%= link_to "ログイン", new_user_session_path, class: "btn btn-lg btn-primary mr-5" %>
-      <%= link_to 'ゲストログイン', users_guest_sign_in_path, method: :post, class: "btn btn-lg btn-success mx-3" %>
+    <!-- ボタン -->
+    <div class="d-flex flex-wrap justify-content-center">
+      <%= link_to "新規登録", new_user_registration_path, class: "btn btn-lg btn-danger mx-3 mb-3 shadow" %>
+      <%= link_to "ログイン", new_user_session_path, class: "btn btn-lg btn-primary mx-3 mb-3 shadow" %>
+      <%= link_to 'ゲストログイン', users_guest_sign_in_path, method: :post, class: "btn btn-lg btn-success mx-3 mb-3 shadow" %>
     </div>
   </div>
 </div>
