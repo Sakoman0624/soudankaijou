@@ -13,14 +13,12 @@
       <% rooms.each do |room| %>
         <div class="col mb-4">
           <div class="card h-100 shadow">
-            <% if room.image.attached? %>
-              <%= link_to room_path(room) do %>
-                <%= image_tag room.get_image(300,230), class: 'card-img-top', style: "height: 180px; object-fit:contain" %>
-              <% end %>
-            <% else %>
-              <%= link_to room_path(room) do %>
-                <%= image_tag "room_image.jpg", class: 'card-img-top', style: "height: 180px; object-fit:cover" %>
-              <% end %>
+            <%= link_to room_path(room), class: 'thumbnail-button m-1' do %>
+              <%= image_tag(
+                    (room.image.attached? ? room.get_image(300,230) : 'room_image.jpg'),
+                    class: 'thumbnail-image',
+                    style: "object-fit: #{room.image.attached? ? 'contain' : 'cover'};"
+                  ) %>
             <% end %>
             <div class="card-body">
               <h5 class="card-title"><%= link_to room.title, room %></h5>
@@ -31,16 +29,6 @@
                 <% end %>
               </div>
               <small class="text-end text-left"><%= room.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d　%H:%M') %></small>
-              <div>
-                コメント数： <%= room.room_comments.count %>
-              </div>
-              <div>
-                <% if room.public? %>
-                  <span class="badge bg-success">公開</span>
-                <% else %>
-                  <span class="badge bg-secondary">非公開</span>
-                <% end %>
-              </div>
               <div class="like-button mt-3">
                 <% if room.public? %>
                   <% if current_user.likes.exists?(room: room) %>
@@ -56,16 +44,28 @@
                   <% end %>
                 <% end %>
               </div>
-              <div>
-                この部屋のいいね数: <%= room.likes.count %>
+              <div class="d-flex flex-wrap align-items-center mb-2">
+                <div class="mr-3">
+                  <i class="fa fa-comment"></i> <%= room.room_comments.count %>件
+                </div>
+                <div class="mr-3">
+                  <i class="fa fa-heart text-danger"></i> <%= room.likes.count %>いいね
+                </div>
+                <div>
+                  <% if room.public? %>
+                    <span class="badge bg-success">公開</span>
+                  <% else %>
+                    <span class="badge bg-secondary">非公開</span>
+                  <% end %>
+                </div>
               </div>
             </div>
       
             <% if controller_name == "my_rooms" && action_name == "index" %>
               <div class="card-footer text-end d-flex flex-column flex-md-row justify-content-md-end flex-wrap">
                 <% if current_user == room.user %>
-                  <%= link_to "Edit", edit_room_path(room), class: 'btn btn-primary mx-1 mb-2 mb-md-0' %>
-                  <%= link_to "Delete", room_path(room),
+                  <%= link_to "編集", edit_room_path(room), class: 'btn btn-primary mx-1 mb-2 mb-md-0' %>
+                  <%= link_to "削除", room_path(room),
                   method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1' %>
                 <% end %>
               </div>

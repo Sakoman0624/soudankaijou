@@ -27,3 +27,28 @@
 .pagination {
   justify-content: center;
 }
+
+.thumbnail-button {
+  display: inline-block;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.thumbnail-button:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transform: scale(1.02);
+  text-decoration: none;
+}
+
+.thumbnail-image {
+  height: 180px;
+  width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-button:hover .thumbnail-image {
+  transform: scale(1.05);
+}
