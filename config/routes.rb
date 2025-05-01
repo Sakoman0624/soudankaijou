@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         patch :toggle_public
       end
       resources :likes, only: [:create, :destroy]
-      resources :comments, only: [:create, :destroy]
+      resources :comments, only: [:create, :update, :destroy]
     end
 
     resources :my_rooms, only: [:index]

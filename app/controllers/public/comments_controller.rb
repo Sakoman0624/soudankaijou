@@ -22,6 +22,17 @@ class Public::CommentsController < ApplicationController
       redirect_to request.referer, alert: "削除権限がありません。"
     end
   end
+  
+  def update
+    @room = Room.find(params[:room_id])
+    @comment = @room.comments.find(params[:id])
+    if @comment.user == current_user && @comment.update(comment_params)
+      redirect_to room_path(@room), notice: "コメントを更新しました"
+    else
+      flash.now[:alert] = "コメントの更新に失敗しました"
+      render 'rooms/show'
+    end
+  end
 
 
   private

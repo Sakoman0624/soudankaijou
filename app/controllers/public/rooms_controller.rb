@@ -42,6 +42,7 @@ class Public::RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
     @comment = Comment.new
+    @edit_comment = params[:edit_comment_id] ? @room.comments.find_by(id: params[:edit_comment_id]) : nil
     @user = @room.user_id
     @current_user = current_user
     if !@room.public? && @room.user != current_user

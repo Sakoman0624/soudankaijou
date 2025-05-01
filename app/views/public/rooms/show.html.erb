@@ -63,8 +63,8 @@
           <% end %>
         </div>
         <!-- 掲示板ボタン -->
-        <div class="mt-4">
-          <%= link_to "掲示板", "#", class: "btn btn-success btn-block btn-lg" %>
+        <div class="text-center bg-success text-white mt-4">
+            <h1>いいねした部屋一覧</h1>
         </div>
         <!-- エラーメッセージ -->
         <%= render 'layouts/errors', obj: @room %>
@@ -89,17 +89,35 @@
                         <% end %>
                         <span class="text-muted small">・<%= comment.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M') %></span>
                       </div>
-                      <% if comment.user == current_user || comment.room.user == current_user %>
-                        <%= link_to room_comment_path(@room, comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-danger small" do %>
-                          <i class="fa-solid fa-trash-can"></i>
+                      <div>
+                        <% if comment.user == current_user || comment.room.user == current_user %>
+                          <%= link_to room_comment_path(@room, comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-danger small mr-2" do %>
+                            <i class="fa-solid fa-trash-can"></i>
+                          <% end %>
                         <% end %>
-                      <% end %>
-                    </div>
-                    <p class="mt-2 text-break"><%= comment.body %></p>
-                    <% if comment.image.attached? %>
-                      <div class="mt-2">
-                        <%= image_tag comment.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
+                        <% if comment.user == current_user %>
+                          <%= link_to room_path(@room, edit_comment_id: comment.id), class: "text-primary small" do %>
+                            <i class="fas fa-edit"></i>
+                          <% end %>
+                        <% end %>
                       </div>
+                    </div>
+                    <% if @edit_comment == comment %>
+                      <%= form_with(model: [@room, comment], url: room_comment_path(@room, comment), method: :patch) do |f| %>
+                        <div class="input-group mt-2">
+                          <%= f.text_field :body, class: "form-control", value: comment.body, autofocus: true %>
+                          <button type="submit" class="btn btn-warning">
+                            <i class="fa fa-pen"></i> 更新
+                          </button>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <p class="mt-2 text-break"><%= comment.body %></p>
+                      <% if comment.image.attached? %>
+                        <div class="mt-2">
+                          <%= image_tag comment.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
+                        </div>
+                      <% end %>
                     <% end %>
                   </div>
                 </div>
