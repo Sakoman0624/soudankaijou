@@ -14,7 +14,12 @@ Rails.application.routes.draw do
         patch :reactivate
       end
     end
-    resources :rooms, only: [:index, :show, :destroy]
+    resources :rooms, only: [:index, :show, :update, :destroy] do
+      member do
+        patch :toggle_public
+      end
+      resources :comments, only: [:create, :update, :destroy]
+    end
   end
   
   devise_scope :user do

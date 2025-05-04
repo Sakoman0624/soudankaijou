@@ -1,39 +1,54 @@
-<div class="text-center">
-  <h1>全投稿一覧</h1>
-</div>
-<div class="container">
+<div class="container bg-light py-4">
+  <div class="mb-3">
+    <div class="btn-group" role="group" aria-label="ソート順">
+      <%= link_to 'いいね多い順', admin_rooms_path(sort: 'likes_desc'), class: "btn #{params[:sort] == 'likes_desc' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to '更新が新しい順', admin_rooms_path(sort: 'updated_desc'), class: "btn #{params[:sort] == 'updated_desc' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to '更新が遅い順', admin_rooms_path(sort: 'updated_asc'), class: "btn #{params[:sort] == 'updated_asc' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to '作成が新しい順', admin_rooms_path(sort: 'created_desc'), class: "btn #{params[:sort] == 'created_desc' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to '作成が古い順', admin_rooms_path(sort: 'created_asc'), class: "btn #{params[:sort] == 'created_asc' ? 'btn-primary' : 'btn-outline-primary'}" %>
+    </div>
+  </div>
   <div class="row row-cols-1 row-cols-md-3 g-4 m-4">
     <% @rooms.each do |room| %>
       <div class="col mb-4">
         <div class="card h-100 shadow">
-          <% if room.image.attached? %>
-              <%= image_tag room.get_image(300,230), class:'card-img-top', style:"height: 180px; object-fit:contain" %>
-          <% else %>
-            <%= image_tag "room_image.jpg", class:'card-img-top', style:"height: 180px; object-fit:cover" %>
+          <%= link_to admin_room_path(room), class: 'thumbnail-button m-1' do %>
+            <%= image_tag(
+                  (room.image.attached? ? room.get_image(300,230) : 'room_image.jpg'),
+                  class: 'thumbnail-image',
+                  style: "object-fit: #{room.image.attached? ? 'contain' : 'cover'};"
+                ) %>
           <% end %>
           <div class="card-body">
-            <h5 class="card-title"><%= link_to room.title, admin_room_path(room.id) %></h5>
+             <h5 class="card-title"><%= link_to room.title, admin_room_path(room) %></h5>
             <div class="muted-text">
-              <%= image_tag room.user.get_profile_image(25,25), class:"rounded-circle icon" %>
-              <%= room.user.name %>
-            </div>
-            <small class="text-end text-left"><%= room.created_at.strftime('%Y/%m/%d') %></small>
-            <div>
-              コメント数： <%= room.room_comments.count %>
-            </div>
-            <div>
-              <% if room.public? %>
-                <span class="badge bg-success">公開</span>
-              <% else %>
-                <span class="badge bg-secondary">非公開</span>
+              <!--<%= link_to admin_user_path(room.user.id) do %>-->
+                <%= image_tag room.user.get_profile_image(25,25), class:"rounded-circle icon" %>
+                <%= room.user.name %>
               <% end %>
             </div>
+            <small class="text-end text-left"><%= room.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d　%H:%M') %></small>
+            <div class="d-flex flex-wrap align-items-center mb-2">
+              <div class="mr-3">
+                <i class="fa fa-comment"></i> <%= room.room_comments.count %>件
+              </div>
+              <div class="mr-3">
+                <i class="fa fa-heart text-danger"></i> <%= room.likes.count %>いいね
+              </div>
+              <div>
+                <% if room.public? %>
+                  <span class="badge bg-success">公開</span>
+                <% else %>
+                  <span class="badge bg-secondary">非公開</span>
+                <% end %>
+              </div>
+            </div>
           </div>
-    
           <div class="card-footer text-end d-flex flex-column flex-md-row justify-content-md-end flex-wrap">
-            <%= link_to "Show", room_path(room), class: 'btn btn-secondary mx-1 mb-2 mb-md-0 w-100 w-md-auto' %>
-              <%= link_to "Delete", room_path(room),
-              method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1 w-100 w-md-auto' %>
+            <%= link_to "削除", admin_room_path(room),
+              method: :delete,
+              data: { confirm: '本当に削除しますか？' },
+              class: 'btn btn-danger mx-1' %>
           </div>
         </div>
       </div>
