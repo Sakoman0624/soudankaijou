@@ -88,6 +88,6 @@ class Public::RoomsController < ApplicationController
   private
   # ストロングパラメータ
   def room_params
-    params.require(:room).permit(:title, :body, :image)
+    params.require(:room).permit(:title, :body, :image, :tag_id)
   end
 end

@@ -6,6 +6,8 @@ class Room < ApplicationRecord
   validates :public, inclusion: { in: [true, false] }
 
   belongs_to :user
+  
+  belongs_to :tag, optional: true
 
   def self.looks(search, word)
     if search == "perfect_match"

@@ -16,6 +16,12 @@
               <%= f.file_field :image, class: "form-control-file" %>
             </div>
             <div class="form-group">
+              <%= f.label :tag_id do %>
+                <i class="fas fa-tag mr-2"></i>タグ
+              <% end %>
+              <%= f.select :tag_id, options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, selected: @room.tag_id), { prompt: "タグを選んでください" }, class: "form-select" %>
+            </div>
+            <div class="form-group">
               <%= f.label :title do %>
                 <i class="fas fa-heading mr-2"></i>タイトル
               <% end %>

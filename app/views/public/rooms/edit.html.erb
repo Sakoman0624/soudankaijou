@@ -28,6 +28,12 @@
               <%= f.text_area :body, class: "form-control", rows: 3,
                     placeholder: "説明文\n(例文)明日の夕食が決められませんどうすればよいでしょうか" %>
             </div>
+            <div class="form-group">
+              <%= f.label :tag_id do %>
+                <i class="fas fa-tag mr-2"></i>タグ
+              <% end %>
+              <%= f.select :tag_id, options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, selected: @room.tag_id), { prompt: "タグを選んでください" }, class: "form-select" %>
+            </div>
             <div class="form-group text-center mb-0">
               <%= f.submit "更新する", class: 'btn btn-warning btn-lg btn-block' %>
             </div>
