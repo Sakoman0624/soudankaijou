@@ -32,7 +32,8 @@ Rails.application.routes.draw do
     get "users" => redirect("/users/sign_up")
 
     root to: 'homes#top'
-
+    
+    get "tags/guide", to: "tags#guide", as: "tag_guide"
     get 'homes/about', to: 'homes#about', as: :about
     get "search" => "searches#search"
     get "liked_rooms", to: "rooms#liked_rooms"

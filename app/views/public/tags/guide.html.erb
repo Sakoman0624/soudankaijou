@@ -1,0 +1,28 @@
+<div class="container py-4">
+  <h1 class="mb-4">相談ジャンルのご案内</h1>
+  <p class="mb-3">
+    当サイトでは、相談内容に応じてジャンル（タグ）を選ぶことができます。
+    以下のジャンルをクリックすると、関連する相談部屋が表示されます。
+  </p>
+  <% genre_tags = [
+    ["生活・人間関係", "家庭、恋愛、学校など日常生活での人との関係についての悩み", "fas fa-users", "warning"],
+    ["仕事・学業", "仕事や学業、進路に関する悩みや不安", "fas fa-briefcase", "success"],
+    ["心の悩み", "不安や孤独、生きづらさなど、心の問題", "fas fa-heartbeat", "danger"],
+    ["健康・体調", "病気、睡眠、体調管理など身体に関する相談", "fas fa-notes-medical", "primary"],
+    ["その他", "分類に当てはまらない内容や雑談など", "fas fa-comments", "secondary"]
+  ] %>
+  <% genre_tags.each do |tag, description, icon_class, color| %>
+    <div class="card mb-3 border-<%= color %> shadow-sm">
+      <div class="card-header bg-<%= color %> text-white">
+        <i class="<%= icon_class %> mr-2"></i>
+        <%= link_to tag, search_path(tag: tag), class: "text-white font-weight-bold" %>
+      </div>
+      <div class="card-body">
+        <p class="card-text"><%= description %></p>
+      </div>
+    </div>
+  <% end %>
+  <p class="mt-4 text-muted">
+    ※ タグを使うことで、似た悩みを持つ相談を探しやすくなります。
+  </p>
+</div>
