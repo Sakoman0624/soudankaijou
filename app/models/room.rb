@@ -7,7 +7,7 @@ class Room < ApplicationRecord
 
   belongs_to :user
   
-  belongs_to :tag, optional: true
+  belongs_to :tag
 
   def self.looks(search, word)
     if search == "perfect_match"
