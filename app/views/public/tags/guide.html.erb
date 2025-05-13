@@ -12,15 +12,17 @@
     ["その他", "分類に当てはまらない内容や雑談など", "fas fa-comments", "secondary"]
   ] %>
   <% genre_tags.each do |tag, description, icon_class, color| %>
-    <div class="card mb-3 border-<%= color %> shadow-sm">
-      <div class="card-header bg-<%= color %> text-white">
-        <i class="<%= icon_class %> mr-2"></i>
-        <%= link_to tag, search_path(tag: tag), class: "text-white font-weight-bold" %>
+    <%= link_to search_path(tag: tag), class: "text-decoration-none" do %>
+      <div class="card mb-3 border-<%= color %> shadow-sm">
+        <div class="card-header bg-<%= color %> text-white">
+          <i class="<%= icon_class %> mr-2"></i>
+          <span class="font-weight-bold"><%= tag %></span>
+        </div>
+        <div class="card-body">
+          <p class="card-text"><%= description %></p>
+        </div>
       </div>
-      <div class="card-body">
-        <p class="card-text"><%= description %></p>
-      </div>
-    </div>
+    <% end %>
   <% end %>
   <p class="mt-4 text-muted">
     ※ タグを使うことで、似た悩みを持つ相談を探しやすくなります。
