@@ -82,8 +82,29 @@ class Public::RoomsController < ApplicationController
   end
   
   def liked_rooms
-    @liked_rooms = Room.where(public: true).where(id: current_user.liked_rooms.pluck(:room_id)).page(params[:page]).per(12)
+    @liked_rooms = Room.joins(:likes)
+                       .where(likes: { user_id: current_user.id })
+                       .distinct
+  
+    case params[:sort]
+    when 'likes_desc'
+      @liked_rooms = @liked_rooms.left_joins(:likes)
+                                 .group(:id)
+                                 .order('COUNT(likes.id) DESC')
+    when 'updated_desc'
+      @liked_rooms = @liked_rooms.order(updated_at: :desc)
+    when 'updated_asc'
+      @liked_rooms = @liked_rooms.order(updated_at: :asc)
+    when 'created_asc'
+      @liked_rooms = @liked_rooms.order(created_at: :asc)
+    else
+      @liked_rooms = @liked_rooms.order(created_at: :desc)
+    end
+  
+    @liked_rooms = @liked_rooms.page(params[:page]).per(12) # Kaminari or will_paginate
   end
+
+
 
   private
   # ストロングパラメータ
