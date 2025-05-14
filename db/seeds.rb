@@ -8,6 +8,17 @@
 
 puts "seedの実行を開始"
 
+# タグの作成
+["生活・人間関係", "仕事・学業", "心の悩み", "健康・体調", "その他"].each do |name|
+  Tag.find_or_create_by!(name: name)
+end
+
+# タグの取得
+school_tag = Tag.find_by!(name: "仕事・学業")
+family_tag = Tag.find_by!(name: "生活・人間関係")
+work_tag   = Tag.find_by!(name: "心の悩み")
+
+# ユーザー作成
 olivia = User.find_or_create_by!(email: "olivia@example.com") do |user|
   user.name = "Olivia"
   user.password = "password"
@@ -26,22 +37,26 @@ lucas = User.find_or_create_by!(email: "lucas@example.com") do |user|
   user.profile_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-user3.jpg"), filename:"sample-user3.jpg")
 end
 
+# Room の作成とタグの割り当て
 Room.find_or_create_by!(title: "学校に行きたくないです") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post1.jpg"), filename: "sample-post1.jpg")
   room.body = "理由はありませんなんとなくです"
   room.user = olivia
+  room.tag = school_tag
 end
 
 Room.find_or_create_by!(title: "家族仲が") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post2.jpg"), filename: "sample-post2.jpg")
   room.body = "子供が絶賛反抗期になってしまいました！"
   room.user = james
+  room.tag = family_tag
 end
 
 Room.find_or_create_by!(title: "職場環境が") do |room|
   room.image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{Rails.root}/db/fixtures/sample-post3.jpg"), filename: "sample-post3.jpg")
   room.body = "職場でうまくいかなくて困っています"
   room.user = lucas
+  room.tag = work_tag
 end
 
 puts "seedの実行が完了しました"

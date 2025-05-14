@@ -36,6 +36,9 @@ class Public::RoomsController < ApplicationController
       @rooms = @rooms.order(created_at: :desc) # デフォルト：新しい順
     end
     @rooms = @rooms.page(params[:page]).per(12)
+    @tags = Tag.all.map do |tag|
+      { tag: tag.name, count: tag.rooms.count }
+    end
    # @room = Room.find(params[:id])
   end
 
