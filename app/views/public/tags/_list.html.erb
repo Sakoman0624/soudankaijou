@@ -1,0 +1,12 @@
+<div class="card mb-4">
+  <div class="card-header bg-light">
+    タグ一覧
+  </div>
+  <div class="card-body d-flex flex-wrap gap-2">
+    <% @tags.each do |tag| %>
+      <%= link_to search_path(tag: tag[:tag]) do %>
+        <button class="btn btn-outline-info btn-sm m-1"><%= tag[:tag] %></button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
