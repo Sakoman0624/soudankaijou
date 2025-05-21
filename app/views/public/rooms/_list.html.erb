@@ -23,7 +23,8 @@
               <small class="text-end text-left"><%= room.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d　%H:%M') %></small>
               <div>
                 <% if room.tag.present? %>
-                  タグ: <span class="badge bg-info text-dark"><%= room.tag.name %></span>
+                  タグ: 
+                  <%= link_to room.tag.name, search_path(tag: room.tag.name), class: "badge bg-info text-dark text-decoration-none" %>
                 <% end %>
               </div>
               <div class="like-button mt-3">
