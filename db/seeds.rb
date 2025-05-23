@@ -59,4 +59,16 @@ Room.find_or_create_by!(title: "職場環境が") do |room|
   room.tag = work_tag
 end
 
+puts "コメントの作成を開始"
+
+room1 = Room.find_by!(title: "学校に行きたくないです")
+room2 = Room.find_by!(title: "家族仲が")
+room3 = Room.find_by!(title: "職場環境が")
+
+Comment.find_or_create_by!(body: "私も以前、なんとなく学校に行きたくない時期がありました。少し休んで、自分の好きなことに集中してみたら気持ちが落ち着きましたよ。無理しないでくださいね。", user: james, room: room1)
+Comment.find_or_create_by!(body: "うちの子も反抗期の時は話しかけるたびにぶつかっていました。私は、まず話す時間を短くして、共通の趣味（ゲームや映画など）を通じて少しずつ距離を縮めるようにしました。少し時間がかかりますが、変化はありますよ。", user: lucas, room: room2)
+Comment.find_or_create_by!(body: "以前の職場で上司との関係に悩んでいた時、信頼できる同僚に相談したり、日記を書いて気持ちを整理したりしていました。状況が改善しなければ、転職も一つの選択肢として真剣に考えてみてください。", user: olivia, room: room3)
+
+puts "コメントの作成が完了しました"
+
 puts "seedの実行が完了しました"
