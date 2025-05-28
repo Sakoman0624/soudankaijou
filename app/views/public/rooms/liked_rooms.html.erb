@@ -1,5 +1,7 @@
 <div class="text-center text-light bg-dark">
-    <h2>いいねした部屋一覧</h2>
+  <h2>いいねした部屋一覧</h2>
 </div>
-<%= render 'public/rooms/list', rooms: @liked_rooms %>
-<%= paginate @liked_rooms %>
+<div id="room-list">
+  <%= render 'public/rooms/list', rooms: @rooms %>
+</div>
+<%= paginate @rooms %>

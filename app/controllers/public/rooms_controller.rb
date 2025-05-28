@@ -39,6 +39,10 @@ class Public::RoomsController < ApplicationController
     @tags = Tag.all.map do |tag|
       { tag: tag.name, count: tag.rooms.count }
     end
+    respond_to do |format|
+      format.html
+      format.js
+    end
    # @room = Room.find(params[:id])
   end
 
@@ -85,27 +89,33 @@ class Public::RoomsController < ApplicationController
   end
   
   def liked_rooms
-    @liked_rooms = Room.joins(:likes)
-                       .where(likes: { user_id: current_user.id })
-                       .distinct
+    @rooms = Room.joins(:likes)
+                 .where(likes: { user_id: current_user.id })
+                 .distinct
   
-    case params[:sort]
-    when 'likes_desc'
-      @liked_rooms = @liked_rooms.left_joins(:likes)
-                                 .group(:id)
-                                 .order('COUNT(likes.id) DESC')
-    when 'updated_desc'
-      @liked_rooms = @liked_rooms.order(updated_at: :desc)
-    when 'updated_asc'
-      @liked_rooms = @liked_rooms.order(updated_at: :asc)
-    when 'created_asc'
-      @liked_rooms = @liked_rooms.order(created_at: :asc)
-    else
-      @liked_rooms = @liked_rooms.order(created_at: :desc)
+    @rooms = case params[:sort]
+             when 'likes_desc'
+               @rooms.left_joins(:likes)
+                     .group(:id)
+                     .order('COUNT(likes.id) DESC')
+             when 'updated_desc'
+               @rooms.order(updated_at: :desc)
+             when 'updated_asc'
+               @rooms.order(updated_at: :asc)
+             when 'created_asc'
+               @rooms.order(created_at: :asc)
+             else
+               @rooms.order(created_at: :desc)
+             end
+  
+    @rooms = @rooms.page(params[:page]).per(12)
+  
+    respond_to do |format|
+      format.html
+      format.js
     end
-  
-    @liked_rooms = @liked_rooms.page(params[:page]).per(12) # Kaminari or will_paginate
   end
+
 
 
 
