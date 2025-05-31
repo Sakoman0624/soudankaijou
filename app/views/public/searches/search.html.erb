@@ -1,7 +1,8 @@
-
 <div class="bg-dark text-white text-center">
   <h1>検索結果</h1>
 </div>
 <%= render 'layouts/errors', obj: @room %>
-<%= render 'public/rooms/list', rooms: @rooms %>
+<div id="room-list">
+  <%= render 'public/rooms/list', rooms: @rooms %>
+</div>
 <%= paginate @rooms %>
