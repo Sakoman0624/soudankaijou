@@ -1,0 +1,8 @@
+// 対象のカードを取得
+const commentCard = document.querySelector("#edit-comment-<%= @comment.id %>").closest(".card");
+
+// 本文のテキストを書き換える（例: コメント内容用の <p id="comment-body-123"> に変更すると安全）
+commentCard.querySelector("p").innerText = "<%= j @comment.body %>";
+
+// フォームを削除
+document.querySelector("#edit-comment-<%= @comment.id %>").remove();

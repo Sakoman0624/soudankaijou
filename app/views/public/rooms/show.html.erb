@@ -103,7 +103,7 @@
                       </div>
                     </div>
                     <% if @edit_comment == comment %>
-                      <%= form_with(model: [@room, comment], url: room_comment_path(@room, comment), method: :patch) do |f| %>
+                      <%= form_with(model: [@room, comment], url: room_comment_path(@room, comment), method: :patch, local: false, html: { id: "edit-comment-#{comment.id}" }) do |f| %>
                         <div class="input-group mt-2">
                           <%= f.text_field :body, class: "form-control", value: comment.body, autofocus: true %>
                           <button type="submit" class="btn btn-warning">
