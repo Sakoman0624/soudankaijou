@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   scope module: :public do
     devise_for :users
+    get 'privacy', to: 'pages#privacy', as: 'privacy'
 
     get "users" => redirect("/users/sign_up")
 
