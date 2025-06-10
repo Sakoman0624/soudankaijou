@@ -9,6 +9,9 @@ class Public::UsersController < ApplicationController
   def show
     @room = Room.new
     @user = User.find(params[:id])
+    @user_rooms_count = Room.where(user_id: @user.id).count  # 自作部屋の数として例
+    @my_rooms_count = @user.rooms.count                      # 例えば関連付け済みなら
+    @liked_rooms_count = @user.liked_rooms.count
   end
 
   def edit

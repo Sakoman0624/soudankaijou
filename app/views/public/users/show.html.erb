@@ -18,8 +18,8 @@
             <% if user_signed_in? && current_user == @user %>
               <div class="mt-4">
                 <%= link_to "プロフィールを編集", edit_user_path, class: "btn btn-outline-warning btn-lg mx-2 my-2" %>
-                <%= link_to "自作の部屋", my_rooms_path, class: "btn btn-outline-success btn-lg mx-2 my-2" %>
-                <%= link_to "いいねした部屋", liked_rooms_path, class: "btn btn-outline-primary btn-lg mx-2 my-2" %>
+                <%= link_to "自作の部屋 (#{@my_rooms_count})", my_rooms_path, class: "btn btn-outline-success btn-lg mx-2 my-2" %>
+                <%= link_to "いいねした部屋 (#{@liked_rooms_count})", liked_rooms_path, class: "btn btn-outline-primary btn-lg mx-2 my-2" %>
                 <%= link_to "退会画面へ", users_check_path, class: "btn btn-outline-danger btn-lg mx-2 my-2" %>
               </div>
             <% end %>
