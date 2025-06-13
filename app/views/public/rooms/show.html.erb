@@ -78,12 +78,16 @@
               <div class="card my-3 <%= 'border-primary bg-light' if is_creator_comment %>">
                 <div class="card-body d-flex">
                   <div class="me-3">
-                    <%= image_tag comment.user.get_profile_image(40, 40), class: "rounded-circle" %>
+                    <%= link_to user_path(comment.user), class: "d-inline-block" do %>
+                      <%= image_tag comment.user.get_profile_image(40, 40), class: "rounded-circle" %>
+                    <% end %>
                   </div>
                   <div class="w-100">
                     <div class="d-flex justify-content-between">
                       <div>
-                        <strong><%= comment.user.name %></strong>
+                        <%= link_to user_path(comment.user), class: "text-dark font-weight-bold" do %>
+                          <strong><%= comment.user.name %></strong>
+                        <% end %>
                         <% if is_creator_comment %>
                           <span class="badge badge-primary ml-2">作成者</span>
                         <% end %>
