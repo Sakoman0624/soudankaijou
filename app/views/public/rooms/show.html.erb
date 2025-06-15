@@ -73,7 +73,7 @@
           <% if @room.comments.blank? %>
             <p class="text-muted text-center">コメントが投稿されていません。</p>
           <% else %>
-            <% @room.comments.each do |comment| %>
+            <% @room.comments.where(parent_id: nil).order(:created_at).each do |comment| %>
               <% is_creator_comment = comment.user == @room.user %>
               <div class="card my-3 <%= 'border-primary bg-light' if is_creator_comment %>">
                 <div class="card-body d-flex">
@@ -123,12 +123,60 @@
                         </div>
                       <% end %>
                     <% end %>
+        
+                    <!-- 返信リンク -->
+                    <div class="mt-2">
+                      <a href="javascript:void(0);" class="text-primary small" data-toggle="collapse" data-target="#reply-form-<%= comment.id %>">
+                        <i class="fas fa-reply"></i> 返信
+                      </a>
+                    </div>
+        
+                    <!-- 返信フォーム -->
+                    <div id="reply-form-<%= comment.id %>" class="collapse mt-2">
+                      <%= form_with(model: [@room, Comment.new], local: true) do |f| %>
+                        <%= f.hidden_field :parent_id, value: comment.id %>
+                        <div class="input-group mt-2">
+                          <%= f.text_field :body, placeholder: "返信を入力", class: "form-control" %>
+                          <button type="submit" class="btn btn-secondary">
+                            <i class="fa fa-paper-plane"></i> 返信
+                          </button>
+                        </div>
+                      <% end %>
+                    </div>
+        
+                    <!-- 子コメント（返信）表示 -->
+                    <% comment.replies.each do |reply| %>
+                      <div class="card my-2 ml-4 border-secondary bg-white">
+                        <div class="card-body d-flex">
+                          <div class="me-3">
+                            <%= link_to user_path(reply.user), class: "d-inline-block" do %>
+                              <%= image_tag reply.user.get_profile_image(30, 30), class: "rounded-circle" %>
+                            <% end %>
+                          </div>
+                          <div class="w-100">
+                            <div class="d-flex justify-content-between">
+                              <div>
+                                <strong><%= reply.user.name %></strong>
+                                <span class="text-muted small">・<%= reply.created_at.strftime('%Y/%m/%d %H:%M') %></span>
+                              </div>
+                            </div>
+                            <p class="mt-2 text-break"><%= reply.body %></p>
+                            <% if reply.image.attached? %>
+                              <div class="mt-2">
+                                <%= image_tag reply.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
+                              </div>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
                   </div>
                 </div>
               </div>
             <% end %>
           <% end %>
         </div>
+        
         <!-- コメント投稿フォーム -->
         <div class="card mt-4">
           <div class="card-body">

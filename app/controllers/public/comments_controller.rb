@@ -2,7 +2,6 @@ class Public::CommentsController < ApplicationController
   before_action :set_post
   before_action :authenticate_user!
 
-
   def create
     @comment = @room.comments.build(comment_params)
     @comment.user = current_user
@@ -22,13 +21,12 @@ class Public::CommentsController < ApplicationController
       redirect_to request.referer, alert: "削除権限がありません。"
     end
   end
-  
+
   def update
-    @room = Room.find(params[:room_id])
     @comment = @room.comments.find(params[:id])
     if @comment.user == current_user && @comment.update(comment_params)
-      redirect_to room_path(@room), notice: "コメントを更新しました"
       respond_to do |format|
+        format.html { redirect_to room_path(@room), notice: "コメントを更新しました" }
         format.js
       end
     else
@@ -37,13 +35,13 @@ class Public::CommentsController < ApplicationController
     end
   end
 
-
   private
+
   def set_post
     @room = Room.find(params[:room_id])
   end
 
   def comment_params
-    params.require(:comment).permit(:body, :image,:room_id)
+    params.require(:comment).permit(:body, :image, :parent_id)
   end
 end
