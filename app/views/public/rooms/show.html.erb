@@ -159,6 +159,18 @@
                                 <strong><%= reply.user.name %></strong>
                                 <span class="text-muted small">・<%= reply.created_at.strftime('%Y/%m/%d %H:%M') %></span>
                               </div>
+                              <div>
+                                <% if reply.user == current_user || reply.room.user == current_user %>
+                                  <%= link_to room_comment_path(@room, reply), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "text-danger small mr-2" do %>
+                                    <i class="fa-solid fa-trash-can"></i>
+                                  <% end %>
+                                <% end %>
+                                <% if reply.user == current_user %>
+                                  <%= link_to room_path(@room, edit_comment_id: reply.id), class: "text-primary small" do %>
+                                    <i class="fas fa-edit"></i>
+                                  <% end %>
+                                <% end %>
+                              </div>
                             </div>
                             <p class="mt-2 text-break"><%= reply.body %></p>
                             <% if reply.image.attached? %>
