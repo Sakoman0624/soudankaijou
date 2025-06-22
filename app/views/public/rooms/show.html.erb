@@ -107,7 +107,7 @@
                       </div>
                     </div>
                     <% if @edit_comment == comment %>
-                      <%= form_with(model: [@room, comment], url: room_comment_path(@room, comment), method: :patch, local: false, html: { id: "edit-comment-#{comment.id}" }) do |f| %>
+                      <%= form_with(model: [@room, comment], url: room_comment_path(@room, comment), method: :patch, local: true, html: { id: "edit-comment-#{comment.id}" }) do |f| %>
                         <div class="input-group mt-2">
                           <%= f.text_field :body, class: "form-control", value: comment.body, autofocus: true %>
                           <button type="submit" class="btn btn-warning">
@@ -116,7 +116,7 @@
                         </div>
                       <% end %>
                     <% else %>
-                      <p class="mt-2 text-break"><%= comment.body %></p>
+                      <p id="comment-body-<%= comment.id %>" class="mt-2 text-break"><%= comment.body %></p>
                       <% if comment.image.attached? %>
                         <div class="mt-2">
                           <%= image_tag comment.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
@@ -172,11 +172,23 @@
                                 <% end %>
                               </div>
                             </div>
-                            <p class="mt-2 text-break"><%= reply.body %></p>
-                            <% if reply.image.attached? %>
-                              <div class="mt-2">
-                                <%= image_tag reply.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
-                              </div>
+                    
+                            <% if @edit_comment == reply %>
+                              <%= form_with(model: [@room, reply], url: room_comment_path(@room, reply), method: :patch, local: true, html: { id: "edit-comment-#{reply.id}" }) do |f| %>
+                                <div class="input-group mt-2">
+                                  <%= f.text_field :body, class: "form-control", value: reply.body, autofocus: true %>
+                                  <button type="submit" class: "btn btn-warning">
+                                    <i class="fa fa-pen"></i> 更新
+                                  </button>
+                                </div>
+                              <% end %>
+                            <% else %>
+                              <p class="mt-2 text-break"><%= reply.body %></p>
+                              <% if reply.image.attached? %>
+                                <div class="mt-2">
+                                  <%= image_tag reply.image, class: "img-fluid rounded", style: "max-width: 200px;" %>
+                                </div>
+                              <% end %>
                             <% end %>
                           </div>
                         </div>

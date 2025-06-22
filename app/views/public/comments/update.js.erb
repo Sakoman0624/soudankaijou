@@ -1,8 +1,16 @@
-// 対象のカードを取得
-const commentCard = document.querySelector("#edit-comment-<%= @comment.id %>").closest(".card");
+console.log("update.js.erb loaded for comment:", "<%= @comment.id %>");
 
-// 本文のテキストを書き換える（例: コメント内容用の <p id="comment-body-123"> に変更すると安全）
-commentCard.querySelector("p").innerText = "<%= j @comment.body %>";
+const commentId = "<%= @comment.id %>";
+const commentBody = document.getElementById(`comment-body-${commentId}`);
+const editForm = document.getElementById(`edit-comment-${commentId}`);
 
-// フォームを削除
-document.querySelector("#edit-comment-<%= @comment.id %>").remove();
+if (commentBody) {
+  commentBody.innerText = "<%= j @comment.body %>";
+} else {
+  console.warn(`comment-body-${commentId} が見つかりませんでした`);
+}
+
+if (editForm) {
+  editForm.remove();
+} else {
+  console.warn(`edit-comment-${commentId} が見つかりませんでした`);

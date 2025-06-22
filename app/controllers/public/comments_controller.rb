@@ -25,12 +25,12 @@ class Public::CommentsController < ApplicationController
   def update
     @comment = @room.comments.find(params[:id])
     if @comment.user == current_user && @comment.update(comment_params)
-      respond_to do |format|
-        format.html { redirect_to room_path(@room), notice: "コメントを更新しました" }
-        format.js
-      end
+      redirect_to room_path(@room), notice: "コメントを更新しました"
     else
       flash.now[:alert] = "コメントの更新に失敗しました"
+      # 編集フォームを表示させるために @edit_comment をセットして show をレンダー
+      @edit_comment = @comment
+      @room = @comment.room
       render 'rooms/show'
     end
   end
