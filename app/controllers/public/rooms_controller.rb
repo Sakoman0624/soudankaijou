@@ -47,12 +47,18 @@ class Public::RoomsController < ApplicationController
   end
 
   def show
-    @room = Room.find(params[:id])
+    @room = Room.find_by(id: params[:id])
+    unless @room
+      redirect_to rooms_path, alert: "指定された部屋は存在しません"
+      return
+    end
+  
     @comment = Comment.new
     @edit_comment = params[:edit_comment_id] ? @room.comments.find_by(id: params[:edit_comment_id]) : nil
     @user = @room.user_id
     @current_user = current_user
     @comments = @room.comments.where(parent_id: nil).order(:created_at)
+  
     if !@room.public? && @room.user != current_user
       redirect_to rooms_path, alert: "この部屋は非公開です"
     end
