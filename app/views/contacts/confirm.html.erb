@@ -1,28 +1,31 @@
-<div class="container mt-5">
-  <h2 class="text-center mb-4">確認画面</h2>
+<div class="container mt-5 mb-5">
+  <div class="card shadow-lg p-4 rounded-lg mx-auto" style="max-width: 600px; background: #f8f9fa;">
+    <h2 class="text-center mb-4 font-weight-bold text-primary">確認画面</h2>
 
-  <%= form_with model: @contact, url: thanks_contacts_path, local: true do |f| %>
-    <div class="form-group">
-      <label>お名前</label>
-      <p><%= @contact.name %></p>
-      <%= hidden_field_tag "contact[name]", @contact.name %>
-    </div>
+    <%= form_with model: @contact, url: thanks_contacts_path, local: true do |f| %>
+      <div class="form-group">
+        <label class="font-weight-bold">お名前</label>
+        <p class="border p-3 rounded bg-white"><%= @contact.name %></p>
+        <%= hidden_field_tag "contact[name]", @contact.name %>
+      </div>
 
-    <div class="form-group">
-      <label>メールアドレス</label>
-      <p><%= @contact.email %></p>
-      <%= hidden_field_tag "contact[email]", @contact.email %>
-    </div>
+      <div class="form-group">
+        <label class="font-weight-bold">メールアドレス</label>
+        <p class="border p-3 rounded bg-white"><%= @contact.email %></p>
+        <%= hidden_field_tag "contact[email]", @contact.email %>
+      </div>
 
-    <div class="form-group">
-      <label>お問い合わせ内容</label>
-      <p><%= simple_format(@contact.message) %></p>
-      <%= hidden_field_tag "contact[message]", @contact.message %>
-    </div>
+      <div class="form-group">
+        <label class="font-weight-bold">お問い合わせ内容</label>
+        <%= simple_format(h(@contact.message), { class: "border p-3 rounded bg-white" }) %>
+        <%= hidden_field_tag "contact[message]", @contact.message %>
+      </div>
 
-    <div class="text-center">
-      <%= submit_tag "送信する", class: "btn btn-success btn-lg" %>
-      <%= button_to "戻る", new_contacts_path, method: :get, class: "btn btn-outline-secondary btn-lg", form_class: "d-inline" %>
-    </div>
-  <% end %>
+      <div class="text-center">
+        <%= hidden_field_tag :back, true %>
+        <%= submit_tag "送信する", class: "btn btn-success btn-lg px-5 font-weight-bold" %>
+        <%= submit_tag "戻る", name: "back_button", class: "btn btn-outline-secondary btn-lg ml-3" %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -4,9 +4,15 @@ class ContactsController < ApplicationController
   end
 
   def confirm
+    if params[:contact].blank?
+      redirect_to new_contacts_path, alert: "もう一度入力してください"
+      return
+    end
+  
     @contact = Contact.new(contact_params)
     render :new unless @contact.valid?
   end
+
 
   def thanks
     if request.post?
