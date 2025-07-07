@@ -1,31 +1,121 @@
 <div class="container mt-5 mb-5">
-  <div class="card shadow-lg p-4 rounded-lg mx-auto" style="max-width: 600px; background: #f8f9fa;">
-    <h2 class="text-center mb-4 font-weight-bold text-primary">確認画面</h2>
-
-    <%= form_with model: @contact, url: thanks_contacts_path, local: true do |f| %>
-      <div class="form-group">
-        <label class="font-weight-bold">お名前</label>
-        <p class="border p-3 rounded bg-white"><%= @contact.name %></p>
-        <%= hidden_field_tag "contact[name]", @contact.name %>
+  <div class="card shadow-lg p-5 rounded-lg mx-auto confirm-card animated-fade" style="max-width: 700px;">
+    <div class="text-center mb-4">
+      <div class="step-indicator mb-2">
+        <span class="step active">1. 入力</span>
+        <span class="step current">2. 確認</span>
+        <span class="step">3. 完了</span>
       </div>
+      <h2 class="font-weight-bold text-white"><i class="fas fa-search"></i> 内容をご確認ください</h2>
+    </div>
 
+    <%= form_with url: thanks_contacts_path, local: true do %>
+      <%= hidden_field_tag "contact[name]", @contact.name %>
+      <%= hidden_field_tag "contact[email]", @contact.email %>
+      <%= hidden_field_tag "contact[message]", @contact.message %>
+        
+      <!-- 表示部分はそのままでOK -->
       <div class="form-group">
-        <label class="font-weight-bold">メールアドレス</label>
-        <p class="border p-3 rounded bg-white"><%= @contact.email %></p>
-        <%= hidden_field_tag "contact[email]", @contact.email %>
+        <label class="font-weight-bold text-white">お名前</label>
+        <div class="confirm-box slide-in"><%= @contact.name %></div>
       </div>
-
+    
       <div class="form-group">
-        <label class="font-weight-bold">お問い合わせ内容</label>
-        <%= simple_format(h(@contact.message), { class: "border p-3 rounded bg-white" }) %>
-        <%= hidden_field_tag "contact[message]", @contact.message %>
+        <label class="font-weight-bold text-white">メールアドレス</label>
+        <div class="confirm-box slide-in"><%= @contact.email %></div>
       </div>
-
-      <div class="text-center">
-        <%= hidden_field_tag :back, true %>
-        <%= submit_tag "送信する", class: "btn btn-success btn-lg px-5 font-weight-bold" %>
-        <%= submit_tag "戻る", name: "back_button", class: "btn btn-outline-secondary btn-lg ml-3" %>
+    
+      <div class="form-group">
+        <label class="font-weight-bold text-white">お問い合わせ内容</label>
+        <div class="confirm-box slide-in"><%= simple_format(h(@contact.message)) %></div>
+      </div>
+    
+      <div class="text-center mt-5">
+        <%= submit_tag "送信する", name: "submit_button", class: "btn btn-gradient btn-lg px-5 font-weight-bold text-white mr-2" %>
+        <%= submit_tag "戻る", name: "back_button", class: "btn btn-outline-light btn-lg font-weight-bold" %>
       </div>
     <% end %>
   </div>
 </div>
+
+<style>
+  .confirm-card {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+  }
+
+  .confirm-box {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    border: none;
+    box-shadow: 0 4px 12px rgba(106, 17, 203, 0.5);
+    transition: background 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    color: white;
+  }
+
+  /* フェードイン */
+  .animated-fade {
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 情報ボックススライド感 */
+  .slide-in {
+    animation: slideIn 0.5s ease-in-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* ステップ表示 */
+  .step-indicator {
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  .step {
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 5px;
+    font-weight: bold;
+  }
+
+  .step.current {
+    background: #fff;
+    color: #2575fc;
+  }
+
+  .step.active {
+    background: #28a745;
+  }
+</style>

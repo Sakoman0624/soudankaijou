@@ -57,11 +57,14 @@ Rails.application.routes.draw do
     resources :users, only: [:show, :edit, :update]
   end
   
-  resource :contacts, only: [:new] do
-    post 'confirm'
-    post 'thanks' # 送信処理
-    get 'thanks', action: :thanks # 完了画面表示（GET）
+  resources :contacts, only: [:new] do
+    collection do
+      post 'confirm'         # 確認画面に送信（POST）
+      post 'thanks'          # 送信処理（POST）
+      get  'thanks', to: 'contacts#thanks'  # 完了画面（GET）
+    end
   end
+
 
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -4,31 +4,43 @@ class ContactsController < ApplicationController
   end
 
   def confirm
-    if params[:contact].blank?
-      redirect_to new_contacts_path, alert: "もう一度入力してください"
-      return
-    end
-  
     @contact = Contact.new(contact_params)
-    render :new unless @contact.valid?
+  
+    # 戻るボタンが押された場合のみ new に戻る
+    if params[:back_button]
+      render :new
+    elsif @contact.valid?
+      # 問題なければ確認画面を表示
+      render :confirm
+    else
+      # バリデーション失敗
+      render :new
+    end
   end
 
 
   def thanks
     if request.post?
+      if params[:back_button]
+        # 戻るボタンが押されたら new に戻る
+        @contact = Contact.new(contact_params) # 入力値を保持したい場合
+        render :new
+        return
+      end
+  
       @contact = Contact.new(contact_params)
       if @contact.valid?
-        # メール送信などの処理
-        render :thanks
+        # 送信処理
+        redirect_to thanks_contacts_path # GETリクエストで完了画面へ
       else
         render :new
       end
     else
-      # GETリクエストなら単純に完了画面を表示
-      # @contactが不要なら空でOK
+      # GETは完了画面表示
       render :thanks
     end
   end
+
 
   private
 
