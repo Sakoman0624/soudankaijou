@@ -2,5 +2,7 @@
 <!-- タグ一覧をボタンで1つのまとまりとして表示 -->
 <%= render 'public/tags/list' %>
 <%= render 'layouts/errors', obj: @room %>
-<%= render 'list', rooms: @rooms %>
+<div style="background-color: #f0f0f0; padding: 40px 0;">
+  <%= render 'list', rooms: @rooms %>
+</div>
 <%= paginate @rooms %>

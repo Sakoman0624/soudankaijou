@@ -1,14 +1,33 @@
-<div class="container my-5">
-  <div class="card shadow-lg border-0 p-4" style="background-color: #fdfdfd;">
+<div class="container my-5" style="background-color: #f5f7fa; border-radius: 15px; padding: 30px;">
+  <div class="card shadow-lg border-0" style="background-color: #fdfdfd; animation: fadeIn 1s ease;">
     <div class="card-body">
+
       <h1 class="mb-4 text-primary border-bottom pb-2 text-center font-weight-bold">
         <i class="fas fa-user-shield mr-2"></i>プライバシーポリシー
       </h1>
 
-      <div class="mb-4 text-start" style="line-height: 1.8;">
-        当相談会場（以下、「当サイト」といいます）は、利用者が質問や回答を投稿し、コミュニケーションを行うQ&Aコミュニティサービスを提供しております。利用者の個人情報の重要性を深く認識し、適切な保護と管理に努めます。本プライバシーポリシーでは、当サイトにおける個人情報の取り扱いについてご説明いたします。
-      </div>
+      <!-- 🔷 目次（アンカーリンク） -->
+      <nav class="mb-5">
+        <h5 class="font-weight-bold text-secondary mb-3"><i class="fas fa-list-ul mr-2"></i>目次</h5>
+        <ul class="pl-3">
+          <% icons = ["id-card", "download", "bullseye", "comment", "share-square", "shield-alt", "cookie-bite", "user-check", "sync-alt", "envelope"] %>
+          <% titles = [
+            "1. 個人情報の定義", "2. 個人情報の収集方法", "3. 個人情報の利用目的",
+            "4. 投稿内容について", "5. 第三者への提供", "6. 個人情報の管理",
+            "7. Cookie等の利用", "8. 利用者の権利", "9. プライバシーポリシーの変更", "10. お問い合わせ"
+          ] %>
 
+          <% titles.each_with_index do |title, i| %>
+            <li class="mb-2">
+              <a href="#section<%= i + 1 %>" class="text-dark">
+                <i class="fas fa-<%= icons[i] %> mr-2 text-primary"></i><%= title %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+
+      <!-- 🔷 本文 -->
       <% sections = [
         ["1. 個人情報の定義", "個人情報とは、氏名、メールアドレス、IPアドレス、利用者ID、投稿内容など、特定の個人を識別できる情報をいいます。"],
         ["2. 個人情報の収集方法", "当サイトでは、会員登録、質問・回答投稿、コメント投稿、問い合わせフォームの利用時に、利用者から必要な個人情報を取得いたします。また、アクセスログやCookie等も収集し、サービス向上に役立てます。"],
@@ -22,12 +41,13 @@
         ["10. お問い合わせ", "<strong>メールアドレス：</strong> example@example.com<br><strong>電話番号：</strong> 0120-xxx-xxx"]
       ] %>
 
-      <% sections.each do |title, content| %>
-        <section class="mt-4">
+      <% icons.each_with_index do |icon, i| %>
+        <section class="mt-5 fade-section" id="section<%= i + 1 %>">
           <h4 class="text-dark font-weight-bold border-left border-primary pl-3">
-            <i class="fas fa-angle-right mr-2 text-primary"></i><%= title %>
+            <i class="fas fa-<%= icon %> mr-2 text-primary"></i><%= sections[i][0] %>
           </h4>
 
+          <% content = sections[i][1] %>
           <% if content.is_a?(Array) %>
             <div class="pl-4 mt-2 text-start">
               <% content.each do |item| %>
@@ -41,6 +61,55 @@
           <% end %>
         </section>
       <% end %>
+
     </div>
   </div>
 </div>
+
+
+<style>
+  body {
+    background-color: #eef1f5;
+    scroll-behavior: smooth;
+  }
+
+  .fade-section {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    scroll-margin-top: 100px; /* ←← ここがポイント！ */
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  nav ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  nav ul li a:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+</style>
