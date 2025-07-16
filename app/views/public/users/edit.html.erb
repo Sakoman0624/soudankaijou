@@ -1,42 +1,51 @@
-<div class="container">
+<div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6 my-5">
-      <%# エラーメッセージ %>
+    <div class="col-lg-8 col-xl-6">
       <%= render 'layouts/errors', obj: @user %>
-      <div class="card shadow-lg">
-        <div class="card-header bg-secondary text-white text-center">
-          <h4 class="mb-0">プロフィール編集</h4>
+      <div class="card shadow-lg border-0">
+        <div class="card-header text-white text-center" style="background: linear-gradient(90deg, #6a11cb, #2575fc);">
+          <h3 class="mb-0 font-weight-bold"><i class="fas fa-user-cog mr-2"></i>プロフィール編集</h3>
         </div>
         <div class="card-body bg-light">
           <%= form_with model: @user, local: true do |f| %>
             <%= f.hidden_field :password, value: @user.password %>
             <%= f.hidden_field :password_confirmation, value: @user.password_confirmation %>
+
+            <!-- プロフィール画像 -->
             <div class="form-group">
-              <%= f.label :profile_image do %>
-                <i class="fas fa-image mr-2"></i>画像
+              <%= f.label :profile_image, class: "font-weight-bold" do %>
+                <i class="fas fa-image mr-2 text-primary"></i>プロフィール画像
               <% end %>
               <%= f.file_field :profile_image, class: "form-control-file" %>
             </div>
+
+            <!-- 名前 -->
             <div class="form-group">
-              <%= f.label :name do %>
-                <i class="fas fa-user mr-2"></i>名前
+              <%= f.label :name, class: "font-weight-bold" do %>
+                <i class="fas fa-user mr-2 text-primary"></i>名前
               <% end %>
-              <%= f.text_field :name, class: 'form-control' %>
+              <%= f.text_field :name, class: "form-control rounded-pill px-4 shadow-sm" %>
             </div>
+
+            <!-- メール -->
             <div class="form-group">
-              <%= f.label :email do %>
-                <i class="fas fa-envelope mr-2"></i>メールアドレス
+              <%= f.label :email, class: "font-weight-bold" do %>
+                <i class="fas fa-envelope mr-2 text-primary"></i>メールアドレス
               <% end %>
-              <%= f.text_field :email, class: 'form-control' %>
+              <%= f.email_field :email, class: "form-control rounded-pill px-4 shadow-sm" %>
             </div>
+
+            <!-- 自己紹介 -->
             <div class="form-group">
-              <%= f.label :introduction do %>
-                <i class="fas fa-comment-alt mr-2"></i>自己紹介（255文字まで）
+              <%= f.label :introduction, class: "font-weight-bold" do %>
+                <i class="fas fa-comment-alt mr-2 text-primary"></i>自己紹介（255文字まで）
               <% end %>
-              <%= f.text_area :introduction, class: "form-control", rows: 3, placeholder: "自己紹介記入欄\n(例文)新社会人です！よろしくお願いします" %>
+              <%= f.text_area :introduction, rows: 4, class: "form-control shadow-sm", placeholder: "自己紹介を入力してください（例：新社会人です！よろしくお願いします）" %>
             </div>
-            <div class="form-group text-center mb-0">
-              <%= f.submit "プロフィール更新", class: 'btn btn-primary btn-lg btn-block' %>
+
+            <!-- ボタン -->
+            <div class="text-center">
+              <%= f.submit "プロフィールを更新", class: "btn btn-gradient btn-lg px-5 font-weight-bold text-white" %>
             </div>
           <% end %>
         </div>
@@ -44,3 +53,27 @@
     </div>
   </div>
 </div>
+
+<style>
+  .btn-gradient {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    border: none;
+    transition: 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  .form-control:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 5px rgba(106, 17, 203, 0.3);
+  }
+
+  .form-control::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+</style>
