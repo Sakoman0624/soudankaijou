@@ -20,3 +20,14 @@ import "../stylesheets/application";
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+window.previewImage = function(event) {
+  const reader = new FileReader();
+  reader.onload = function () {
+    const preview = document.getElementById('preview');
+    if (preview) {
+      preview.src = reader.result;
+    }
+  };
+  reader.readAsDataURL(event.target.files[0]);
+};
