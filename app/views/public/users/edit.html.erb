@@ -55,7 +55,7 @@
               </div>
 
               <div class="text-center mt-4">
-                <%= f.submit "プロフィールを更新", class: "btn btn-gradient btn-lg px-5 font-weight-bold text-white" %>
+                <%= f.submit "プロフィールを更新", class: "btn btn-gradient btn-lg px-5 font-weight-bold" %>
               </div>
             <% end %>
           </div>
@@ -64,28 +64,3 @@
     </div>
   </div>
 </div>
-
-
-<style>
-  .btn-gradient {
-    background: linear-gradient(45deg, #6a11cb, #2575fc);
-    border: none;
-    transition: 0.3s ease;
-  }
-
-  .btn-gradient:hover {
-    background: linear-gradient(45deg, #2575fc, #6a11cb);
-    transform: scale(1.02);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-
-  .form-control:focus {
-    border-color: #6a11cb;
-    box-shadow: 0 0 5px rgba(106, 17, 203, 0.3);
-  }
-
-  .form-control::placeholder {
-    color: #999;
-    font-style: italic;
-  }
-</style>

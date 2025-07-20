@@ -52,3 +52,228 @@
 .thumbnail-button:hover .thumbnail-image {
   transform: scale(1.05);
 }
+/* プロフィール編集画面用css */
+.btn-gradient {
+  @extend .btn;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  border: none;
+  transition: 0.3s ease;
+  color: white;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+
+.form-control:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 5px rgba(106, 17, 203, 0.3);
+}
+
+.form-control::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* プライバシーポリシーページのCSS */
+body {
+  background-color: #eef1f5;
+  scroll-behavior: smooth;
+}
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+  scroll-margin-top: 100px; /* ←ここがポイント */
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* お問い合わせページのCSS */
+
+/* ---------------------------------------
+   お問い合わせ 入力フォーム用スタイル
+--------------------------------------- */
+/* 入力フォーム全体を囲むカード */
+.contact-form-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* フォームラベル */
+.contact-form-card label {
+  font-weight: 600;
+  color: #2575fc;
+}
+
+/* 入力欄 */
+.contact-form-card input.form-control,
+.contact-form-card textarea.form-control {
+  border: 1.5px solid #ddd;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form-card input.form-control:focus,
+.contact-form-card textarea.form-control:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
+  outline: none;
+}
+
+/* ボタンのグラデーションは既存の .btn-gradient を利用 */
+
+
+
+
+/* ---------------------------------------
+   お問い合わせ 完了ページ用スタイル
+--------------------------------------- */
+.success-card {
+  animation: fadeSlide 0.6s ease-out; /* フェードイン＋スライドアップのアニメーション */
+  background: linear-gradient(to right, #e0f7fa, #ffffff); /* 優しい水色から白のグラデーション */
+  border: none;
+}
+
+.success-icon {
+  font-size: 4rem;   /* 大きな成功アイコン */
+  color: #28a745;    /* 成功をイメージさせる緑色 */
+  margin-bottom: 20px;
+}
+
+/* アニメーション定義：下からふわっと表示 */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------
+   お問い合わせ 確認ページ用スタイル
+--------------------------------------- */
+.confirm-card {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* 青紫のグラデーション */
+  border: none;
+}
+
+.confirm-box {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* 内側の薄い影で立体感 */
+}
+
+.btn-gradient {
+  background: linear-gradient(45deg, #6a11cb, #2575fc); /* 青紫グラデ */
+  border: none;
+  box-shadow: 0 4px 12px rgba(106, 17, 203, 0.5);
+  transition: background 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+  color: white;
+}
+
+/* ---------------------------------------
+   アニメーション共通
+--------------------------------------- */
+/* フェードイン＋スライドアップ */
+.animated-fade {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 横スライドイン */
+.slide-in {
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------
+   ステップ表示用
+--------------------------------------- */
+.step-indicator {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.step {
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.2);
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.step.current {
+  background: #fff;
+  color: #2575fc;
+}
+
+.step.active {
+  background: #28a745;
+}
