@@ -277,3 +277,65 @@ nav ul li a:hover {
 .step.active {
   background: #28a745;
 }
+
+/* ===== 独自ナビデザイン（人間工学＋オリジナリティ） ===== */
+
+.custom-navbar {
+  background: linear-gradient(135deg, #212529 0%, #2f3640 100%);
+  padding: 0.5rem 1rem;
+  transition: background 0.4s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.custom-navbar .navbar-brand {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.header-search-box {
+  max-width: 700px;
+  width: 100%;
+}
+
+.nav-btn {
+  color: #fff !important;
+  font-size: 0.9rem;
+  padding: 0.3rem 1rem;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.btn-grad {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  border: none;
+}
+
+/* ロゴにアニメーション追加 */
+.animated-logo img {
+  transition: transform 0.3s ease;
+}
+.animated-logo:hover img {
+  transform: rotate(-3deg) scale(1.05);
+}
+
+/* モバイル対応 */
+@media (max-width: 576px) {
+  .header-search-box {
+    display: none;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+main {
+  padding-top: 70px; /* ヘッダー高さに合わせて調整 */
+}
+
