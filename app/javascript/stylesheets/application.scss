@@ -338,4 +338,24 @@ nav ul li a:hover {
 main {
   padding-top: 70px; /* ヘッダー高さに合わせて調整 */
 }
+/* フッターのレイアウト調整 */
+.footer {
+  background: linear-gradient(135deg, #212529 0%, #2f3640 100%);
+  color: #fff;
+}
 
+.footer-link {
+  transition: color 0.3s ease;
+  &:hover {
+    color: #00c6ff;
+    text-decoration: underline;
+  }
+}
+
+.hover-glow {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  &:hover {
+    color: #00c6ff !important;
+    text-shadow: 0 0 8px #00c6ff;
+  }
+}
