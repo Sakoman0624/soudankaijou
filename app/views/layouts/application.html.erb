@@ -14,29 +14,28 @@
   </head>
 
   <body class="d-flex flex-column vh-100">
-    <header class="main-header fixed-top">
-      <nav class="navbar navbar-expand-lg custom-navbar">
+    <header class="shadow-sm fixed-top bg-dark">
+      <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid align-items-center">
           <% if user_signed_in? %>
             <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center animated-logo" do %>
-              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow" %>
-              <span class="ml-2 font-weight-bold">MyApp</span>
+              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
+              <span class="ml-2 font-weight-bold text-light">MyApp</span>
             <% end %>
           <% else %>
             <%= link_to root_path, class: "navbar-brand d-flex align-items-center animated-logo" do %>
-              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow" %>
-              <span class="ml-2 font-weight-bold">MyApp</span>
+              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
+              <span class="ml-2 font-weight-bold text-light">MyApp</span>
             <% end %>
           <% end %>
     
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
             <span class="navbar-toggler-icon"></span>
           </button>
     
-          <div class="collapse navbar-collapse" id="navbarContent">
-            <!-- 中央に検索フォーム -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <% if user_signed_in? %>
-              <div class="mx-auto header-search-box">
+              <div class="mx-auto my-2 my-lg-0" style="width: 100%; max-width: 700px;">
                 <%= form_with url: search_path, method: :get, local: true, class: "form-inline d-flex" do |f| %>
                   <%= f.text_field :word, value: params[:word], placeholder: "探す", class: "form-control mr-2 rounded-pill px-3 shadow-sm" %>
                   <%= f.select :range, options_for_select(['タイトル', '作成者名'], params[:range]), class: "form-control mr-2 rounded-pill shadow-sm" %>
@@ -49,22 +48,22 @@
             <ul class="navbar-nav ml-auto text-center">
               <% if user_signed_in? %>
                 <li class="nav-item">
-                  <%= link_to new_room_path, class: "nav-link nav-btn btn-grad btn-warning rounded-pill mx-1" do %>
+                  <%= link_to new_room_path, class: "nav-link nav-btn btn-warning text-dark rounded-pill mx-1" do %>
                     <i class="fa-solid fa-wrench"></i> 作成
                   <% end %>
                 </li>
                 <li class="nav-item">
-                  <%= link_to rooms_path, class: "nav-link nav-btn btn-grad btn-secondary rounded-pill mx-1" do %>
-                    <i class="fa-solid fa-table"></i> 部屋一覧
+                  <%= link_to rooms_path, class: "nav-link nav-btn btn-secondary text-white rounded-pill mx-1" do %>
+                    <i class="fa-solid fa-table"></i> 一覧
                   <% end %>
                 </li>
                 <li class="nav-item">
-                  <%= link_to user_path(current_user.id), class: "nav-link nav-btn btn-grad btn-info rounded-pill mx-1" do %>
+                  <%= link_to user_path(current_user), class: "nav-link nav-btn btn-info text-white rounded-pill mx-1" do %>
                     <i class="fa-solid fa-user"></i> マイページ
                   <% end %>
                 </li>
                 <li class="nav-item">
-                  <%= link_to destroy_user_session_path, method: :delete, class: "nav-link nav-btn btn-grad btn-danger rounded-pill mx-1" do %>
+                  <%= link_to destroy_user_session_path, method: :delete, class: "nav-link nav-btn btn-danger text-white rounded-pill mx-1" do %>
                     <i class="fa-solid fa-right-from-bracket"></i> ログアウト
                   <% end %>
                 </li>
