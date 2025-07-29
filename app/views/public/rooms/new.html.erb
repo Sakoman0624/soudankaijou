@@ -1,44 +1,124 @@
+<!-- app/views/rooms/new.html.erb または共通フォーム部分 -->
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6 my-5">
-      <%# エラーメッセージ（目立たせるため cardの外） %>
+      <%# エラーメッセージ %>
       <%= render 'layouts/errors', obj: @room %>
-      <div class="card shadow-lg">
+
+      <div class="card shadow-lg animated-card">
         <div class="card-header bg-primary text-white text-center">
           <h4 class="mb-0">新規作成フォーム</h4>
         </div>
         <div class="card-body bg-light">
-          <%= form_with model: Room.new, local: true do |f| %>
-            <div class="form-group">
+          <%= form_with model: @room, local: true, html: { enctype: "multipart/form-data" } do |f| %>
+
+            <!-- 画像 -->
+            <div class="form-group mb-3">
               <%= f.label :image do %>
-                <i class="fas fa-image mr-2"></i>画像
+                <i class="fas fa-image"></i> 画像
               <% end %>
-              <%= f.file_field :image, class: "form-control-file" %>
+              <%= f.file_field :image, class: "form-control", accept: "image/*", onchange: "previewImage(event)" %>
+              <div class="image-preview mt-2 text-center">
+                <img id="preview" src="#" alt="画像プレビュー" class="img-fluid d-none rounded shadow" style="max-height: 200px;" />
+              </div>
             </div>
-            <div class="form-group">
+
+            <!-- タグ -->
+            <div class="form-group mb-3">
               <%= f.label :tag_id do %>
-                <i class="fas fa-tag mr-2"></i>タグ
+                <i class="fas fa-tag"></i> タグ
               <% end %>
-              <%= f.select :tag_id, options_for_select(Tag.all.map { |tag| [tag.name, tag.id] }, selected: @room.tag_id), { prompt: "タグを選んでください" }, class: "form-select" %>
+              <%= f.select :tag_id, options_from_collection_for_select(Tag.all, :id, :name, @room.tag_id), { prompt: "タグを選んでください" }, class: "form-control" %>
             </div>
-            <div class="form-group">
+
+            <!-- タイトル -->
+            <div class="form-group mb-3">
               <%= f.label :title do %>
-                <i class="fas fa-heading mr-2"></i>タイトル
+                <i class="fas fa-heading"></i> タイトル
               <% end %>
-              <%= f.text_area :title, class: 'form-control', placeholder: "２～３０文字", rows: 2 %>
+              <%= f.text_area :title, class: 'form-control', placeholder: "2～30文字", rows: 2 %>
             </div>
-            <div class="form-group">
+
+            <!-- 本文 -->
+            <div class="form-group mb-4">
               <%= f.label :body do %>
-                <i class="fas fa-align-left mr-2"></i>本文
+                <i class="fas fa-align-left"></i> 本文
               <% end %>
-              <%= f.text_area :body, class: 'form-control', placeholder: "５～２００文字", rows: 4 %>
+              <%= f.text_area :body, class: 'form-control', placeholder: "5～200文字", rows: 4 %>
             </div>
+
+            <!-- 送信 -->
             <div class="form-group text-center mb-0">
-              <%= f.submit "作成する", class: 'btn btn-success btn-lg btn-block' %>
+              <%= f.submit "作成する", class: 'btn btn-success btn-lg w-100' %>
             </div>
+
           <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- 画像プレビュー用JS -->
+<script>
+  function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('preview');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.classList.remove('d-none');
+      };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      preview.src = "#";
+      preview.classList.add('d-none');
+    }
+  }
+</script>
+
+<!-- スタイル：CSS -->
+<style>
+  .animated-card {
+    animation: fadeIn 0.6s ease-out;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  label i {
+    color: #007bff;
+    margin-right: 0.5rem;
+  }
+
+  .btn-success {
+    transition: all 0.3s ease;
+  }
+
+  .btn-success:hover {
+    transform: scale(1.03);
+    background-color: #218838;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+    border-color: #80bdff;
+  }
+
+  .field-with-error .form-control {
+    border-color: #dc3545;
+    background-color: #ffe6e6;
+  }
+
+  .field-with-error .form-text {
+    color: #dc3545;
+    font-size: 0.9em;
+  }
+</style>
