@@ -18,7 +18,7 @@
               <%= f.label :image do %>
                 <i class="fas fa-image"></i> 画像
               <% end %>
-              <%= f.file_field :image, class: "form-control", accept: "image/*", onchange: "previewImage(event)" %>
+              <%= f.file_field :image, class: "form-control", accept: "image/*" %>
               <div class="image-preview mt-2 text-center">
                 <img id="preview" src="#" alt="画像プレビュー" class="img-fluid d-none rounded shadow" style="max-height: 200px;" />
               </div>
@@ -59,66 +59,3 @@
     </div>
   </div>
 </div>
-
-<!-- 画像プレビュー用JS -->
-<script>
-  function previewImage(event) {
-    const input = event.target;
-    const preview = document.getElementById('preview');
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.classList.remove('d-none');
-      };
-      reader.readAsDataURL(input.files[0]);
-    } else {
-      preview.src = "#";
-      preview.classList.add('d-none');
-    }
-  }
-</script>
-
-<!-- スタイル：CSS -->
-<style>
-  .animated-card {
-    animation: fadeIn 0.6s ease-out;
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  label i {
-    color: #007bff;
-    margin-right: 0.5rem;
-  }
-
-  .btn-success {
-    transition: all 0.3s ease;
-  }
-
-  .btn-success:hover {
-    transform: scale(1.03);
-    background-color: #218838;
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
-  }
-
-  .form-control:focus {
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
-    border-color: #80bdff;
-  }
-
-  .field-with-error .form-control {
-    border-color: #dc3545;
-    background-color: #ffe6e6;
-  }
-
-  .field-with-error .form-text {
-    color: #dc3545;
-    font-size: 0.9em;
-  }
-</style>

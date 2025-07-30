@@ -31,3 +31,25 @@ window.previewImage = function(event) {
   };
   reader.readAsDataURL(event.target.files[0]);
 };
+
+document.addEventListener('turbolinks:load', function () {
+  const input = document.querySelector('input[type="file"][name="room[image]"]');
+  const preview = document.getElementById('preview');
+
+  if (input && preview) {
+    input.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "#";
+        preview.classList.add('d-none');
+      }
+    });
+  }
+});
