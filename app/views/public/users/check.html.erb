@@ -1,11 +1,58 @@
-<h3 class="text-danger bg-light py-4 mb-0 text-center">【最終警告】本当に退会しますか？</h3>
-<p class="d-flex justify-content-center text-center text-danger font-weight-bold">
-  一度退会すると、<br>
-  アカウント情報・これまでの投稿・記録・やり取りの履歴は<br>
-  **すべて完全に削除され、元に戻すことはできません。**<br>
-  この操作は取り消せません。本当に退会してもよろしいですか？
-</p>
-<div class="d-flex justify-content-center mt-5">
-  <%= link_to "退会しない", user_path(current_user.id), :class => "btn btn-lg btn-secondary mx-3 my-3" %>
-  <%= link_to "退会する", users_withdraw_path, method: :patch, :class => "btn btn-lg btn-danger mx-3 my-3", data: { confirm: "最終確認です。本当に退会しますか？この操作は元に戻せません。" }  %>
+<div class="container my-5">
+  <div class="card border-danger shadow fade-in">
+    <div class="card-header bg-danger text-white text-center">
+      <h3 class="mb-0 font-weight-bold">【最終警告】本当に退会しますか？</h3>
+    </div>
+    <div class="card-body bg-light text-center">
+      <p class="text-danger font-weight-bold mb-4">
+        一度退会すると、<br>
+        アカウント情報・これまでの投稿・記録・やり取りの履歴は<br>
+        <span class="text-decoration-underline">すべて完全に削除され、元に戻すことはできません。</span><br>
+        この操作は取り消せません。本当に退会してもよろしいですか？
+      </p>
+      <div class="d-flex justify-content-center">
+        <%= link_to "退会しない", user_path(current_user.id), class: "btn btn-lg btn-outline-secondary mx-3" %>
+        <button id="withdraw-button" class="btn btn-lg btn-danger mx-3" disabled>
+          退会する（5秒）
+        </button>
+        <%= form_with url: users_withdraw_path, method: :patch, local: true, id: "withdraw-form", style: "display: none;" do %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const withdrawBtn = document.getElementById("withdraw-button");
+    const form = document.getElementById("withdraw-form");
+    let countdown = 5;
+
+    const interval = setInterval(() => {
+      countdown--;
+      withdrawBtn.textContent = `退会する（${countdown}秒）`;
+
+      if (countdown <= 0) {
+        clearInterval(interval);
+        withdrawBtn.textContent = "退会する";
+        withdrawBtn.disabled = false;
+      }
+    }, 1000);
+
+    withdrawBtn.addEventListener("click", function () {
+      if (confirm("最終確認です。本当に退会しますか？この操作は元に戻せません。")) {
+        form.submit();
+      }
+    });
+  });
+</script>
+
+<style>
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>
