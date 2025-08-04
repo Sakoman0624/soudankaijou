@@ -21,38 +21,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const withdrawBtn = document.getElementById("withdraw-button");
-    const form = document.getElementById("withdraw-form");
-    let countdown = 5;
-
-    const interval = setInterval(() => {
-      countdown--;
-      withdrawBtn.textContent = `退会する（${countdown}秒）`;
-
-      if (countdown <= 0) {
-        clearInterval(interval);
-        withdrawBtn.textContent = "退会する";
-        withdrawBtn.disabled = false;
-      }
-    }, 1000);
-
-    withdrawBtn.addEventListener("click", function () {
-      if (confirm("最終確認です。本当に退会しますか？この操作は元に戻せません。")) {
-        form.submit();
-      }
-    });
-  });
-</script>
-
-<style>
-.fade-in {
-  animation: fadeIn 0.8s ease-in-out;
-}
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-</style>

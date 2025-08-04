@@ -401,3 +401,13 @@ label i {
   color: #dc3545;
   font-size: 0.9em;
 }
+
+/* 退会画面　*/
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

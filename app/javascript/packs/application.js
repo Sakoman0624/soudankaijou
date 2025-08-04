@@ -53,3 +53,31 @@ document.addEventListener('turbolinks:load', function () {
     });
   }
 });
+
+
+document.addEventListener("turbolinks:load", function () {
+  const withdrawBtn = document.getElementById("withdraw-button");
+  const form = document.getElementById("withdraw-form");
+  if (!withdrawBtn || !form) return;
+
+  let countdown = 5;
+  withdrawBtn.textContent = `退会する（${countdown}秒）`;
+  withdrawBtn.disabled = true;
+
+  const interval = setInterval(() => {
+    countdown--;
+    withdrawBtn.textContent = `退会する（${countdown}秒）`;
+
+    if (countdown <= 0) {
+      clearInterval(interval);
+      withdrawBtn.textContent = "退会する";
+      withdrawBtn.disabled = false;
+    }
+  }, 1000);
+
+  withdrawBtn.addEventListener("click", function () {
+    if (confirm("最終確認です。本当に退会しますか？この操作は元に戻せません。")) {
+      form.submit();
+    }
+  });
+});
