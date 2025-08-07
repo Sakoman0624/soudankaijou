@@ -1,0 +1,66 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg">
+        <div class="card-header bg-dark text-light text-center">
+          <h2><%= @user.name %> さんのプロフィール</h2>
+        </div>
+        <div class="card-body text-center">
+          <%= image_tag @user.get_profile_image(150, 150), class: "rounded-circle shadow-sm mb-3", alt: "プロフィール画像" %>
+          <h3 class="font-weight-bold"><%= @user.name %></h3>
+
+          <div class="mt-4">
+            <h4 class="text-secondary">紹介文</h4>
+            <div class="border rounded p-3 text-break bg-light">
+              <%= @user.introduction.presence || "紹介文がまだありません。" %>
+            </div>
+          </div>
+
+          <div class="mt-5 text-left">
+            <h4 class="text-secondary">ユーザー詳細</h4>
+            <table class="table table-bordered mt-3">
+              <tr>
+                <th>ID</th>
+                <td><%= @user.id %></td>
+              </tr>
+              <tr>
+                <th>名前</th>
+                <td><%= @user.name %></td>
+              </tr>
+              <tr>
+                <th>メールアドレス</th>
+                <td><%= @user.email %></td>
+              </tr>
+              <tr>
+                <th>退会済み</th>
+                <td><%= @user.is_deleted? ? 'はい' : 'いいえ' %></td>
+              </tr>
+              <tr>
+                <th>作成日</th>
+                <td><%= @user.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="mt-4 d-flex justify-content-center gap-2 flex-wrap">
+            <% if @user.is_deleted %>
+              <%= link_to reactivate_admin_user_path(@user), method: :patch, class: 'btn btn-outline-success btn-sm', title: '再有効化' do %>
+                <i class="fas fa-user-check"></i> 再有効化
+              <% end %>
+            <% else %>
+              <%= link_to withdraw_admin_user_path(@user), method: :patch, data: { confirm: '本当に退会させますか？' }, class: 'btn btn-outline-warning btn-sm', title: '退会' do %>
+                <i class="fas fa-user-slash"></i> 退会
+              <% end %>
+            <% end %>
+
+            <%= link_to admin_user_path(@user), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-outline-danger btn-sm', title: '削除' do %>
+              <i class="fas fa-trash-alt"></i> 削除
+            <% end %>
+
+            <%= link_to '一覧に戻る', admin_users_path, class: 'btn btn-secondary btn-sm' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

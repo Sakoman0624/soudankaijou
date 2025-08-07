@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'dashboards', to: 'dashboards#index'
-    resources :users, only: [:index, :destroy] do
+    resources :users, only: [:index, :show, :destroy] do
       member do
         patch :withdraw
         patch :reactivate
