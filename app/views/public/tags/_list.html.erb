@@ -1,19 +1,21 @@
 <div class="card mb-4">
   <div class="card-header bg-light d-flex justify-content-between align-items-center">
-    <span>タグ一覧</span>
-    <span class="badge badge-primary badge-pill">
-      <%= @tags.count %> 件
-    </span>
+    <h5 class="mb-0">
+      タグ一覧
+      <span class="badge badge-primary badge-pill ml-2">
+        <%= @tags.count %> 件
+      </span>
+    </h5>
   </div>
   <div class="card-body d-flex flex-wrap">
     <% @tags.each do |tag| %>
-      <%= link_to search_path(tag: tag[:tag]), class: 'm-1' do %>
-        <button class="btn btn-outline-info btn-sm">
+      <%= link_to search_path(tag: tag[:tag]), class: 'text-decoration-none' do %>
+        <span class="badge badge-outline-info border m-1 p-2">
           <%= tag[:tag] %>
           <span class="badge badge-light ml-1">
             <%= tag[:count] %>
           </span>
-        </button>
+        </span>
       <% end %>
     <% end %>
   </div>
