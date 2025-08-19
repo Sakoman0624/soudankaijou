@@ -1,48 +1,59 @@
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10">
-      <div class="card shadow-lg border-0 rounded-3">
-        <div class="card-header bg-dark text-light text-center py-4">
-          <h2 class="mb-0"><%= @user.name %><span class="ml-2">さんのプロフィール</span></h2>
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        
+        <!-- ヘッダー -->
+        <div class="card-header bg-gradient text-light text-center py-5" style="background: linear-gradient(135deg, #343a40, #495057);">
+          <%= image_tag @user.get_profile_image(160, 160), 
+                        class: "rounded-circle shadow-lg mb-3 border border-3 border-light", 
+                        alt: "プロフィール画像" %>
+          <h2 class="fw-bold mb-0"><%= @user.name %></h2>
+          <p class="text-white-50 mt-2 mb-0">さんのプロフィール</p>
         </div>
-        <div class="card-body text-center p-4">
-          
-          <!-- プロフィール画像と名前 -->
-          <%= image_tag @user.get_profile_image(150, 150), class: "rounded-circle shadow-sm mb-3 border border-light", alt: "プロフィール画像" %>
-          <h3 class="font-weight-bold mb-4"><%= @user.name %></h3>
-          <hr class="my-4">
+
+        <!-- 本文 -->
+        <div class="card-body text-center p-5">
 
           <!-- 紹介文 -->
-          <div class="mt-4">
-            <h4 class="text-secondary mb-3">紹介文</h4>
-            <div class="border rounded p-4 bg-light text-break">
+          <div class="mb-5">
+            <h4 class="text-secondary mb-3">
+              <i class="fa-solid fa-quote-left me-2 text-muted"></i>紹介文
+            </h4>
+            <div class="border rounded p-4 bg-light text-break shadow-sm">
               <%= @user.introduction.presence || "紹介文がまだありません。" %>
             </div>
           </div>
 
-          <% unless current_user&.guest? %>
-            <% if user_signed_in? && current_user == @user %>
-              <!-- ボタンエリア -->
-              <div class="mt-5">
-                <div class="row">
-                  <div class="col-sm-6 my-1">
-                    <%= link_to "プロフィールを編集", edit_user_path, class: "btn btn-outline-warning btn-block btn-lg" %>
-                  </div>
-                  <div class="col-sm-6 my-1">
-                    <%= link_to "自作の部屋 (#{@my_rooms_count})", my_rooms_path, class: "btn btn-outline-success btn-block btn-lg" %>
-                  </div>
-                  <div class="col-sm-6 my-1">
-                    <%= link_to "いいねした部屋 (#{@liked_rooms_count})", liked_rooms_path, class: "btn btn-outline-primary btn-block btn-lg" %>
-                  </div>
-                  <div class="col-sm-6 my-1">
-                    <%= link_to "退会画面へ", users_check_path, class: "btn btn-outline-danger btn-block btn-lg" %>
-                  </div>
-                </div>
+          <% if user_signed_in? && current_user == @user && !current_user.guest? %>
+            <!-- ボタンエリア -->
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <%= link_to edit_user_path, class: "btn btn-outline-warning btn-lg w-100 d-flex align-items-center justify-content-center" do %>
+                  <i class="fa-solid fa-user-pen me-2"></i> プロフィールを編集
+                <% end %>
               </div>
-            <% end %>
+              <div class="col-sm-6">
+                <%= link_to my_rooms_path, class: "btn btn-outline-success btn-lg w-100 d-flex align-items-center justify-content-center" do %>
+                  <i class="fa-solid fa-door-open me-2"></i> 自作の部屋 (<%= @my_rooms_count %>)
+                <% end %>
+              </div>
+              <div class="col-sm-6">
+                <%= link_to liked_rooms_path, class: "btn btn-outline-primary btn-lg w-100 d-flex align-items-center justify-content-center" do %>
+                  <i class="fa-solid fa-heart me-2"></i> いいねした部屋 (<%= @liked_rooms_count %>)
+                <% end %>
+              </div>
+              <div class="col-sm-6">
+                <%= link_to users_check_path, class: "btn btn-outline-danger btn-lg w-100 d-flex align-items-center justify-content-center" do %>
+                  <i class="fa-solid fa-right-from-bracket me-2"></i> 退会画面へ
+                <% end %>
+              </div>
+            </div>
           <% end %>
+
         </div>
       </div>
     </div>
   </div>
 </div>
+

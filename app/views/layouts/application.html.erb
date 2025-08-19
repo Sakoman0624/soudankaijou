@@ -90,25 +90,32 @@
       <div class="row">
         <% if user_signed_in? %>
           <!-- サイドバー: 幅を縮小 -->
-          <aside class="col-md-1 bg-light border-right py-3 sidebar-small">
+          <aside class="col-md-1 bg-light border-right py-3 sidebar-small d-none d-md-block">
             <ul class="nav flex-column text-center">
               <li class="nav-item mb-3">
-                <%= link_to new_room_path, class: "btn btn-warning text-dark btn-sm rounded-circle" do %>
-                  <i class="fa-solid fa-wrench"></i>部屋作成
+                <%= link_to new_room_path, class: "btn btn-warning text-dark btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋作成" do %>
+                  <i class="fa-solid fa-wrench"></i>
                 <% end %>
               </li>
               <li class="nav-item mb-3">
-                <%= link_to rooms_path, class: "btn btn-secondary text-white btn-sm rounded-circle" do %>
-                  <i class="fa-solid fa-table"></i>部屋一覧
+                <%= link_to rooms_path, class: "btn btn-secondary text-white btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋一覧" do %>
+                  <i class="fa-solid fa-table"></i>
                 <% end %>
               </li>
               <li class="nav-item mb-3">
-                <%= link_to user_path(current_user), class: "btn btn-info text-white btn-sm rounded-circle" do %>
-                  <i class="fa-solid fa-user"></i>マイページ
+                <%= link_to user_path(current_user), class: "btn btn-info text-white btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "マイページ" do %>
+                  <i class="fa-solid fa-user"></i>
                 <% end %>
               </li>
             </ul>
           </aside>
+          
+          <script>
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+          </script>
+
         <% end %>
     
         <!-- メインコンテンツ -->
