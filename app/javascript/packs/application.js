@@ -81,3 +81,16 @@ document.addEventListener("turbolinks:load", function () {
     }
   });
 });
+
+
+// app/javascript/packs/application.js
+document.addEventListener("turbolinks:load", function() {
+  const toggleBtn = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener("click", function() {
+      sidebar.classList.toggle("collapsed");
+    });
+  }
+});

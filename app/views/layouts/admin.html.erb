@@ -12,15 +12,20 @@
 <body class="bg-light">
   <% if admin_signed_in? %>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+      <!-- トグルボタン -->
+      <button id="sidebar-toggle" class="btn btn-outline-light mr-3">
+        <i class="fa fa-bars"></i>
+      </button>
+    
       <span class="navbar-brand">🛠 管理画面</span>
-
+    
       <div class="ml-auto d-flex align-items-center">
         <span class="text-white mr-3">
           管理者: <strong><%= current_admin.email %></strong>
         </span>
-
+    
         <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-sm btn-outline-light" do %>
-          <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+          <i class="fa fa-sign-out-alt"></i> ログアウト
         <% end %>
       </div>
     </nav>
@@ -34,15 +39,28 @@
 
     <div class="container-fluid">
       <div class="row">
-        <aside class="col-md-2 bg-light border-right py-3">
-          <div class="nav flex-column">
-            <%= link_to "ダッシュボード", admin_dashboards_path, class: "btn btn-outline-primary mb-2" %>
-            <%= link_to "ユーザー一覧", admin_users_path, class: "btn btn-outline-success mb-2" %>
-            <%= link_to "部屋一覧", admin_rooms_path, class: "btn btn-outline-info mb-2" %>
+        <!-- サイドバー -->
+        <aside id="sidebar" class="col-md-2 bg-light border-right py-3">
+          <div class="nav flex-column text-nowrap">
+            <%= link_to admin_dashboards_path, class: "btn btn-outline-primary mb-2 d-flex align-items-center" do %>
+              <i class="fa fa-tachometer-alt mr-2"></i>
+              <span class="menu-text">ダッシュボード</span>
+            <% end %>
+    
+            <%= link_to admin_users_path, class: "btn btn-outline-success mb-2 d-flex align-items-center" do %>
+              <i class="fa fa-users mr-2"></i>
+              <span class="menu-text">ユーザー一覧</span>
+            <% end %>
+    
+            <%= link_to admin_rooms_path, class: "btn btn-outline-info mb-2 d-flex align-items-center" do %>
+              <i class="fa fa-door-open mr-2"></i>
+              <span class="menu-text">部屋一覧</span>
+            <% end %>
           </div>
         </aside>
-
-        <main class="col-md-10 py-3">
+    
+        <!-- メインコンテンツ -->
+        <main id="main-content" class="col-md-10 py-3">
           <%= yield %>
         </main>
       </div>

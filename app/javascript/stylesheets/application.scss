@@ -411,3 +411,38 @@ label i {
   0% { opacity: 0; transform: translateY(-10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+
+/* adminサイドバー */
+#sidebar {
+  transition: all 0.3s ease;
+  min-height: 100vh;
+}
+
+/* 縮小時 */
+#sidebar.collapsed {
+  width: auto !important;   /* アイコンの幅にフィット */
+  flex: none;               /* col-md-2 の強制幅を無効化 */
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* テキストは非表示 */
+#sidebar.collapsed .menu-text {
+  display: none;
+}
+
+/* アイコン調整 */
+#sidebar i {
+  font-size: 1.3rem; /* アイコンのサイズを決める（ここで横幅が決まる） */
+  transition: font-size 0.3s ease;
+}
+
+#sidebar.collapsed i {
+  font-size: 1.5rem;  /* 縮小時は少し大きめに */
+  margin-right: 0;    /* テキスト消えるので余白カット */
+}
+
+/* メインとの間に余白 */
+#sidebar.collapsed + #main-content {
+  margin-left: 10px;  /* アイコンとメインの間隔 */
+}
