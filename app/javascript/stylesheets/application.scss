@@ -420,10 +420,10 @@ label i {
 
 /* 縮小時 */
 #sidebar.collapsed {
-  width: auto !important;   /* アイコンの幅にフィット */
-  flex: none;               /* col-md-2 の強制幅を無効化 */
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  width: auto !important;       /* アイコンにフィット */
+  flex: none;                   /* col-md-2 の幅を無効化 */
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 /* テキストは非表示 */
@@ -431,18 +431,12 @@ label i {
   display: none;
 }
 
-/* アイコン調整 */
-#sidebar i {
-  font-size: 1.3rem; /* アイコンのサイズを決める（ここで横幅が決まる） */
-  transition: font-size 0.3s ease;
-}
-
-#sidebar.collapsed i {
-  font-size: 1.5rem;  /* 縮小時は少し大きめに */
-  margin-right: 0;    /* テキスト消えるので余白カット */
-}
-
-/* メインとの間に余白 */
-#sidebar.collapsed + #main-content {
-  margin-left: 10px;  /* アイコンとメインの間隔 */
+/* ボタンもアイコンサイズに合わせる */
+#sidebar-toggle {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

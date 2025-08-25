@@ -15,123 +15,96 @@
 
   <body class="d-flex flex-column vh-100">
     <header class="shadow-sm fixed-top bg-dark">
-      <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid align-items-center">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+        <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center" do %>
+          <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
+          <span class="ml-2 font-weight-bold text-light">MyApp</span>
+        <% end %>
+      
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <% if user_signed_in? %>
-            <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center animated-logo" do %>
-              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
-              <span class="ml-2 font-weight-bold text-light">MyApp</span>
-            <% end %>
-          <% else %>
-            <%= link_to root_path, class: "navbar-brand d-flex align-items-center animated-logo" do %>
-              <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
-              <span class="ml-2 font-weight-bold text-light">MyApp</span>
-            <% end %>
-          <% end %>
-
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <% if user_signed_in? %>
-              <div class="mx-auto my-2 my-lg-0" style="width: 100%; max-width: 700px;">
-                <%= form_with url: search_path, method: :get, local: true, class: "form-inline d-flex" do |f| %>
-                  <%= f.text_field :word, value: params[:word], placeholder: "探す", class: "form-control mr-2 rounded-pill px-3 shadow-sm" %>
-                  <%= f.select :range, options_for_select(['タイトル', '作成者名'], params[:range]), class: "form-control mr-2 rounded-pill shadow-sm" %>
-                  <%= f.select :search, options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]], params[:search]), class: "form-control mr-2 rounded-pill shadow-sm" %>
-                  <%= f.submit "🔍", class: "btn btn-outline-light rounded-pill px-4 shadow-sm" %>
-                <% end %>
-              </div>
-            <% end %>
-
-            <ul class="navbar-nav ml-auto text-center">
-              <% if user_signed_in? %>
-                <ul class="navbar-nav ml-auto text-center d-flex align-items-center">
-                  <%= link_to user_path(current_user), class: "nav-item text-white d-flex align-items-center mr-3 text-decoration-none" do %>
-                    <i class="fa-solid fa-user mr-1"></i>
-                    <strong><%= current_user.name %></strong>
-                  <% end %>
-                  <li class="nav-item">
-                    <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-danger rounded-pill px-3" do %>
-                      <i class="fa-solid fa-right-from-bracket"></i> ログアウト
-                    <% end %>
-                  </li>
-                </ul>
-              <% else %>
-                <li class="nav-item">
-                  <%= link_to root_path, class: "nav-link text-light" do %>
-                    <i class="fa-solid fa-home"></i> TOP
-                  <% end %>
-                </li>
-                <li class="nav-item">
-                  <%= link_to about_path, class: "nav-link text-light" do %>
-                    <i class="fa-solid fa-info-circle"></i> About
-                  <% end %>
-                </li>
-                <li class="nav-item">
-                  <%= link_to new_user_registration_path, class: "nav-link text-success font-weight-bold" do %>
-                    <i class="fa-solid fa-user-plus"></i> 新規
-                  <% end %>
-                </li>
-                <li class="nav-item">
-                  <%= link_to new_user_session_path, class: "nav-link text-primary font-weight-bold" do %>
-                    <i class="fa-solid fa-sign-in-alt"></i> ログイン
-                  <% end %>
-                </li>
+            <!-- 検索フォームを中央に配置 -->
+            <div class="mx-auto my-2 my-lg-0" style="width: 100%; max-width: 500px;">
+              <%= form_with url: search_path, method: :get, local: true, class: "form-inline d-flex" do |f| %>
+                <%= f.text_field :word, value: params[:word], placeholder: "探す", class: "form-control mr-2 rounded-pill px-3 shadow-sm" %>
+                <%= f.select :range, options_for_select(['タイトル', '作成者名'], params[:range]), class: "form-control mr-2 rounded-pill shadow-sm" %>
+                <%= f.select :search, options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]], params[:search]), class: "form-control mr-2 rounded-pill shadow-sm" %>
+                <%= f.submit "🔍", class: "btn btn-outline-light rounded-pill px-4 shadow-sm" %>
               <% end %>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <div class="container-fluid" style="padding-top: 70px; flex: 1 0 auto;">
-      <div class="row">
-        <% if user_signed_in? %>
-          <!-- サイドバー: 幅を縮小 -->
-          <aside class="col-md-1 bg-light border-right py-3 sidebar-small d-none d-md-block">
-            <ul class="nav flex-column text-center">
-              <li class="nav-item mb-3">
-                <%= link_to new_room_path, class: "btn btn-warning text-dark btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋作成" do %>
+            </div>
+        
+            <!-- 右側: アイコンボタン + ユーザー情報 + ログアウト -->
+            <ul class="navbar-nav ml-auto align-items-center">
+              <li class="nav-item mr-2">
+                <%= link_to new_room_path, class: "btn btn-warning btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋作成" do %>
                   <i class="fa-solid fa-wrench"></i>
                 <% end %>
               </li>
-              <li class="nav-item mb-3">
-                <%= link_to rooms_path, class: "btn btn-secondary text-white btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋一覧" do %>
+              <li class="nav-item mr-2">
+                <%= link_to rooms_path, class: "btn btn-secondary btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋一覧" do %>
                   <i class="fa-solid fa-table"></i>
                 <% end %>
               </li>
-              <li class="nav-item mb-3">
-                <%= link_to user_path(current_user), class: "btn btn-info text-white btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "マイページ" do %>
+              <li class="nav-item mr-3">
+                <%= link_to user_path(current_user), class: "btn btn-info btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "マイページ" do %>
                   <i class="fa-solid fa-user"></i>
                 <% end %>
               </li>
+        
+              <li class="nav-item mr-3">
+                <%= link_to user_path(current_user), class: "d-flex align-items-center text-white text-decoration-none" do %>
+                  <i class="fa-solid fa-user mr-1"></i>
+                  <strong><%= current_user.name %></strong>
+                <% end %>
+              </li>
+        
+              <li class="nav-item">
+                <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm rounded-pill" do %>
+                  <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+                <% end %>
+              </li>
             </ul>
-          </aside>
-          
-          <script>
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
-          </script>
+          <% else %>
+            <!-- 未ログイン時リンク -->
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><%= link_to "TOP", root_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-light" %></li>
+              <li class="nav-item"><%= link_to "新規", new_user_registration_path, class: "nav-link text-success font-weight-bold" %></li>
+              <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link text-primary font-weight-bold" %></li>
+            </ul>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+      
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
 
-        <% end %>
-    
+
+      
         <!-- メインコンテンツ -->
-        <main class="<%= user_signed_in? ? 'col-md-11' : 'col-12' %> mb-auto p-0">
-          <% if flash[:notice] %>
-            <div class="alert alert-primary text-center" role="alert">
-              <%= flash[:notice] %>
-            </div>
-          <% end %>
-          <% if flash[:alert] %>
-            <div class="alert alert-danger text-center" role="alert">
-              <%= flash[:alert] %>
-            </div>
-          <% end %>
-          <%= yield %>
-        </main>
+        <div class="container-fluid" style="padding-top: 70px; flex: 1 0 auto;">
+          <main class="col-12 mb-auto p-0">
+            <% if flash[:notice] %>
+              <div class="alert alert-primary text-center" role="alert">
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <% if flash[:alert] %>
+              <div class="alert alert-danger text-center" role="alert">
+                <%= flash[:alert] %>
+              </div>
+            <% end %>
+            <%= yield %>
+          </main>
+        </div>
       </div>
     </div>
 
