@@ -1,7 +1,38 @@
-<div class="text-center text-light bg-dark">
-  <h2>いいねした部屋一覧</h2>
+<div class="py-5 text-center text-white" style="background: linear-gradient(135deg, #212529, #343a40);">
+  <h1 class="display-5 mb-2">
+    <i class="fa-solid fa-heart text-danger"></i> いいねした部屋一覧
+  </h1>
+  <p class="lead">あなたが気に入った部屋をまとめています</p>
 </div>
-<div id="room-list">
-  <%= render 'public/rooms/list', rooms: @rooms %>
+
+<div class="container my-5">
+  <% if @rooms.present? %>
+    <div class="row g-4">
+      <% @rooms.each do |room| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-lg border-0 h-100">
+            <div class="card-body">
+              <h5 class="card-title text-dark"><%= room.title %></h5>
+              <p class="card-text text-muted"><%= truncate(room.body, length: 80) %></p>
+              <%= link_to "詳細を見る", room_path(room), class: "btn btn-danger btn-sm rounded-pill" %>
+            </div>
+            <div class="card-footer text-muted small">
+              作成日: <%= l(room.created_at, format: :short) %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <%= paginate @rooms %>
+    </div>
+  <% else %>
+    <p class="text-center text-muted mt-5">まだ「いいね」した部屋はありません。</p>
+  <% end %>
 </div>
-<%= paginate @rooms %>
+
+<div class="text-center mt-5">
+  <%= link_to "→ 自作部屋一覧はこちら", my_rooms_path,
+              class: "btn btn-outline-warning btn-lg rounded-pill shadow" %>
+</div>
