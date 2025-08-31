@@ -42,17 +42,26 @@
         <!-- サイドバー -->
         <aside id="sidebar" class="col-md-2 bg-light border-right py-3">
           <div class="nav flex-column text-nowrap">
-            <%= link_to admin_dashboards_path, class: "btn btn-outline-primary mb-2 d-flex align-items-center justify-content-center" do %>
+            <%= link_to admin_dashboards_path,
+                        class: "btn btn-outline-primary mb-2 d-flex align-items-center justify-content-center",
+                        data: { toggle: "tooltip" },
+                        title: "ダッシュボード" do %>
               <i class="fa fa-tachometer-alt"></i>
               <span class="menu-text ml-2">ダッシュボード</span>
             <% end %>
-    
-            <%= link_to admin_users_path, class: "btn btn-outline-success mb-2 d-flex align-items-center justify-content-center" do %>
+            
+            <%= link_to admin_users_path,
+                        class: "btn btn-outline-success mb-2 d-flex align-items-center justify-content-center",
+                        data: { toggle: "tooltip" },
+                        title: "ユーザー一覧" do %>
               <i class="fa fa-users"></i>
               <span class="menu-text ml-2">ユーザー一覧</span>
             <% end %>
-    
-            <%= link_to admin_rooms_path, class: "btn btn-outline-info mb-2 d-flex align-items-center justify-content-center" do %>
+            
+            <%= link_to admin_rooms_path,
+                        class: "btn btn-outline-info mb-2 d-flex align-items-center justify-content-center",
+                        data: { toggle: "tooltip" },
+                        title: "部屋一覧" do %>
               <i class="fa fa-door-open"></i>
               <span class="menu-text ml-2">部屋一覧</span>
             <% end %>

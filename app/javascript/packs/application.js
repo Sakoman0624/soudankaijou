@@ -94,3 +94,9 @@ document.addEventListener("turbolinks:load", function() {
     });
   }
 });
+
+import "bootstrap";
+
+document.addEventListener("turbolinks:load", () => {
+  $('[data-toggle="tooltip"]').tooltip();
+});
