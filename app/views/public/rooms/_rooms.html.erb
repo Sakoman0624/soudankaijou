@@ -2,56 +2,91 @@
   <% rooms.each do |room| %>
     <div class="col mb-4">
       <div class="card h-100 shadow">
-        <%= link_to room_path(room), class: 'thumbnail-button m-1' do %>
+
+        <!-- サムネイル画像 (部屋ページへ) -->
+        <%= link_to room_path(room),
+                    class: 'thumbnail-button m-1',
+                    data: { toggle: "tooltip" },
+                    title: "部屋ページへ" do %>
           <%= image_tag(
                 (room.image.attached? ? room.get_image(300,230) : 'room_image.jpg'),
                 class: 'thumbnail-image',
                 style: "object-fit: #{room.image.attached? ? 'contain' : 'cover'};"
               ) %>
         <% end %>
+
         <div class="card-body d-flex flex-column justify-content-between">
+
+          <!-- タイトル (部屋ページへ) -->
           <h5 class="card-title mb-2">
-            <%= link_to room.title, room, class: "text-decoration-none text-dark" %>
+            <%= link_to room.title,
+                        room,
+                        class: "text-decoration-none text-dark",
+                        data: { toggle: "tooltip" },
+                        title: "部屋ページへ" %>
           </h5>
-        
+
+          <!-- 投稿日 -->
           <small class="text-muted d-block mb-2">
             投稿日: <%= room.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M') %>
           </small>
-        
+
+          <!-- タグ -->
           <% if room.tag.present? %>
             <div class="mb-2">
               <span class="me-1">タグ:</span>
-              <%= link_to room.tag.name, search_path(tag: room.tag.name),
-                  class: "badge bg-info text-dark text-decoration-none" %>
+              <%= link_to room.tag.name,
+                          search_path(tag: room.tag.name),
+                          class: "badge bg-info text-dark text-decoration-none",
+                          data: { toggle: "tooltip" },
+                          title: "このタグで検索" %>
             </div>
           <% end %>
-        
+
+          <!-- 投稿者 (マイページへ) -->
           <div class="d-flex align-items-center mb-3">
-            <%= link_to user_path(room.user.id), class: "d-flex align-items-center text-decoration-none text-dark" do %>
-              <%= image_tag room.user.get_profile_image(25, 25), class: "rounded-circle me-2" %>
+            <%= link_to user_path(room.user.id),
+                        class: "d-flex align-items-center text-decoration-none text-dark",
+                        data: { toggle: "tooltip" },
+                        title: "マイページへ" do %>
+              <%= image_tag room.user.get_profile_image(25, 25),
+                            class: "rounded-circle me-2" %>
               <%= room.user.name %>
             <% end %>
           </div>
-        
+
+          <!-- いいねボタン -->
           <% if room.public? %>
             <div class="mb-3">
               <% if current_user.likes.exists?(room: room) %>
                 <%= button_to room_like_path(room, current_user.likes.find_by(room_id: room.id)),
-                    method: :delete, class: "btn btn-outline-danger btn-sm w-100" do %>
-                  <i class="fa fa-heart-broken"></i> いいねを取り消す
+                    method: :delete,
+                    class: "btn btn-outline-danger btn-sm w-100",
+                    data: { toggle: "tooltip" },
+                    title: "いいね解除" do %>
+                  <i class="fa fa-heart-broken"></i> いいね解除
                 <% end %>
               <% else %>
-                <%= button_to room_likes_path(room), method: :post, class: "btn btn-outline-success btn-sm w-100" do %>
-                  <i class="fa fa-heart"></i> いいねする
+                <%= button_to room_likes_path(room),
+                    method: :post,
+                    class: "btn btn-outline-success btn-sm w-100",
+                    data: { toggle: "tooltip" },
+                    title: "いいねする" do %>
+                  <i class="fa fa-heart"></i> いいね
                 <% end %>
               <% end %>
             </div>
           <% end %>
-        
+
+          <!-- コメント数 / いいね数 / 公開状態 -->
           <div class="d-flex justify-content-between flex-wrap text-muted small mb-2">
-            <div><i class="fa fa-comment"></i> <%= room.room_comments.count %>件</div>
-            <div><i class="fa fa-heart text-danger"></i> <%= room.likes.count %>いいね</div>
-            <div>
+            <div data-toggle="tooltip" title="コメント数">
+              <i class="fa fa-comment"></i> <%= room.room_comments.count %>件
+            </div>
+            <div data-toggle="tooltip" title="いいね数">
+              <i class="fa fa-heart text-danger"></i> <%= room.likes.count %>いいね
+            </div>
+            <div data-toggle="tooltip" title="公開状態">
               <% if room.public? %>
                 <span class="badge bg-success">公開</span>
               <% else %>
@@ -61,16 +96,27 @@
           </div>
         </div>
 
-  
+        <!-- 自分の部屋 (編集 / 削除) -->
         <% if controller_name == "my_rooms" && action_name == "index" %>
           <div class="card-footer text-end d-flex flex-column flex-md-row justify-content-md-end flex-wrap">
             <% if current_user == room.user %>
-              <%= link_to "編集", edit_room_path(room), class: 'btn btn-primary mx-1 mb-2 mb-md-0' %>
-              <%= link_to "削除", room_path(room),
-              method: :delete, data: { confirm: t('defaults.message.本当に削除しますか') }, class: 'btn btn-danger mx-1' %>
+              <%= link_to "編集",
+                          edit_room_path(room),
+                          class: 'btn btn-primary mx-1 mb-2 mb-md-0',
+                          data: { toggle: "tooltip" },
+                          title: "編集する" %>
+
+              <%= link_to "削除",
+                          room_path(room),
+                          method: :delete,
+                          data: { confirm: t('defaults.message.本当に削除しますか'),
+                                  toggle: "tooltip" },
+                          title: "削除する",
+                          class: 'btn btn-danger mx-1' %>
             <% end %>
           </div>
         <% end %>
+
       </div>
     </div>
   <% end %>
