@@ -8,12 +8,19 @@
   color: #f0c500;
 }
 
-.background_top-image{
+.background_top-image {
+  position: relative;
   background-image: url('../images/background_top.jpg');
-  background-size:cover;
-  height: 100vh;
+  background-size: 110%; /* ズーム用に少し大きめ */
   background-position: center;
-  color: #1b2550;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  animation: zoomSlide 30s ease-in-out infinite alternate;
 }
 
 .logo{
@@ -450,4 +457,69 @@ label i {
 
 .alert {
   margin-bottom: 0 !important;
+}
+
+/* 背景がズーム＋スライド */
+@keyframes zoomSlide {
+  0% {
+    background-size: 110%;
+    background-position: center;
+  }
+  50% {
+    background-size: 120%;
+    background-position: top center;
+  }
+  100% {
+    background-size: 110%;
+    background-position: center;
+  }
+}
+
+/* 薄暗いオーバーレイ（文字を見やすくする） */
+.background_top-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* 少し暗く */
+  z-index: 1;
+}
+
+/* コンテンツ */
+.background_top-image .container {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ボタンの光る hover */
+.background_top-image .btn {
+  transition: all 0.4s ease;
+  transform: translateY(0);
+  position: relative;
+  overflow: hidden;
+}
+
+.background_top-image .btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-20deg);
+  transition: 0.5s;
+}
+
+.background_top-image .btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.background_top-image .btn:hover::after {
+  left: 100%;
 }
