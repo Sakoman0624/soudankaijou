@@ -523,3 +523,243 @@ label i {
 .background_top-image .btn:hover::after {
   left: 100%;
 }
+
+/* ======================================
+JavaScript不要のプロフィールページ改良
+====================================== */
+/* CSS変数定義 */
+:root {
+–primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+–shadow-hover: 0 15px 35px rgba(0,0,0,0.15);
+–transition-smooth: all 0.3s ease;
+}
+/* 背景設定 */
+body {
+background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+background-attachment: fixed;
+min-height: 100vh;
+}
+/* メインプロフィールカード */
+.profile-card {
+background: rgba(30, 30, 30, 0.85); /* 半透明ダーク */
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+transition: var(–transition-smooth);
+box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+.profile-card:hover {
+transform: translateY(-3px);
+box-shadow: var(–shadow-hover);
+}
+/* ヘッダー部分 */
+.card-header {
+background: var(–primary-gradient) !important;
+position: relative;
+overflow: hidden;
+}
+/* シンプルなアニメーション効果 */
+.card-header::before {
+content: ‘’;
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+animation: gentle-rotate 6s ease-in-out infinite;
+}
+@keyframes gentle-rotate {
+0%, 100% { transform: rotate(0deg); }
+50% { transform: rotate(180deg); }
+}
+/* プロフィール画像 */
+.profile-image {
+transition: var(–transition-smooth);
+border: 3px solid rgba(255,255,255,0.9) !important;
+box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+position: relative;
+z-index: 1;
+}
+.profile-image:hover {
+transform: scale(1.05);
+border-color: rgba(255,255,255,1) !important;
+}
+/* プロフィール名 */
+.profile-name {
+text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+position: relative;
+z-index: 1;
+}
+/* 紹介文セクション */
+.intro-section {
+background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+border: 1px solid rgba(0,0,0,0.05);
+position: relative;
+overflow: hidden;
+transition: var(–transition-smooth);
+}
+.intro-section::before {
+content: ‘’;
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+transition: left 0.5s ease;
+}
+.intro-section:hover::before {
+left: 100%;
+}
+.intro-section:hover {
+background: linear-gradient(145deg, #ffffff, #f8f9fa);
+box-shadow: inset 0 1px 8px rgba(0,0,0,0.03);
+}
+/* アクションボタン基本設定 */
+.action-btn {
+position: relative;
+overflow: hidden;
+transition: var(–transition-smooth);
+border-width: 2px !important;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.3px;
+text-decoration: none;
+display: flex !important;
+align-items: center;
+justify-content: center;
+}
+/* ホバー時の光る効果 */
+.action-btn::before {
+content: ‘’;
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+transition: left 0.4s ease;
+z-index: 0;
+}
+.action-btn:hover::before {
+left: 100%;
+}
+.action-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+text-decoration: none;
+}
+.action-btn:active {
+transform: translateY(0);
+}
+/* ボタン内の要素 */
+.action-btn i,
+.action-btn span {
+position: relative;
+z-index: 1;
+transition: transform 0.2s ease;
+}
+.action-btn:hover i {
+transform: scale(1.1);
+}
+/* 各ボタンの個別カラー */
+.btn-edit {
+background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%);
+border-color: #fcb69f;
+color: #8B4513;
+}
+.btn-edit:hover,
+.btn-edit:focus {
+background: linear-gradient(45deg, #fcb69f 0%, #ffecd2 100%);
+border-color: #8B4513;
+color: #8B4513;
+}
+.btn-rooms {
+background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%);
+border-color: #a8edea;
+color: #2d5a57;
+}
+.btn-rooms:hover,
+.btn-rooms:focus {
+background: linear-gradient(45deg, #fed6e3 0%, #a8edea 100%);
+border-color: #2d5a57;
+color: #2d5a57;
+}
+.btn-liked {
+background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%);
+border-color: #fbc2eb;
+color: #4a5568;
+}
+.btn-liked:hover,
+.btn-liked:focus {
+background: linear-gradient(45deg, #a6c1ee 0%, #fbc2eb 100%);
+border-color: #4a5568;
+color: #4a5568;
+}
+.btn-danger-custom {
+background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%);
+border-color: #ff9a9e;
+color: #721c24;
+}
+.btn-danger-custom:hover,
+.btn-danger-custom:focus {
+background: linear-gradient(45deg, #fecfef 0%, #ff9a9e 100%);
+border-color: #721c24;
+color: #721c24;
+}
+/* シンプルなフェードインアニメーション */
+.fade-in {
+animation: fadeInUp 0.6s ease-out forwards;
+opacity: 0;
+transform: translateY(20px);
+}
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.2s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+.fade-in:nth-child(4) { animation-delay: 0.4s; }
+@keyframes fadeInUp {
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+.profile-card {
+margin: 0 15px;
+}
+.card-body {
+padding: 2rem !important;
+}
+.action-btn {
+padding: 10px 16px;
+font-size: 0.85rem;
+}
+}
+@media (max-width: 480px) {
+.card-body {
+padding: 1.5rem !important;
+}
+.profile-name {
+font-size: 1.5rem;
+}
+.action-btn {
+font-size: 0.8rem;
+}
+}
+/* フォーカス表示（アクセシビリティ） */
+.action-btn:focus {
+box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+outline: none;
+}
+/* アニメーション軽減設定 */
+@media (prefers-reduced-motion: reduce) {
+*,
+*::before,
+*::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+}
+}
