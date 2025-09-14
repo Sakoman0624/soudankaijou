@@ -1,34 +1,36 @@
-<div class="container">
-  <div class="row no-gutters">
-    <div class="col-md-5 col-sm-10 mx-2 mx-sm-auto text-center shadow-lg rounded px-0 my-5">
-      <h5 class="text-dark bg-light py-4 mb-0">ユーザーログイン</h5>
-      <div class="form-body p-4">
-        <div class="mx-auto text-center">
-          <p>メールアドレスと<br>パスワードを入力してください。</p>
-        </div>
-        <% if flash[:alert] %>
-          <div class="alert alert-danger" role="alert">
-            <%= flash[:alert] %>
-          </div>
-        <% end %>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="col-md-5 col-sm-10 shadow-lg rounded-3 overflow-hidden login-card">
+    <!-- ヘッダー -->
+    <div class="bg-gradient text-white text-center py-4">
+      <h4 class="mb-0"><i class="fa-solid fa-user-circle me-2"></i>ユーザーログイン</h4>
+    </div>
 
-        <%= form_with model: @user, url: user_session_path do |f| %>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
-            </div>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", class: "form-control" %>
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" aria-hidden="true"><i class="fa-solid fa-lock"></i></span>
-            </div>
-            <%= f.password_field :password, placeholder: "パスワード", class: "form-control"  %>
-          </div>
-            <%= f.submit "ログイン", class: "btn btn-lg btn-block btn-primary mt-5" %>
-            <%= link_to "新規登録画面", new_user_registration_path, class: "btn btn-lg btn-block btn-danger" %>
-        <% end %>
-      </div>
+    <!-- 本体 -->
+    <div class="form-body p-5">
+      <p class="text-muted text-center mb-4">
+        メールアドレスとパスワードを入力してください
+      </p>
+
+      <% if flash[:alert] %>
+        <div class="alert alert-danger" role="alert">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <%= form_with model: @user, url: user_session_path, local: true do |f| %>
+        <div class="input-group mb-4">
+          <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", class: "form-control" %>
+        </div>
+
+        <div class="input-group mb-4">
+          <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+          <%= f.password_field :password, placeholder: "パスワード", class: "form-control" %>
+        </div>
+
+        <%= f.submit "ログイン", class: "btn btn-lg w-100 mb-3 login-btn" %>
+        <%= link_to "新規登録はこちら", new_user_registration_path, class: "btn btn-lg w-100 btn-outline-light signup-btn" %>
+      <% end %>
     </div>
   </div>
 </div>

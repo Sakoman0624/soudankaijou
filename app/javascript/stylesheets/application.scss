@@ -763,3 +763,43 @@ animation-iteration-count: 1 !important;
 transition-duration: 0.01ms !important;
 }
 }
+
+/* カード全体 */
+.login-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.login-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* ヘッダー背景 */
+.bg-gradient {
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+}
+
+/* ログインボタン */
+.login-btn {
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+}
+.login-btn:hover {
+  opacity: 0.9;
+}
+
+/* 新規登録ボタン */
+.signup-btn {
+  border: 2px solid #06b6d4;
+  color: #06b6d4;
+  transition: all 0.3s ease;
+}
+.signup-btn:hover {
+  background: #06b6d4;
+  color: #fff;
+}
