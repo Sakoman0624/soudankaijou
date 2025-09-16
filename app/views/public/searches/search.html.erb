@@ -1,8 +1,20 @@
-<div class="bg-dark text-white text-center">
-  <h1>検索結果</h1>
+<!-- 検索結果ヘッダー -->
+<div class="search-header text-white text-center py-5">
+  <h1 class="fw-bold">
+    <i class="fa-solid fa-magnifying-glass me-2"></i>検索結果
+  </h1>
+  <p class="lead mb-0">条件に一致したルームを表示しています</p>
 </div>
+
+<!-- エラーメッセージ -->
 <%= render 'layouts/errors', obj: @room %>
-<div id="room-list">
+
+<!-- 結果リスト -->
+<div id="room-list" class="container my-5">
   <%= render 'public/rooms/list', rooms: @rooms %>
 </div>
-<%= paginate @rooms %>
+
+<!-- ページネーション -->
+<div class="custom-pagination text-center my-4">
+  <%= paginate @rooms %>
+</div>

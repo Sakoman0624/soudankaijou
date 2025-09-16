@@ -803,3 +803,40 @@ transition-duration: 0.01ms !important;
   background: #06b6d4;
   color: #fff;
 }
+
+/* ヘッダー部分 */
+.search-header {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-bottom: 4px solid #06b6d4;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* リスト全体 */
+#room-list .card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+#room-list .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+}
+
+/* ページネーション */
+.custom-pagination .pagination {
+  justify-content: center;
+}
+.custom-pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+}
+.custom-pagination .page-link {
+  border-radius: 8px;
+  margin: 0 3px;
+  color: #4f46e5;
+  transition: all 0.2s ease;
+}
+.custom-pagination .page-link:hover {
+  background: #06b6d4;
+  color: #fff;
+}
