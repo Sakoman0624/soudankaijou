@@ -4,11 +4,11 @@
     <div class="col-md-6 col-lg-5">
       <div class="card signup-card shadow-sm mb-5" id="signup-card">
         <div class="card-header text-center bg-gradient text-white py-3">
-          <h5 class="mb-0"><i class="fa-solid fa-user-plus me-2"></i>新規登録</h5>
+          <h5 class="mb-0"><i class="fa fa-user-plus mr-2"></i>新規登録</h5>
         </div>
 
         <div class="card-body p-4">
-          <!-- サーバ側のエラーサマリ（スクリーンリーダー向けに aria-live） -->
+          <!-- サーバ側のエラー -->
           <% if @user.errors.any? %>
             <div class="alert alert-danger" role="alert" aria-live="assertive">
               <h6 class="mb-2"><%= pluralize(@user.errors.count, "件のエラー") %> が発生しました</h6>
@@ -21,6 +21,7 @@
           <% end %>
 
           <%= form_with model: @user, url: user_registration_path, local: true, html: { id: "signup-form", novalidate: true } do |f| %>
+
             <!-- 名前 -->
             <div class="form-group mb-3">
               <%= f.label :name, "名前", class: "form-label" %>
@@ -35,9 +36,13 @@
             <div class="form-group mb-3">
               <%= f.label :email, "メールアドレス", class: "form-label" %>
               <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span></div>
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                </div>
                 <%= f.email_field :email, class: "form-control", id: "email", autocomplete: "email", aria: { describedby: "email-help email-error" } %>
-                <span class="input-group-text" id="email-status" aria-hidden="true"></span>
+                <div class="input-group-append">
+                  <span class="input-group-text" id="email-status" aria-hidden="true"></span>
+                </div>
               </div>
               <small id="email-help" class="form-text text-muted">確認用メールを送信します。</small>
               <% if @user.errors[:email].any? %>
@@ -50,7 +55,11 @@
               <%= f.label :password, "パスワード", class: "form-label" %>
               <div class="input-group">
                 <%= f.password_field :password, class: "form-control", id: "password", data: { min_password_length: @minimum_password_length || 8 }, aria: { describedby: "pw-help pw-error pw-strength-text" } %>
-                <button type="button" class="btn btn-outline-secondary" id="toggle-password" aria-pressed="false" aria-label="パスワードを表示">表示</button>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary" id="toggle-password" aria-label="パスワードを表示">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </div>
               </div>
               <small id="pw-help" class="form-text text-muted">推奨: 12文字以上のフレーズ（スペースや絵文字も可）。</small>
 
@@ -72,7 +81,9 @@
               <%= f.label :password_confirmation, "パスワード（確認）", class: "form-label" %>
               <div class="input-group">
                 <%= f.password_field :password_confirmation, class: "form-control", id: "password-confirm", aria: { describedby: "pw-confirm-error" } %>
-                <span class="input-group-text" id="pw-confirm-status" aria-hidden="true"></span>
+                <div class="input-group-append">
+                  <span class="input-group-text" id="pw-confirm-status" aria-hidden="true"></span>
+                </div>
               </div>
               <% if @user.errors[:password_confirmation].any? %>
                 <div id="pw-confirm-error" class="invalid-feedback d-block" role="alert"><%= @user.errors[:password_confirmation].first %></div>
@@ -83,7 +94,7 @@
             <div class="d-grid">
               <button id="signup-submit" class="btn btn-lg btn-primary" type="submit" aria-live="polite">
                 <span id="submit-label">サインアップ</span>
-                <span id="submit-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+                <span id="submit-spinner" class="spinner-border spinner-border-sm ml-2 d-none" role="status" aria-hidden="true"></span>
               </button>
             </div>
 
@@ -96,3 +107,4 @@
     </div>
   </div>
 </div>
+

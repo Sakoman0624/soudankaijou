@@ -101,3 +101,65 @@ document.addEventListener("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const email = document.getElementById("email");
+  const emailStatus = document.getElementById("email-status");
+  const pw = document.getElementById("password");
+  const pwConfirm = document.getElementById("password-confirm");
+  const pwStatus = document.getElementById("pw-confirm-status");
+  const togglePw = document.getElementById("toggle-password");
+  const pwStrength = document.getElementById("pw-strength");
+  const pwStrengthText = document.getElementById("pw-strength-text");
+
+  // メール形式チェック
+  email.addEventListener("input", () => {
+    if (email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      emailStatus.innerHTML = '<i class="fa fa-check text-success"></i>';
+    } else {
+      emailStatus.innerHTML = '<i class="fa fa-times text-danger"></i>';
+    }
+  });
+
+  // パスワード表示切替
+  togglePw.addEventListener("click", () => {
+    const type = pw.type === "password" ? "text" : "password";
+    pw.type = type;
+    togglePw.innerHTML =
+      type === "password"
+        ? '<i class="fa fa-eye"></i>'
+        : '<i class="fa fa-eye-slash"></i>';
+  });
+
+  // パスワード強度判定
+  pw.addEventListener("input", () => {
+    const val = pw.value;
+    let strength = 0;
+    if (val.length >= 8) strength++;
+    if (/[A-Z]/.test(val)) strength++;
+    if (/[0-9]/.test(val)) strength++;
+    if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+    pwStrength.className = "progress-bar"; // reset
+    pwStrength.style.width = (strength * 25) + "%";
+
+    if (strength <= 1) {
+      pwStrength.classList.add("weak");
+      pwStrengthText.textContent = "弱い";
+    } else if (strength === 2) {
+      pwStrength.classList.add("medium");
+      pwStrengthText.textContent = "普通";
+    } else {
+      pwStrength.classList.add("strong");
+      pwStrengthText.textContent = "強い";
+    }
+  });
+
+  // パスワード確認一致チェック
+  pwConfirm.addEventListener("input", () => {
+    if (pw.value && pw.value === pwConfirm.value) {
+      pwStatus.innerHTML = '<i class="fa fa-check text-success"></i>';
+    } else {
+      pwStatus.innerHTML = '<i class="fa fa-times text-danger"></i>';
+    }
+  });
+});
