@@ -96,14 +96,16 @@ class Public::RoomsController < ApplicationController
   end
   
   def liked_rooms
+    # 基本スコープ：current_user がいいねした rooms
     @rooms = Room.joins(:likes)
                  .where(likes: { user_id: current_user.id })
                  .distinct
   
+    # 並び替え（likes_desc は likes の数で降順）
     @rooms = case params[:sort]
              when 'likes_desc'
                @rooms.left_joins(:likes)
-                     .group(:id)
+                     .group('rooms.id')
                      .order('COUNT(likes.id) DESC')
              when 'updated_desc'
                @rooms.order(updated_at: :desc)
@@ -115,13 +117,25 @@ class Public::RoomsController < ApplicationController
                @rooms.order(created_at: :desc)
              end
   
+    # N+1対策：ActiveStorage の単数添付を使っている想定なら image_attachment をプリロード
+    # （複数添付なら :images_attachments に合わせてください）
+    @rooms = @rooms.includes(:likes, image_attachment: :blob)
+  
+    # ページネーション（kaminari/will_paginate に合わせて調整）
     @rooms = @rooms.page(params[:page]).per(12)
   
+    # current_user の like レコードをページ内の room_id に対して一括取得 → { room_id => like }
+    room_ids = @rooms.map(&:id)
+    likes = current_user.likes.where(room_id: room_ids)
+    @likes_map = likes.index_by(&:room_id)
+  
+    # HTMLのみ返す（JS無し方針）
     respond_to do |format|
       format.html
-      format.js
+      format.js   # 既存のajaxがあれば残す
     end
   end
+
 
 
 

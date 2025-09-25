@@ -1,38 +1,115 @@
-<div class="py-5 text-center text-white" style="background: linear-gradient(135deg, #212529, #343a40);">
-  <h1 class="display-5 mb-2">
-    <i class="fa-solid fa-heart text-danger"></i> いいねした部屋一覧
-  </h1>
-  <p class="lead">あなたが気に入った部屋をまとめています</p>
+<!-- ヘッダー -->
+<div class="py-5 text-center text-white search-hero">
+  <div class="container">
+    <h1 class="display-5 mb-2">
+      <i class="fa-solid fa-heart text-danger" aria-hidden="true"></i>
+      いいねした部屋一覧
+      <small class="badge bg-light text-dark ms-2"><%= @rooms.total_count if @rooms.respond_to?(:total_count) %></small>
+    </h1>
+    <p class="lead">あなたが気に入った部屋をまとめています</p>
+
+    <!-- 検索 / ソート（通常のGETフォーム） -->
+    <div class="d-flex justify-content-center mt-3 gap-2">
+      <%= form_with url: liked_rooms_path, method: :get, local: true, class: "d-flex" do |f| %>
+        <div class="input-group">
+          <%= f.search_field :q, value: params[:q], placeholder: "タイトルや説明で検索", class: "form-control form-control-sm", aria: {label: "検索"} %>
+          <button class="btn btn-sm btn-outline-light" type="submit" aria-label="検索ボタン"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <!-- JS無しのため onchange は使わず、検索ボタンで送信 -->
+        <select name="sort" class="form-select form-select-sm ms-2" aria-label="並び替え">
+          <option value="">並び替え</option>
+          <option value="likes_desc" <%= 'selected' if params[:sort] == 'likes_desc' %>>いいね数の多い順</option>
+          <option value="updated_desc" <%= 'selected' if params[:sort] == 'updated_desc' %>>更新が新しい順</option>
+          <option value="updated_asc" <%= 'selected' if params[:sort] == 'updated_asc' %>>更新が古い順</option>
+          <option value="created_asc" <%= 'selected' if params[:sort] == 'created_asc' %>>作成が古い順</option>
+        </select>
+      <% end %>
+    </div>
+  </div>
 </div>
 
+<!-- フラッシュ -->
+<div class="container mt-3">
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
+</div>
+
+<!-- コンテナ -->
 <div class="container my-5">
   <% if @rooms.present? %>
-    <div class="row g-4">
+    <div class="row g-4" id="liked-room-grid">
       <% @rooms.each do |room| %>
+        <% like = @likes_map && @likes_map[room.id] %>
+
         <div class="col-md-6 col-lg-4">
-          <div class="card shadow-lg border-0 h-100">
-            <div class="card-body">
-              <h5 class="card-title text-dark"><%= room.title %></h5>
-              <p class="card-text text-muted"><%= truncate(room.body, length: 80) %></p>
-              <%= link_to "詳細を見る", room_path(room), class: "btn btn-danger btn-sm rounded-pill" %>
+          <article id="room-card-<%= room.id %>" class="card room-card h-100" aria-labelledby="room-<%= room.id %>-title">
+            <% if room.image.attached? %>
+              <%= link_to room_path(room), class: "card-img-link" do %>
+                <%= image_tag room.image.variant(resize_to_fill: [600,360]).processed, class: "card-img-top", alt: "#{room.title} の画像" %>
+              <% end %>
+            <% else %>
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center placeholder-img" role="img" aria-label="画像なし">
+                <i class="fa-solid fa-house fa-2x text-muted" aria-hidden="true"></i>
+              </div>
+            <% end %>
+
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 id="room-<%= room.id %>-title" class="card-title text-dark mb-0"><%= truncate(room.title, length: 36) %></h5>
+
+                <!-- いいね解除 / 作成（JS不要） -->
+                <% if like %>
+                  <%= button_to room_like_path(room, like), method: :delete,
+                        form: { class: "d-inline" }, class: "btn btn-icon", aria: { label: "いいねを解除する" } do %>
+                    <i class="fa-solid fa-heart text-danger" aria-hidden="true"></i>
+                  <% end %>
+                <% else %>
+                  <%= button_to room_likes_path(room), method: :post,
+                        form: { class: "d-inline" }, class: "btn btn-icon", aria: { label: "いいねする" } do %>
+                    <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <p class="card-text text-muted mb-3"><%= truncate(room.body, length: 90) %></p>
+
+              <div class="mt-auto d-flex justify-content-between align-items-center small text-muted">
+                <div>
+                  <span class="me-2">
+                    <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                    <%= l(room.created_at, format: :short) %>
+                  </span>
+                </div>
+                <%= link_to "詳細を見る", room_path(room), class: "btn btn-sm btn-danger rounded-pill" %>
+              </div>
             </div>
-            <div class="card-footer text-muted small">
-              作成日: <%= l(room.created_at, format: :short) %>
-            </div>
-          </div>
+          </article>
         </div>
       <% end %>
     </div>
 
+    <!-- ページネーション（サーバー側）-->
     <div class="d-flex justify-content-center mt-4">
       <%= paginate @rooms %>
     </div>
+
   <% else %>
-    <p class="text-center text-muted mt-5">まだ「いいね」した部屋はありません。</p>
+    <div class="empty-state text-center py-5">
+      <svg width="160" height="120" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 7h18v10H3z" stroke="#cbd5e1" stroke-width="1.2" fill="#f8fafc"/>
+      </svg>
+      <p class="text-muted mt-3">まだ「いいね」した部屋はありません。気になる部屋を見つけてハートをクリックしてください。</p>
+      <%= link_to "自作部屋一覧へ", my_rooms_path, class: "btn btn-warning btn-lg rounded-pill mt-3" %>
+    </div>
   <% end %>
 </div>
 
-<div class="text-center mt-5">
+<div class="text-center mt-4 mb-5">
   <%= link_to "→ 自作部屋一覧はこちら", my_rooms_path,
               class: "btn btn-outline-warning btn-lg rounded-pill shadow" %>
 </div>
+
