@@ -929,3 +929,83 @@ transition-duration: 0.01ms !important;
   border-radius: 8px;
   margin: 0 3px;
 }
+
+
+/* ==========================
+   検索バー全体のラッパー
+   ========================== */
+.search-bar-wrapper {
+  max-width: 600px;   /* 横幅の最大値 */
+  width: 100%;        /* 画面幅に合わせて縮む */
+}
+
+/* ==========================
+   検索フォーム全体（form_with）
+   ========================== */
+.search-bar {
+  background: #fff;   /* 白背景 */
+  border-radius: 50px; /* 丸みを持たせて pill 風 */
+  padding: 6px 12px;   /* 内側余白 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 影 */
+  transition: box-shadow 0.3s ease;
+}
+
+/* フォーカス時に影を強調 */
+.search-bar:focus-within {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* ==========================
+   テキスト入力欄（キーワード）
+   ========================== */
+.search-input {
+  border: none;               /* 枠線なし */
+  border-radius: 50px;        /* 丸み */
+  padding: 8px 16px;          /* 内側余白 */
+  box-shadow: none;           /* デフォルト影なし */
+  font-size: 0.95rem;
+}
+
+/* 入力欄フォーカス時 */
+.search-input:focus {
+  outline: none;                        /* 青い枠を消す */
+  box-shadow: 0 0 0 2px #007bff33;      /* 薄い青の囲み */
+}
+
+/* ==========================
+   セレクトボックス（範囲・検索方法）
+   ========================== */
+.search-select {
+  border: none;                  /* 枠線なし */
+  border-radius: 50px;           /* pill 風 */
+  padding: 6px 14px;             /* 内側余白 */
+  font-size: 0.9rem;
+  background-color: #f9fafb;     /* 薄いグレー背景 */
+  transition: background 0.2s ease;
+}
+
+/* セレクトフォーカス時 */
+.search-select:focus {
+  outline: none;
+  background-color: #eef2ff;     /* 薄い青背景 */
+  box-shadow: 0 0 0 2px #007bff33;
+}
+
+/* ==========================
+   検索ボタン（虫眼鏡アイコン）
+   ========================== */
+.search-btn {
+  background: #007bff;      /* 青色 */
+  color: #fff;              /* 白アイコン */
+  border-radius: 50%;       /* 真円にする */
+  width: 40px;              /* 幅 */
+  height: 40px;             /* 高さ */
+  border: none;             /* 枠線なし */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* ホバー時のアニメーション */
+.search-btn:hover {
+  background: #0056b3;      /* 濃い青 */
+  transform: scale(1.1);    /* 少し大きく */
+}

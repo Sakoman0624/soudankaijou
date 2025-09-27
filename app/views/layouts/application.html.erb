@@ -28,12 +28,29 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <% if user_signed_in? %>
             <!-- 検索フォームを中央に配置 -->
-            <div class="mx-auto my-2 my-lg-0" style="width: 100%; max-width: 500px;">
-              <%= form_with url: search_path, method: :get, local: true, class: "form-inline d-flex" do |f| %>
-                <%= f.text_field :word, value: params[:word], placeholder: "探す", class: "form-control mr-2 rounded-pill px-3 shadow-sm" %>
-                <%= f.select :range, options_for_select(['タイトル', '作成者名'], params[:range]), class: "form-control mr-2 rounded-pill shadow-sm" %>
-                <%= f.select :search, options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]], params[:search]), class: "form-control mr-2 rounded-pill shadow-sm" %>
-                <%= f.submit "🔍", class: "btn btn-outline-light rounded-pill px-4 shadow-sm" %>
+            <div class="search-bar-wrapper mx-auto my-3">
+              <%= form_with url: search_path, method: :get, local: true, class: "search-bar d-flex align-items-center" do |f| %>
+                
+                <!-- キーワード -->
+                <%= f.text_field :word, value: params[:word],
+                  placeholder: "キーワードを入力",
+                  class: "form-control search-input mr-2" %>
+            
+                <!-- 範囲選択 -->
+                <%= f.select :range,
+                  options_for_select(['タイトル', '作成者名'], params[:range]),
+                  class: "custom-select search-select mr-2" %>
+            
+                <!-- 検索方法 -->
+                <%= f.select :search,
+                  options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]], params[:search]),
+                  class: "custom-select search-select mr-2" %>
+            
+                <!-- 検索ボタン -->
+                <%= f.button type: "submit", class: "btn search-btn d-flex align-items-center justify-content-center" do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+            
               <% end %>
             </div>
         
