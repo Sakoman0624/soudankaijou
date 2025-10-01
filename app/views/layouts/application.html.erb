@@ -107,21 +107,20 @@
 
       
         <!-- メインコンテンツ -->
-        <div class="container-fluid main-container">
-          <main class="col-12 mb-auto p-0">
-            <% if flash[:notice] %>
-              <div class="alert alert-primary text-center" role="alert">
-                <%= flash[:notice] %>
-              </div>
-            <% end %>
-            <% if flash[:alert] %>
-              <div class="alert alert-danger text-center" role="alert">
-                <%= flash[:alert] %>
-              </div>
-            <% end %>
-            <%= yield %>
-          </main>
-        </div>
+      <div class="container-fluid main-container">
+        <main class="col-12 mb-auto p-0">
+          <% if flash[:notice] %>
+            <div class="alert alert-primary text-center" role="alert">
+              <%= flash[:notice] %>
+            </div>
+          <% end %>
+          <% if flash[:alert] %>
+            <div class="alert alert-danger text-center" role="alert">
+              <%= flash[:alert] %>
+            </div>
+          <% end %>
+          <%= yield %>
+        </main>
       </div>
     </div>
 

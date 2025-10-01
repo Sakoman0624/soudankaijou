@@ -1009,3 +1009,37 @@ transition-duration: 0.01ms !important;
   background: #0056b3;      /* 濃い青 */
   transform: scale(1.1);    /* 少し大きく */
 }
+
+/* header高さを変数化（必要なら数値を調整） */
+:root {
+  --header-height: 70px; /* 実際のヘッダー高さに合わせる（例: 70px） */
+}
+
+/* 固定ヘッダーの高さを明示（Bootstrapの .fixed-top が既に position:fixed をつける） */
+header.fixed-top,
+header.fixed-top .navbar {
+  height: var(--header-height);
+  min-height: var(--header-height);
+}
+
+/* ページ本文の余白を確保（固定ヘッダーが重ならないように） */
+body {
+  padding-top: var(--header-height);
+}
+
+/* メインコンテンツラッパーも保険で同様に */
+.main-container,
+main {
+  padding-top: 0; /* もし別箇所で既に設定があれば干渉しないよう 0 に */
+}
+
+/* ヒーロー要素が画面全高ならヘッダーを差し引く */
+.background_top-image,
+.background_top-image .container {
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* レスポンシブ調整（スマホでヘッダーが高くなる場合） */
+@media (max-width: 767.98px) {
+  :root { --header-height: 100px; } /* 必要に応じて調整 */
+}
