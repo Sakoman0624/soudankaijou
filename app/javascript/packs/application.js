@@ -163,3 +163,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// ripple effect for .tag-chip (軽量)
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('.tag-chip');
+  if (!target) return;
+
+  const rect = target.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  const size = Math.max(rect.width, rect.height) * 1.2;
+  ripple.style.position = 'absolute';
+  ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.borderRadius = '50%';
+  ripple.style.background = 'rgba(255,255,255,0.25)';
+  ripple.style.transform = 'scale(0)';
+  ripple.style.pointerEvents = 'none';
+  ripple.style.transition = 'transform 400ms ease, opacity 400ms ease';
+  ripple.className = 'tag-chip-ripple';
+
+  target.style.position = 'relative';
+  target.appendChild(ripple);
+
+  requestAnimationFrame(() => {
+    ripple.style.transform = 'scale(1)';
+    ripple.style.opacity = '0';
+  });
+
+  setTimeout(() => ripple.remove(), 450);
+});
