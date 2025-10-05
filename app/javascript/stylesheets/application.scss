@@ -935,74 +935,164 @@ transition-duration: 0.01ms !important;
    検索バー全体のラッパー
    ========================== */
 .search-bar-wrapper {
-  max-width: 600px;   /* 横幅の最大値 */
-  width: 100%;        /* 画面幅に合わせて縮む */
+  max-width: 880px;
+  width: 100%;
+  position: relative;
 }
 
 /* ==========================
-   検索フォーム全体（form_with）
+   検索フォーム本体（pill 風カード）
    ========================== */
 .search-bar {
-  background: #fff;   /* 白背景 */
-  border-radius: 50px; /* 丸みを持たせて pill 風 */
-  padding: 6px 12px;   /* 内側余白 */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 影 */
-  transition: box-shadow 0.3s ease;
-}
-
-/* フォーカス時に影を強調 */
-.search-bar:focus-within {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.95);
+  border-radius: 999px;
+  padding: 8px;
+  box-shadow: 0 6px 20px rgba(3, 10, 30, 0.06);
+  display: flex;
+  align-items: center;
 }
 
 /* ==========================
-   テキスト入力欄（キーワード）
+   input-group 内のテキスト入力
    ========================== */
 .search-input {
-  border: none;               /* 枠線なし */
-  border-radius: 50px;        /* 丸み */
-  padding: 8px 16px;          /* 内側余白 */
-  box-shadow: none;           /* デフォルト影なし */
-  font-size: 0.95rem;
-}
-
-/* 入力欄フォーカス時 */
-.search-input:focus {
-  outline: none;                        /* 青い枠を消す */
-  box-shadow: 0 0 0 2px #007bff33;      /* 薄い青の囲み */
+  border: 0;
+  padding: 10px 12px;
+  font-size: 0.96rem;
+  min-width: 160px;
+  background: transparent;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* ==========================
-   セレクトボックス（範囲・検索方法）
+   入力フォーカス時の見た目（アクセシビリティ配慮）
    ========================== */
-.search-select {
-  border: none;                  /* 枠線なし */
-  border-radius: 50px;           /* pill 風 */
-  padding: 6px 14px;             /* 内側余白 */
-  font-size: 0.9rem;
-  background-color: #f9fafb;     /* 薄いグレー背景 */
-  transition: background 0.2s ease;
-}
-
-/* セレクトフォーカス時 */
-.search-select:focus {
+.search-input:focus {
   outline: none;
-  background-color: #eef2ff;     /* 薄い青背景 */
-  box-shadow: 0 0 0 2px #007bff33;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12); /* 薄い青の囲み */
+  border-radius: 8px;
 }
 
 /* ==========================
-   検索ボタン（虫眼鏡アイコン）
+   クリアボタン（入力を消す小さなボタン）
+   ========================== */
+.clear-btn {
+  border: 0;
+  color: #6b7280;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+/* ==========================
+   検索ボタン（虫眼鏡アイコン・真円）
    ========================== */
 .search-btn {
-  background: #007bff;      /* 青色 */
-  color: #fff;              /* 白アイコン */
-  border-radius: 50%;       /* 真円にする */
-  width: 40px;              /* 幅 */
-  height: 40px;             /* 高さ */
-  border: none;             /* 枠線なし */
-  transition: background 0.3s ease, transform 0.2s ease;
+  background: linear-gradient(90deg,#3b82f6,#06b6d4);
+  color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(6,78,59,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
+
+/* 検索ボタン：ホバー/アクティブ */
+.search-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(3,10,30,0.12); }
+.search-btn:active { transform: translateY(0); }
+
+/* ==========================
+   検索オプション領域（範囲・検索方法）
+   ========================== */
+.search-options {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+}
+
+/* セレクト（pill 風） */
+.search-select {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  background-color: #f9fafb;
+  transition: background 0.2s ease;
+  margin-right: 8px;
+}
+
+/* セレクト：フォーカス時 */
+.search-select:focus {
+  outline: none;
+  background-color: #eef2ff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+/* ==========================
+   ラジオ風トグル（検索方法の見た目調整）
+   ========================== */
+.btn-group-toggle .btn {
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  margin-right: 4px;
+}
+
+/* ==========================
+   オートコンプリート候補ボックス
+   ========================== */
+.suggestion-box {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  max-height: 320px;
+  overflow: auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background: #fff;
+  padding: 4px;
+}
+
+/* 候補項目 */
+.suggestion-box .list-group-item {
+  cursor: pointer;
+  border: 0;
+  padding: 10px 14px;
+}
+
+/* 候補選択時のハイライト（キーボード操作対応） */
+.suggestion-box .active {
+  background-color: #f1f5f9;
+}
+
+/* ==========================
+   レスポンシブ（モバイルでオプションを折りたたむ）
+   ========================== */
+@media (max-width: 768px) {
+  .search-options { display: none; } /* モバイルではオプションを非表示にして入力を優先 */
+  .search-bar { padding: 6px; }
+  .search-input { min-width: 80px; }
+}
+
+/* ==========================
+   小さな調整：全体のテキストサイズ等
+   ========================== */
+.search-bar, .search-input, .search-select, .btn-group-toggle .btn {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Segoe UI", Roboto, "Yu Gothic", "Meiryo", sans-serif;
+}
+
 
 /* ホバー時のアニメーション */
 .search-btn:hover {

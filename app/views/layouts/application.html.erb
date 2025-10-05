@@ -1,184 +1,195 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Soudankaijou</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Soudankaijou</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'homes', media: 'all' %>
+  <%= stylesheet_link_tag 'homes', media: 'all' %>
+  <script src="https://kit.fontawesome.com/f074eb6831.js" crossorigin="anonymous"></script>
+  <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
 
-    <script src="https://kit.fontawesome.com/f074eb6831.js" crossorigin="anonymous"></script>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<body class="d-flex flex-column vh-100">
+  <!-- header -->
+  <header class="shadow-sm fixed-top bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+      <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center" do %>
+        <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
+        <span class="ml-2 font-weight-bold text-light">MyApp</span>
+      <% end %>
 
-  <body class="d-flex flex-column vh-100">
-    <header class="shadow-sm fixed-top bg-dark">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <%= link_to rooms_path, class: "navbar-brand d-flex align-items-center" do %>
-          <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "36", class: "rounded-circle shadow-sm" %>
-          <span class="ml-2 font-weight-bold text-light">MyApp</span>
-        <% end %>
-      
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <% if user_signed_in? %>
-            <!-- 検索フォームを中央に配置 -->
-            <div class="search-bar-wrapper mx-auto my-3">
-              <%= form_with url: search_path, method: :get, local: true, class: "search-bar d-flex align-items-center" do |f| %>
-                
-                <!-- キーワード -->
-                <%= f.text_field :word, value: params[:word],
-                  placeholder: "キーワードを入力",
-                  class: "form-control search-input mr-2" %>
-            
-                <!-- 範囲選択 -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <% if user_signed_in? %>
+          <!-- 検索フォーム（ヘッダー内） -->
+          <div class="search-bar-wrapper mx-auto my-2 w-100" style="max-width:880px;">
+            <%= form_with url: search_path, method: :get, local: true, html: { class: "search-bar d-flex align-items-center" } do |f| %>
+              <label for="site-search" class="sr-only">サイト内検索</label>
+
+              <div class="input-group flex-fill">
+                <div class="input-group-prepend d-none d-md-flex align-items-center">
+                  <span class="input-group-text bg-transparent border-0 pl-0">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </span>
+                </div>
+
+                <%= f.text_field :word,
+                    value: params[:word],
+                    id: "site-search",
+                    class: "form-control search-input",
+                    placeholder: "キーワードを入力（例：相談内容、タグ名）",
+                    aria: { autocomplete: "list", controls: "search-suggestions", expanded: "false" } %>
+
+                <button type="button" class="btn btn-link clear-btn" aria-label="検索語をクリア" title="クリア" hidden>
+                  <i class="fa fa-times"></i>
+                </button>
+
+                <div class="input-group-append">
+                  <%= f.button type: "submit", class: "btn search-btn d-flex align-items-center justify-content-center", aria: { label: "検索を実行" } do %>
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="search-options d-flex align-items-center ml-2">
                 <%= f.select :range,
-                  options_for_select(['タイトル', '作成者名'], params[:range]),
-                  class: "custom-select search-select mr-2" %>
-            
-                <!-- 検索方法 -->
-                <%= f.select :search,
-                  options_for_select([["完全一致", "perfect_match"], ["部分一致", "partial_match"]], params[:search]),
-                  class: "custom-select search-select mr-2" %>
-            
-                <!-- 検索ボタン -->
-                <%= f.button type: "submit", class: "btn search-btn d-flex align-items-center justify-content-center" do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-            
-              <% end %>
-            </div>
-        
-            <!-- 右側: アイコンボタン + ユーザー情報 + ログアウト -->
-            <ul class="navbar-nav ml-auto align-items-center">
-              <li class="nav-item mr-2">
-                <%= link_to new_room_path, class: "btn btn-warning btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋作成" do %>
-                  <i class="fa-solid fa-wrench"></i>
-                <% end %>
-              </li>
-              <li class="nav-item mr-2">
-                <%= link_to rooms_path, class: "btn btn-secondary btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋一覧" do %>
-                  <i class="fa-solid fa-table"></i>
-                <% end %>
-              </li>
-              <li class="nav-item mr-3">
-                <%= link_to user_path(current_user), class: "btn btn-info btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "マイページ" do %>
-                  <i class="fa-solid fa-user"></i>
-                <% end %>
-              </li>
-        
-              <li class="nav-item mr-3">
-                <%= link_to user_path(current_user), class: "d-flex align-items-center text-white text-decoration-none" do %>
-                  <i class="fa-solid fa-user mr-1"></i>
-                  <strong><%= current_user.name %></strong>
-                <% end %>
-              </li>
-        
-              <li class="nav-item">
-                <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm rounded-pill" do %>
-                  <i class="fa-solid fa-right-from-bracket"></i> ログアウト
-                <% end %>
-              </li>
-            </ul>
-          <% else %>
-            <!-- 未ログイン時リンク -->
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item"><%= link_to "TOP", root_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-light" %></li>
-              <li class="nav-item"><%= link_to "新規", new_user_registration_path, class: "nav-link text-success font-weight-bold" %></li>
-              <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link text-primary font-weight-bold" %></li>
-            </ul>
-          <% end %>
-        </div>
-      </nav>
-    </header>
-      
-    <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-    </script>
+                    options_for_select([['タイトル','title'], ['作成者名','author']], params[:range]),
+                    class: "custom-select search-select mr-2",
+                    aria: { label: "検索範囲" } %>
 
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" role="tablist" aria-label="検索方法">
+                  <label class="btn btn-sm btn-outline-secondary <%= 'active' if params[:search] != 'perfect_match' %>">
+                    <%= f.radio_button :search, 'partial_match', checked: (params[:search] != 'perfect_match'), autocomplete: 'off', hidden: true %>
+                    部分一致
+                  </label>
+                  <label class="btn btn-sm btn-outline-secondary <%= 'active' if params[:search] == 'perfect_match' %>">
+                    <%= f.radio_button :search, 'perfect_match', checked: (params[:search] == 'perfect_match'), autocomplete: 'off', hidden: true %>
+                    完全一致
+                  </label>
+                </div>
+              </div>
 
-      
-        <!-- メインコンテンツ -->
-      <div class="container-fluid main-container">
-        <main class="col-12 mb-auto p-0">
-          <% if flash[:notice] %>
-            <div class="alert alert-primary text-center" role="alert">
-              <%= flash[:notice] %>
-            </div>
-          <% end %>
-          <% if flash[:alert] %>
-            <div class="alert alert-danger text-center" role="alert">
-              <%= flash[:alert] %>
-            </div>
-          <% end %>
-          <%= yield %>
-        </main>
-      </div>
-    </div>
-
-    <footer class="footer bg-gradient-dark text-white pt-5 pb-4 mt-auto">
-      <div class="container">
-        <div class="row justify-content-between align-items-center">
-          <!-- 左側: ロゴと説明 -->
-          <div class="col-md-4 text-center text-md-left mb-4 mb-md-0">
-            <p class="mb-2 small">困ったときに気軽に相談できる場所</p>
-            <% if user_signed_in? %>
-              <%= link_to rooms_path, class: "d-inline-block" do %>
-                <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "48", class: "rounded-circle shadow" %>
-              <% end %>
-            <% else %>
-              <%= link_to root_path, class: "d-inline-block" do %>
-                <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "48", class: "rounded-circle shadow" %>
-              <% end %>
             <% end %>
 
-            <!-- SNSアイコン -->
-            <div class="mt-3">
-              <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
-                <i class="fab fa-twitter fa-lg"></i>
-              <% end %>
-              <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
-                <i class="fab fa-facebook-f fa-lg"></i>
-              <% end %>
-              <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
-                <i class="fab fa-instagram fa-lg"></i>
-              <% end %>
-            </div>
+            <!-- オートコンプリート候補 -->
+            <ul id="search-suggestions" class="list-group suggestion-box" role="listbox" aria-label="検索候補" hidden></ul>
           </div>
 
-          <!-- 右側: リンク -->
-          <div class="col-md-4 text-center text-md-left">
-            <h6 class="text-white mb-3 font-weight-bold">リンク</h6>
-            <ul class="list-unstyled">
-              <li>
-                <%= link_to "相談ジャンルのご案内", tag_guide_path, class: "text-white-50 d-block footer-link" %>
-              </li>
-              <li>
-                <%= link_to "サイト概要", about_path, title: "About", class: "text-white-50 d-block footer-link" %>
-              </li>
-              <li>
-                <%= link_to "プライバシーポリシー", privacy_path, title: "Privacy Policy", class: "text-white-50 d-block footer-link" %>
-              </li>
-              <li>
-                <%= link_to "お問い合わせ", contacts_new_path, class: "text-white-50 d-block footer-link" %>
-              </li>
-            </ul>
+          <!-- 右側: アイコンボタン + ユーザー情報 + ログアウト -->
+          <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item mr-2">
+              <%= link_to new_room_path, class: "btn btn-warning btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋作成" do %>
+                <i class="fa-solid fa-wrench"></i>
+              <% end %>
+            </li>
+
+            <li class="nav-item mr-2">
+              <%= link_to rooms_path, class: "btn btn-secondary btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "部屋一覧" do %>
+                <i class="fa-solid fa-table"></i>
+              <% end %>
+            </li>
+
+            <li class="nav-item mr-3">
+              <%= link_to user_path(current_user), class: "btn btn-info btn-sm rounded-circle", data: { toggle: "tooltip" }, title: "マイページ" do %>
+                <i class="fa-solid fa-user"></i>
+              <% end %>
+            </li>
+
+            <li class="nav-item mr-3">
+              <%= link_to user_path(current_user), class: "d-flex align-items-center text-white text-decoration-none" do %>
+                <i class="fa-solid fa-user mr-1"></i>
+                <strong><%= current_user.name %></strong>
+              <% end %>
+            </li>
+
+            <li class="nav-item">
+              <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm rounded-pill" do %>
+                <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+              <% end %>
+            </li>
+          </ul>
+
+        <% else %>
+          <!-- 未ログイン時リンク -->
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><%= link_to "TOP", root_path, class: "nav-link text-light" %></li>
+            <li class="nav-item"><%= link_to "About", about_path, class: "nav-link text-light" %></li>
+            <li class="nav-item"><%= link_to "新規", new_user_registration_path, class: "nav-link text-success font-weight-bold" %></li>
+            <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link text-primary font-weight-bold" %></li>
+          </ul>
+        <% end %>
+      </div> <!-- .collapse -->
+    </nav>
+  </header>
+
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+
+  <!-- メインコンテンツ -->
+  <div class="container-fluid main-container">
+    <main class="col-12 mb-auto p-0">
+      <% if flash[:notice] %>
+        <div class="alert alert-primary text-center" role="alert">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger text-center" role="alert">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </div>
+
+  <footer class="footer bg-gradient-dark text-white pt-5 pb-4 mt-auto">
+    <div class="container">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-md-4 text-center text-md-left mb-4 mb-md-0">
+          <p class="mb-2 small">困ったときに気軽に相談できる場所</p>
+
+          <%= link_to (user_signed_in? ? rooms_path : root_path), class: "d-inline-block" do %>
+            <%= image_pack_tag "logo.jpg", alt: "MyApp", height: "48", class: "rounded-circle shadow" %>
+          <% end %>
+
+          <div class="mt-3">
+            <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
+              <i class="fab fa-twitter fa-lg"></i>
+            <% end %>
+            <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
+              <i class="fab fa-facebook-f fa-lg"></i>
+            <% end %>
+            <%= link_to "#", class: "text-white-50 mx-2 hover-glow" do %>
+              <i class="fab fa-instagram fa-lg"></i>
+            <% end %>
           </div>
         </div>
 
-        <!-- コピーライト -->
-        <div class="text-center mt-4 small text-white-50">
-          &copy; 2025 相談会場. All Rights Reserved.
+        <div class="col-md-4 text-center text-md-left">
+          <h6 class="text-white mb-3 font-weight-bold">リンク</h6>
+          <ul class="list-unstyled">
+            <li><%= link_to "相談ジャンルのご案内", tag_guide_path, class: "text-white-50 d-block footer-link" %></li>
+            <li><%= link_to "サイト概要", about_path, title: "About", class: "text-white-50 d-block footer-link" %></li>
+            <li><%= link_to "プライバシーポリシー", privacy_path, title: "Privacy Policy", class: "text-white-50 d-block footer-link" %></li>
+            <li><%= link_to "お問い合わせ", contacts_new_path, class: "text-white-50 d-block footer-link" %></li>
+          </ul>
         </div>
       </div>
-    </footer>
-  </body>
+
+      <div class="text-center mt-4 small text-white-50">
+        &copy; 2025 相談会場. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+</body>
 </html>

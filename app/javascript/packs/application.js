@@ -193,3 +193,128 @@ document.addEventListener('click', function(e) {
 
   setTimeout(() => ripple.remove(), 450);
 });
+
+
+// site-search-autocomplete.js
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('site-search');
+  const list = document.getElementById('search-suggestions');
+  const clearBtn = document.querySelector('.clear-btn');
+
+  let suggestions = [];
+  let selectedIndex = -1;
+  let fetchTimeout = null;
+
+  function setExpanded(val) {
+    input.setAttribute('aria-expanded', val ? 'true' : 'false');
+    if (!val) list.hidden = true;
+  }
+
+  function renderList(items) {
+    list.innerHTML = '';
+    if (!items || items.length === 0) {
+      setExpanded(false);
+      return;
+    }
+    items.forEach((it, idx) => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.setAttribute('role','option');
+      li.setAttribute('id','search-suggestion-' + idx);
+      li.innerHTML = `<div class="d-flex justify-content-between align-items-center">
+                        <div class="suggestion-main">${escapeHtml(it.title || it.label || it)}</div>
+                        ${it.meta ? `<small class="text-muted ml-2">${escapeHtml(it.meta)}</small>` : ''}
+                      </div>`;
+      li.addEventListener('click', () => {
+        input.value = it.title || it.label || it;
+        document.querySelector('form.search-bar').submit();
+      });
+      list.appendChild(li);
+    });
+    suggestions = items;
+    selectedIndex = -1;
+    setExpanded(true);
+  }
+
+  function escapeHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+  }
+
+  function setActive(index) {
+    const children = list.querySelectorAll('.list-group-item');
+    children.forEach((el, i) => {
+      el.classList.toggle('active', i === index);
+    });
+    if (index >= 0 && children[index]) {
+      input.setAttribute('aria-activedescendant', children[index].id);
+      // スクロールイン
+      children[index].scrollIntoView({block: 'nearest'});
+    } else {
+      input.removeAttribute('aria-activedescendant');
+    }
+  }
+
+  function fetchSuggestions(q) {
+    // Debounce
+    if (fetchTimeout) clearTimeout(fetchTimeout);
+    if (!q || q.trim().length < 1) {
+      renderList([]);
+      return;
+    }
+    fetchTimeout = setTimeout(() => {
+      fetch(`/search_suggestions.json?q=${encodeURIComponent(q)}`)
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+          // data expected: [{title:, meta:}, ...] or ["...","..."]
+          renderList(data);
+          // show clear button if input not empty
+          clearBtn.hidden = false;
+        })
+        .catch(()=> renderList([]));
+    }, 220);
+  }
+
+  input.addEventListener('input', (e) => {
+    fetchSuggestions(e.target.value);
+    clearBtn.hidden = !e.target.value;
+  });
+
+  input.addEventListener('keydown', (e) => {
+    const count = suggestions.length;
+    if (!count) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(count - 1, selectedIndex + 1);
+      setActive(selectedIndex);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(0, selectedIndex - 1);
+      setActive(selectedIndex);
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0) {
+        e.preventDefault();
+        const it = suggestions[selectedIndex];
+        input.value = it.title || it.label || it;
+        document.querySelector('form.search-bar').submit();
+      }
+    } else if (e.key === 'Escape') {
+      setExpanded(false);
+    }
+  });
+
+  // clear
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    renderList([]);
+    clearBtn.hidden = true;
+    input.focus();
+  });
+
+  // click outside closes
+  document.addEventListener('click', (e) => {
+    if (!document.querySelector('.search-bar').contains(e.target)) {
+      setExpanded(false);
+    }
+  });
+});
