@@ -318,3 +318,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+/* ==========================
+   Hero：スクロール＆軽いパララックス（最小）
+   ========================== */
+document.addEventListener('turbolinks:load', function() {
+  // スクロールボタンの挙動
+  document.querySelectorAll('.hero-scroll-down').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(btn.dataset.target || '#main') || document.body;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // 軽いパララックス：スクロールで背景を微妙に移動（パフォーマンス配慮）
+  var hero = document.querySelector('.hero-landing');
+  if (!hero) return;
+
+  // 関数を throttle して呼ぶ
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        var scrolled = window.scrollY;
+        // 小さな translateY 変換を与えるだけ（負荷低め）
+        var offset = Math.min(scrolled * 0.08, 60); // 最大60px
+        hero.style.transform = 'translateY(' + (offset * -0.2) + 'px)'; // 微移動
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+});

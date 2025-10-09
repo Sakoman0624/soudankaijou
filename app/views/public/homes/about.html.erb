@@ -1,24 +1,32 @@
-<!--<div class="container">
-  <div class="row">
-    <div class="mx-auto col-11 col-sm-10 col-lg-8 col-xl-6">-->
-      <div class="background-image">
-        <div class="container text-center text-white py-5" style="background-color: rgba(0, 0, 0, 0.6);">
-          <h1 class="display-4 font-weight-bold mb-4">相談会場</h1>
-          <h2 class="h4 mb-4">ひとりで悩まず、いろいろな人に相談してみよう</h2>
-          <p class="lead mb-3">
-            このサイトは、日常で直面するさまざまな問題や悩みに対し、<br>
-            解決の糸口を見つけるための場所です。
-          </p>
-          <p class="mb-3">
-            身近な人に相談しにくい悩みも、ここなら気軽に話せます。<br>
-            あなたの経験が、誰かの力になるかもしれません。
-          </p>
-          <p class="mb-0">
-            「助けたい」と「助けてほしい」がつながる、<br>
-            そんな温かいコミュニティを目指しています。
-          </p>
-        </div>
-      </div>
-    <!--</div>
+<!-- ==========================
+   ヒーロー：トップ（改良版）
+   ========================== -->
+<section class="hero-landing background-image" role="region" aria-label="サイト紹介">
+  <div class="hero-overlay"></div>
+
+  <div class="container hero-content text-center text-white py-5">
+    <h1 class="hero-title display-4 font-weight-bold mb-3">
+      <span class="h1-line">相談会場</span>
+    </h1>
+
+    <p class="hero-subtitle h5 mb-3">ひとりで悩まず、いろいろな人に相談してみよう</p>
+
+    <div class="hero-lead mb-4">
+      <p class="lead mb-2">このサイトは、日常で直面するさまざまな問題や悩みに対し、解決の糸口を見つけるための場所です。</p>
+      <p class="mb-0">「助けたい」と「助けてほしい」がつながる、そんな温かいコミュニティを目指しています。</p>
+    </div>
+
+    <div class="hero-ctas d-flex justify-content-center gap-2 mb-4">
+      <%= link_to "相談を始める", rooms_path, class: "btn btn-primary btn-lg hero-btn action-btn", role: "button", aria: { label: "相談を始める" } %>
+      <%= link_to "よくある質問", '#faq', class: "btn btn-outline-light btn-lg hero-btn", role: "button", aria: { label: "よくある質問へ" } %>
+    </div>
+    
+    <div class="hero-scroll-wrapper text-center mt-4">
+      <button class="hero-scroll-down" aria-label="次のセクションへ移動" data-target="#main">
+        <span class="chev" aria-hidden="true"></span>
+        <span class="visually-hidden">次のセクションへ</span>
+      </button>
+    </div>
+
   </div>
-</div>-->
+</section>

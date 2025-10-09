@@ -1272,3 +1272,140 @@ main {
     transform: translateY(0) scale(1);
   }
 }
+
+/* ==========================
+   ヒーロー（トップ）スタイル
+   ========================== */
+.hero-landing {
+  position: relative;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  min-height: calc(100vh - var(--header-height, 70px)); /* ヘッダー差し引き */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* 半透明のレイヤーで文字を読みやすくする（独自クラスで安全） */
+.hero-landing .hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 60%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* コンテンツは z-index を上げる */
+.hero-landing .hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+  padding: 2.5rem 1rem;
+  transition: transform 0.5s ease;
+}
+
+/* タイトル装飾（穏やかな文字の出現アニメ） */
+.hero-title .h1-line {
+  display: inline-block;
+  background: linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.9));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  animation: heroTitleIn 800ms ease both;
+}
+
+/* サブタイトルの落ち着いたフェード */
+.hero-subtitle {
+  opacity: 0.95;
+  animation: heroSubIn 900ms 150ms ease both;
+}
+
+/* リード文 */
+.hero-lead p { opacity: 0.95; line-height: 1.6; }
+
+/* CTA ボタン群 */
+.hero-ctas .hero-btn {
+  min-width: 160px;
+  margin: 0 .4rem;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.hero-ctas .hero-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(2,8,23,0.18);
+}
+
+/* Scroll down indicator（矢印） */
+.hero-scroll-down {
+  position: relative;  /* absolute → relative */
+  bottom: auto;        /* bottom の指定を無効化 */
+  left: auto;
+  transform: none;     /* X方向の移動を解除 */
+  margin-top: 2rem;    /* CTAボタンとの間隔 */
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center;
+  z-index: 2;          /* hero-content の上に出る */
+}
+.hero-scroll-down .chev {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+  animation: chevronBounce 1.6s infinite;
+  opacity: 0.9;
+}
+
+/* 背景のゆっくりズーム（既存の zoomSlide を使うがより穏やかに） */
+.hero-landing {
+  animation: heroZoom 28s ease-in-out infinite alternate;
+}
+
+/* 画像の若干のパララックス（JSで transform を上書きする場合は安全に） */
+
+/* アニメ定義 */
+@keyframes heroTitleIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes heroSubIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 0.95; transform: translateY(0); }
+}
+@keyframes chevronBounce {
+  0% { transform: translateY(0) rotate(45deg); opacity: 0.9; }
+  50% { transform: translateY(8px) rotate(45deg); opacity: 0.6; }
+  100% { transform: translateY(0) rotate(45deg); opacity: 0.9; }
+}
+@keyframes heroZoom {
+  0% { transform: scale(1) translateY(0); filter: saturate(1); }
+  50% { transform: scale(1.04) translateY(-6px); filter: saturate(1.02); }
+  100% { transform: scale(1) translateY(0); filter: saturate(1); }
+}
+
+/* 画像キャプションや小要素の視認性向上 */
+.hero-landing .lead, .hero-landing p { text-shadow: 0 6px 20px rgba(0,0,0,0.45); }
+
+/* 画像のホバーやタッチ時の過度な挙動を抑える */
+.hero-landing:active, .hero-landing:focus-within { animation-play-state: paused; }
+
+/* レスポンシブ調整 */
+@media (max-width: 767.98px) {
+  .hero-landing { min-height: calc(80vh - var(--header-height, 70px)); padding: 3rem 0; }
+  .hero-title { font-size: 2rem; }
+  .hero-ctas { flex-direction: column; gap: .6rem; }
+  .hero-ctas .hero-btn { width: 86%; max-width: 360px; }
+}
+
+/* アクセシビリティ配慮（動きを控えめに） */
+@media (prefers-reduced-motion: reduce) {
+  .hero-landing, .hero-title .h1-line, .hero-subtitle, .hero-scroll-down .chev {
+    animation: none !important;
+    transition: none !important;
+  }
+}
