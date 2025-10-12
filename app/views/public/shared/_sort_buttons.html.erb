@@ -1,9 +1,78 @@
-<div class="mb-3">
-  <div class="btn-group" role="group" aria-label="ソート順">
-    <%= link_to 'いいね多い順', url_for(request.query_parameters.merge(sort: 'likes_desc')), class: "btn #{params[:sort] == 'likes_desc' ? 'btn-primary' : 'btn-outline-primary'}", remote: true %>
-    <%= link_to '更新が新しい順', url_for(request.query_parameters.merge(sort: 'updated_desc')), class: "btn #{params[:sort] == 'updated_desc' ? 'btn-primary' : 'btn-outline-primary'}", remote: true %>
-    <%= link_to '更新が遅い順', url_for(request.query_parameters.merge(sort: 'updated_asc')), class: "btn #{params[:sort] == 'updated_asc' ? 'btn-primary' : 'btn-outline-primary'}", remote: true %>
-    <%= link_to '作成が新しい順', url_for(request.query_parameters.merge(sort: 'created_desc')), class: "btn #{params[:sort] == 'created_desc' ? 'btn-primary' : 'btn-outline-primary'}", remote: true %>
-    <%= link_to '作成が古い順', url_for(request.query_parameters.merge(sort: 'created_asc')), class: "btn #{params[:sort] == 'created_asc' ? 'btn-primary' : 'btn-outline-primary'}", remote: true %>
+<!-- ==========================
+   ソートコントロール（レスポンシブ／アクセシブル）
+   ========================== -->
+<div class="sort-control-wrapper">
+  <div class="d-flex align-items-center justify-content-center flex-wrap">
+    <!-- ボタン群（PC/タブレット） -->
+    <div class="btn-group sort-btn-group d-none d-sm-flex" role="tablist" aria-label="ソート順">
+      <%= link_to url_for(request.query_parameters.merge(sort: 'likes_desc')), 
+          remote: true,
+          class: "sort-btn btn #{params[:sort] == 'likes_desc' ? 'active' : 'outline'}",
+          role: "tab",
+          'aria-pressed': (params[:sort] == 'likes_desc').to_s,
+          data: { sort: 'likes_desc', toggle: 'sort' } do %>
+        <i class="fa fa-heart mr-1" aria-hidden="true"></i> いいね多い順
+      <% end %>
+
+      <%= link_to url_for(request.query_parameters.merge(sort: 'updated_desc')), 
+          remote: true,
+          class: "sort-btn btn #{params[:sort] == 'updated_desc' ? 'active' : 'outline'}",
+          role: "tab",
+          'aria-pressed': (params[:sort] == 'updated_desc').to_s,
+          data: { sort: 'updated_desc', toggle: 'sort' } do %>
+        <i class="fa fa-refresh mr-1" aria-hidden="true"></i> 更新が新しい順
+      <% end %>
+
+      <%= link_to url_for(request.query_parameters.merge(sort: 'updated_asc')), 
+          remote: true,
+          class: "sort-btn btn #{params[:sort] == 'updated_asc' ? 'active' : 'outline'}",
+          role: "tab",
+          'aria-pressed': (params[:sort] == 'updated_asc').to_s,
+          data: { sort: 'updated_asc', toggle: 'sort' } do %>
+        <i class="fa fa-history mr-1" aria-hidden="true"></i> 更新が遅い順
+      <% end %>
+
+      <%= link_to url_for(request.query_parameters.merge(sort: 'created_desc')), 
+          remote: true,
+          class: "sort-btn btn #{params[:sort] == 'created_desc' ? 'active' : 'outline'}",
+          role: "tab",
+          'aria-pressed': (params[:sort] == 'created_desc').to_s,
+          data: { sort: 'created_desc', toggle: 'sort' } do %>
+        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i> 作成が新しい順
+      <% end %>
+
+      <%= link_to url_for(request.query_parameters.merge(sort: 'created_asc')), 
+          remote: true,
+          class: "sort-btn btn #{params[:sort] == 'created_asc' ? 'active' : 'outline'}",
+          role: "tab",
+          'aria-pressed': (params[:sort] == 'created_asc').to_s,
+          data: { sort: 'created_asc', toggle: 'sort' } do %>
+        <i class="fa fa-minus-circle mr-1" aria-hidden="true"></i> 作成が古い順
+      <% end %>
+    </div>
+
+    <!-- モバイル用セレクト（PCでは非表示） -->
+    <div class="d-block d-sm-none w-100 px-3">
+      <select id="mobile-sort-select" class="form-control form-control-sm">
+        <option value="<%= url_for(request.query_parameters.merge(sort: 'likes_desc')) %>" <%= 'selected' if params[:sort] == 'likes_desc' %>>いいね多い順</option>
+        <option value="<%= url_for(request.query_parameters.merge(sort: 'updated_desc')) %>" <%= 'selected' if params[:sort] == 'updated_desc' %>>更新が新しい順</option>
+        <option value="<%= url_for(request.query_parameters.merge(sort: 'updated_asc')) %>" <%= 'selected' if params[:sort] == 'updated_asc' %>>更新が遅い順</option>
+        <option value="<%= url_for(request.query_parameters.merge(sort: 'created_desc')) %>" <%= 'selected' if params[:sort] == 'created_desc' %>>作成が新しい順</option>
+        <option value="<%= url_for(request.query_parameters.merge(sort: 'created_asc')) %>" <%= 'selected' if params[:sort] == 'created_asc' %>>作成が古い順</option>
+      </select>
+    </div>
+
+    <!-- 現在のソート表示（PC） -->
+    <div class="sort-current text-muted small ml-3 d-none d-sm-block">
+      表示: <strong><%= case params[:sort]
+        when 'likes_desc' then 'いいね順'
+        when 'updated_desc' then '更新が新しい順'
+        when 'updated_asc' then '更新が遅い順'
+        when 'created_desc' then '作成が新しい順'
+        when 'created_asc' then '作成が古い順'
+        else '標準'
+      end %></strong>
+    </div>
   </div>
 </div>
+
