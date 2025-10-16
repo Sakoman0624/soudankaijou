@@ -352,3 +352,31 @@ document.addEventListener('turbolinks:load', function() {
     }
   }, { passive: true });
 });
+
+/* ==========================
+   ソートコントロール：インタラクション
+   ========================== */
+document.addEventListener('turbolinks:load', function() {
+  // クリックで即時 active を切り替え（楽観的UI）
+  document.querySelectorAll('.sort-btn-group .sort-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      try {
+        // 見た目を即時切り替え
+        document.querySelectorAll('.sort-btn-group .sort-btn').forEach(function(b){ b.classList.remove('active'); b.classList.add('outline'); b.setAttribute('aria-pressed','false'); });
+        btn.classList.add('active'); btn.classList.remove('outline'); btn.setAttribute('aria-pressed','true');
+      } catch(err) { /* no-op */ }
+      // 実際の読み込みは Rails UJS の remote: true に任せる
+    });
+  });
+
+  // モバイル select の変更：非AJAXならページ遷移、AJAXにしたければ remote:true で link を使うか fetchで取得
+  var mobileSelect = document.getElementById('mobile-sort-select');
+  if (mobileSelect) {
+    mobileSelect.addEventListener('change', function(e) {
+      var url = e.target.value;
+      if (!url) return;
+      // 普通にページ遷移させる（remote: true の環境が必要ならここを $.get に置き換え）
+      window.location.href = url;
+    });
+  }
+});
