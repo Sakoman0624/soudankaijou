@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     
     get "tags/guide", to: "tags#guide", as: "tag_guide"
     get 'homes/about', to: 'homes#about', as: :about
+    get 'faq', to: 'homes#faq', as: :faq
     get "search" => "searches#search"
     get "liked_rooms", to: "rooms#liked_rooms"
     resources :rooms do
